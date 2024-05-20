@@ -13,7 +13,7 @@ interface PasswordInputForm {
 }
 interface InputProps {
   inputName: string;
-  labelText: string;
+  labelText?: string;
   inputContent: string;
   labelId: string;
   type: 'email' | 'password';
@@ -40,7 +40,7 @@ const PasswordInput = ({
   const [openEye, setOpenEye] = useState(false);
 
   const toggleEye = () => {
-    setOpenEye(!openEye);
+    setOpenEye((prev) => !prev);
   };
 
   const divStyle = twMerge(
@@ -77,9 +77,14 @@ const PasswordInput = ({
             }
           }}
         />
-        <Image className="" onClick={toggleEye} src={openEye ? eyeOn : eyeOff} alt={openEye ? 'eyeOn' : 'eyeOff'} />
+        <Image
+          className="cursor-pointer"
+          onClick={toggleEye}
+          src={openEye ? eyeOn : eyeOff}
+          alt={openEye ? 'eyeOn' : 'eyeOff'}
+        />
       </div>
-      {error?.message && <div className="text-red text-14">{error.message}</div>}
+      {error?.message && <div className="text-red text-14 mt-5">{error.message}</div>}
     </div>
   );
 };

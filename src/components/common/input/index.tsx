@@ -20,7 +20,6 @@ interface InputProps {
   divCheckStyle?: string;
   inputCheckStyle?: string;
   inputErrorFixStyle?: string;
-  labelDropStyle?: string;
   focusType?: string;
   children?: React.ReactNode;
   defaultValue?: string;
@@ -40,8 +39,6 @@ const Input = ({
   divCheckStyle,
   inputCheckStyle,
   inputErrorFixStyle,
-  labelDropStyle,
-  children,
   defaultValue,
   value,
 }: InputProps) => {
@@ -54,36 +51,33 @@ const Input = ({
     `w-full h-50 py-15 px-16 border-1 rounded-lg border-red text-black-33`,
     inputErrorFixStyle,
   );
-  const labelStyle = twMerge(`text-black-33`, labelDropStyle);
   return (
     <div className={divStyle}>
-      <label className={labelStyle} htmlFor={labelId}>
-        {labelText}
-        {children}
-        <input
-          {...register}
-          type={type}
-          name={inputName}
-          className={error?.message ? inputErrorStyle : inputStyle}
-          placeholder={inputContent}
-          id={labelId}
-          value={value}
-          defaultValue={defaultValue}
-          onFocus={() => {
-            switch (focusType) {
-              case 'text':
-                return clearError ? clearError('text') : '';
-              case 'email':
-                return clearError ? clearError('email') : '';
-              case 'password':
-                return clearError ? clearError('password') : '';
-              default:
-                return clearError ? clearError('text') : '';
-            }
-          }}
-        />
-      </label>
-      {error?.message && <div className="text-red text-14">{error.message}</div>}
+      <label htmlFor={labelId}>{labelText}</label>
+      <input
+        {...register}
+        type={type}
+        name={inputName}
+        className={error?.message ? inputErrorStyle : inputStyle}
+        placeholder={inputContent}
+        id={labelId}
+        value={value}
+        defaultValue={defaultValue}
+        onFocus={() => {
+          switch (focusType) {
+            case 'text':
+              return clearError ? clearError('text') : '';
+            case 'email':
+              return clearError ? clearError('email') : '';
+            case 'password':
+              return clearError ? clearError('password') : '';
+            default:
+              return clearError ? clearError('text') : '';
+          }
+        }}
+      />
+
+      {error?.message && <div className="text-red text-14 mt-5">{error.message}</div>}
     </div>
   );
 };
