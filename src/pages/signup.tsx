@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface useSignUpData {
+interface userSignUpData {
   email: string;
   password: string;
   passwordCheck: string;
@@ -17,14 +17,14 @@ const Singup = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordCheck, setIsShowPasswordCheck] = useState(false);
 
-  const route = useRouter();
-
   const {
     register,
     formState: { errors },
     handleSubmit,
     getValues,
-  } = useForm<useSignUpData>({ mode: 'onBlur' });
+  } = useForm<userSignUpData>({ mode: 'onBlur' });
+
+  const route = useRouter();
 
   const handleShowPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -47,7 +47,7 @@ const Singup = () => {
     } catch (error) {}
   };
 
-  const onSubmit = async (signupData: useSignUpData) => {
+  const onSubmit = async (signupData: userSignUpData) => {
     try {
       const response = await fetch('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', {
         method: 'POST',
@@ -66,9 +66,11 @@ const Singup = () => {
     <form className="flex flex-col gap-20" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="email">이메일</label>
       <input
+        className={`border ${errors.email ? 'border-red' : 'border-black'} focus:border-blue`}
         id="email"
         placeholder="이메일"
         type="email"
+        autoComplete="new-email"
         {...register('email', {
           required: {
             value: true,
@@ -87,8 +89,10 @@ const Singup = () => {
       {errors && <p className="font-extrabold">{errors.email?.message}</p>}
       <label htmlFor="password">비밀번호</label>
       <input
+        className={`border ${errors.password ? 'border-red' : 'border-black'} focus:border-blue`}
         id="password"
         placeholder="비밀번호"
+        autoComplete="new-password"
         type={isShowPassword ? 'text' : 'password'}
         {...register('password', {
           required: {
@@ -101,10 +105,11 @@ const Singup = () => {
           },
         })}
       />
-      <div onClick={handleShowPassword}>{isShowPassword ? '텍스트' : '비밀번호'}</div>
+      <div onClick={handleShowPassword}>{isShowPasswordCheck ? 'TEXT' : 'PASSWORD'}</div>
       {errors && <p className="font-extrabold">{errors.password?.message}</p>}
       <label htmlFor="passwordCheck">비밀번호 확인</label>
       <input
+        className={`border ${errors.passwordCheck ? 'border-red' : 'border-black'} focus:border-blue`}
         id="passwordCheck"
         placeholder="비밀번호 확인"
         type={isShowPasswordCheck ? 'TEXT' : 'PASSWORD'}
@@ -120,6 +125,7 @@ const Singup = () => {
       {errors && <p className="font-extrabold">{errors.passwordCheck?.message}</p>}
       <label htmlFor="nickname">닉네임</label>
       <input
+        className={`border ${errors.nickname ? 'border-red' : 'border-black'} focus:border-blue`}
         id="nickname"
         placeholder="닉네임"
         {...register('nickname', {
