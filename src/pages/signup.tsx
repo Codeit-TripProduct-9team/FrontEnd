@@ -19,7 +19,7 @@ const Singup = () => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
     getValues,
   } = useForm<userSignUpData>({ mode: 'onBlur' });
@@ -133,7 +133,9 @@ const Singup = () => {
         })}
       />
       {errors && <p className="font-extrabold">{errors.nickname?.message}</p>}
-      <button>회원가입</button>
+      <button type="submit" disabled={!isValid}>
+        회원가입
+      </button>
     </form>
   );
 };
