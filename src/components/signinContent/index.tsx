@@ -7,6 +7,7 @@ import { FieldError, useForm } from 'react-hook-form';
 import Input from '@/src/components/common/input';
 import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
+import NaverSignin from './NaverSignin';
 // import postUser from '@/src/pages/api/userApi';
 // import { useRouter } from 'next/router';
 
@@ -106,11 +107,7 @@ const SigninContent = () => {
         </p>
       </div>
       <KakaoSignin />
-
-      <Button className="flex justify-center items-center" type="submit" bgColor="green" textColor="white">
-        <Image src={naver} alt="kakao signin" width={24} height={24} className="relative right-10" />
-        네이버 계정으로 로그인
-      </Button>
+      <NaverSignin />
     </div>
   );
 };
