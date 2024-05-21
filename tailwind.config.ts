@@ -42,6 +42,7 @@ module.exports = {
         green: {
           DEFAULT: '#86D549',
           bg: '#E7F7DB',
+          naver: '#03CF5D',
         },
         purple: '#760DDE',
         orange: {
@@ -59,6 +60,7 @@ module.exports = {
         },
         white: '#FFF',
         'beige-f9': '#F9F7F7',
+        yellow: '#FEE500',
       },
       screens: {
         tablet: { max: '1199px' },
