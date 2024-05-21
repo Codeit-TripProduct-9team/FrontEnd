@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import naver from '@/public/assets/icon/naver.svg';
 import mainLogo from '@/public/assets/icon/mainLogo.png';
 import PasswordInput from '@/src/components/common/input/passwordInput';
 import Button from '@/src/components/common/button';
