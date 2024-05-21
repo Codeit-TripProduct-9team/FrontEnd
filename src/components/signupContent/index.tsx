@@ -26,6 +26,7 @@ const PASSWORD_REGEX =
 
 const SingupContent = () => {
   const [isValidateEmail, setIsValidateEmail] = useState(false);
+  const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
 
   const {
     register,
@@ -104,7 +105,7 @@ const SingupContent = () => {
         focusType="email"
       />
 
-      {isEmailvalid && <SendEmail userEmail={emailValue} />}
+      {isEmailvalid && <SendEmail userEmail={emailValue} setIsVerifiedEmail={setIsVerifiedEmail} />}
 
       <PasswordInput
         register={register('password', {
@@ -157,18 +158,18 @@ const SingupContent = () => {
 
       <UserNameInput
         register={register('username', {
-          required: { value: true, message: '닉네임을 입력해주세요' },
+          required: { value: true, message: '이름을 입력해주세요' },
         })}
         type="text"
         clearError={clearErrors}
         error={errors.username as FieldError}
-        inputName="userName"
+        inputName="username"
         inputContent="이름"
-        labelId="userName"
-        focusType="userName"
+        labelId="username"
+        focusType="username"
       />
 
-      <button type="submit" disabled={!isValid}>
+      <button type="submit" disabled={!isValid || !isVerifiedEmail}>
         회원가입
       </button>
     </form>

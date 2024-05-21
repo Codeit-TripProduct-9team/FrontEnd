@@ -3,21 +3,22 @@ import { useState } from 'react';
 
 interface SendEmailProps {
   userEmail: string;
+  setIsVerifiedEmail: (isVerified: boolean) => void;
 }
 
 const SERVICE_ID = 'service_4wlh35v';
 const TEMPLATE_ID = 'trip';
 const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
-const SendEmail = ({ userEmail }: SendEmailProps) => {
+const generateRandomNumber = () => {
+  const randomNumber = Math.floor(Math.random() * 1000000).toString();
+  return randomNumber.padStart(6, '0');
+};
+
+const verificationCode = generateRandomNumber();
+
+const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
   const [isEmailSent, setIsEmailSent] = useState(false);
-
-  const generateRandomNumber = () => {
-    const randomNumber = Math.floor(Math.random() * 1000000).toString();
-    return randomNumber.padStart(6, '0');
-  };
-
-  const verificationCode = generateRandomNumber();
 
   const sendVerificationEmail = () => {
     const templateParams = {
@@ -34,17 +35,19 @@ const SendEmail = ({ userEmail }: SendEmailProps) => {
 
           if (inputCode === verificationCode) {
             setIsEmailSent(true);
+            setIsVerifiedEmail(true);
+            alert('이메일 인증이 완료되었습니다.');
           }
           if (inputCode !== verificationCode) {
+            alert('인증 코드가 일치하지 않습니다.');
             setIsEmailSent(false);
           }
         }
       })
-      .catch(() => {});
-  };
-
-  const handleVerification = () => {
-    sendVerificationEmail();
+      .catch((error) => {
+        console.error(error);
+        alert('인증 이메일 발송에 실패했습니다. ');
+      });
   };
 
   return (
@@ -52,7 +55,7 @@ const SendEmail = ({ userEmail }: SendEmailProps) => {
       {isEmailSent ? (
         <div>인증되었습니다.</div>
       ) : (
-        <button className="border border-black" type="button" onClick={handleVerification}>
+        <button className="border border-black" type="button" onClick={sendVerificationEmail}>
           인증하기
         </button>
       )}
