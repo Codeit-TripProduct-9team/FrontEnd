@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import SendEmail from '../signupContent/sendEmail';
 
 interface userSignUpData {
   email: string;
@@ -14,11 +15,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 const PASSWORD_REGEX =
   /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;"'<>?,./~`-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;"'<>?,./~`-]{8,}$/;
 
-const VERIFY_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{5}$/; //임시
-
-const Singup = () => {
-  const [isVerified, setIsVerified] = useState(false);
-  const [sendVerifyEmail, setSendVerifyEmail] = useState(false);
+const SingupContent = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordCheck, setIsShowPasswordCheck] = useState(false);
 
@@ -27,19 +24,12 @@ const Singup = () => {
     formState: { errors, isValid },
     handleSubmit,
     getValues,
+    watch,
   } = useForm<userSignUpData>({ mode: 'onBlur' });
 
   const route = useRouter();
 
-  const sendVerificationEmail = () => {
-    setSendVerifyEmail(true);
-    // 이메일보내기 로직
-  };
-
-  const handleVerification = () => {
-    setIsVerified(true);
-    // 인증 로직
-  };
+  const emailValue = watch('email');
 
   const handleShowPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -104,40 +94,7 @@ const Singup = () => {
       />
       {errors && <p className="font-extrabold">{errors.email?.message}</p>}
 
-      {!errors.email && (
-        <button className="border border-black" onClick={sendVerificationEmail} type="button">
-          {sendVerifyEmail ? '인증메일 다시 보내기' : '인증메일 보내기'}
-        </button>
-      )}
-
-      {isVerified ? (
-        <div>인증되었습니다.</div>
-      ) : (
-        <div>
-          {sendVerifyEmail && (
-            <div>
-              <label>인증번호입력</label>
-              <input
-                className={`border ${errors.verify ? 'border-red' : 'border-black'} focus:border-blue`}
-                {...register('verify', {
-                  required: {
-                    value: true,
-                    message: '인증번호를 입력해주세요',
-                  },
-                  pattern: {
-                    value: VERIFY_REGEX,
-                    message: '올바른 인증번호를 입력해주세요.',
-                  },
-                })}
-              />
-              <button type="button" onClick={handleVerification} disabled={!!errors.verify}>
-                인증
-              </button>
-              {errors.verify && <p className="font-extrabold">{errors.verify.message}</p>}
-            </div>
-          )}
-        </div>
-      )}
+      <SendEmail userEmail={emailValue} />
 
       <label htmlFor="password">비밀번호</label>
       <input
@@ -192,4 +149,4 @@ const Singup = () => {
   );
 };
 
-export default Singup;
+export default SingupContent;
