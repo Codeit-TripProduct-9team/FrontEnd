@@ -40,7 +40,7 @@ const SendEmail = ({ userEmail }: SendEmailProps) => {
           }
         }
       })
-      .catch((error) => {});
+      .catch(() => {});
   };
 
   const handleVerification = () => {
@@ -53,7 +53,7 @@ const SendEmail = ({ userEmail }: SendEmailProps) => {
         <div>인증되었습니다.</div>
       ) : (
         <button className="border border-black" type="button" onClick={handleVerification}>
-          '인증하기'
+          인증하기
         </button>
       )}
     </div>

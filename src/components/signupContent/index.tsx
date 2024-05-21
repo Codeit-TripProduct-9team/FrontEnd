@@ -1,23 +1,31 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldError, useForm } from 'react-hook-form';
 import SendEmail from '../signupContent/sendEmail';
+import EmailInput from '../common/input';
+import NickNameInput from '../common/input';
+import UserNameInput from '../common/input';
+import PasswordInput from '../common/input/passwordInput';
+import PasswordCheckInput from '../common/input/passwordInput';
 
-interface userSignUpData {
+interface InputForm {
+  text?: string;
   email: string;
   password: string;
-  passwordCheck: string;
+  newpassword?: string;
+  passwordcheck: string;
+  username: string;
   nickname: string;
-  verify: string;
+  checkbox?: boolean;
+  file?: string;
 }
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 const PASSWORD_REGEX =
-  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;"'<>?,./~`-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;"'<>?,./~`-]{8,}$/;
+  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;"'<>?,./~`-])[A-Za-z\d!@#$%^&*()_+{}[\]:;"'<>?,./~`-]{8,}$/;
 
 const SingupContent = () => {
-  const [isShowPassword, setIsShowPassword] = useState(false);
-  const [isShowPasswordCheck, setIsShowPasswordCheck] = useState(false);
+  const [isValidateEmail, setIsValidateEmail] = useState(false);
 
   const {
     register,
@@ -25,19 +33,13 @@ const SingupContent = () => {
     handleSubmit,
     getValues,
     watch,
-  } = useForm<userSignUpData>({ mode: 'onBlur' });
+    clearErrors,
+  } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
   const route = useRouter();
 
   const emailValue = watch('email');
-
-  const handleShowPassword = () => {
-    setIsShowPassword(!isShowPassword);
-  };
-
-  const handleShowPasswordCheck = () => {
-    setIsShowPasswordCheck(!isShowPasswordCheck);
-  };
+  const isEmailvalid = !errors.email && isValidateEmail;
 
   const checkDuplicate = async (emailValue: string) => {
     try {
@@ -48,11 +50,17 @@ const SingupContent = () => {
         },
         body: JSON.stringify({ email: emailValue }),
       });
+      if (response.status === 200) {
+        setIsValidateEmail(true);
+      }
+
       return response.status !== 409;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const onSubmit = async (signupData: userSignUpData) => {
+  const onSubmit = async (signupData: InputForm) => {
     try {
       const response = await fetch('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', {
         method: 'POST',
@@ -65,19 +73,15 @@ const SingupContent = () => {
         alert('회원가입확인 모달로 변경');
         route.push('/signin');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <form className="flex flex-col gap-20" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="email">이메일</label>
-      <input
-        className={`border ${errors.email ? 'border-red' : 'border-black'} focus:border-blue`}
-        id="email"
-        placeholder="이메일"
-        type="email"
-        autoComplete="new-email"
-        {...register('email', {
+      <EmailInput
+        register={register('email', {
           required: {
             value: true,
             message: '이메일을 입력해주세요',
@@ -91,19 +95,19 @@ const SingupContent = () => {
             return isDuplicate || '중복된 이메일입니다.';
           },
         })}
+        type="email"
+        clearError={clearErrors}
+        error={errors.email as FieldError}
+        inputName="email"
+        inputContent="이메일"
+        labelId="email"
+        focusType="email"
       />
-      {errors && <p className="font-extrabold">{errors.email?.message}</p>}
 
-      <SendEmail userEmail={emailValue} />
+      {isEmailvalid && <SendEmail userEmail={emailValue} />}
 
-      <label htmlFor="password">비밀번호</label>
-      <input
-        className={`border ${errors.password ? 'border-red' : 'border-black'} focus:border-blue`}
-        id="password"
-        placeholder="비밀번호"
-        autoComplete="new-password"
-        type={isShowPassword ? 'text' : 'password'}
-        {...register('password', {
+      <PasswordInput
+        register={register('password', {
           required: {
             value: true,
             message: '비밀번호를 입력해주세요',
@@ -113,35 +117,57 @@ const SingupContent = () => {
             message: '대문자, 특수문자를 최소 하나씩 포함한 8자이상으로 입력해주세요',
           },
         })}
+        type="password"
+        clearError={clearErrors}
+        error={errors.password as FieldError}
+        inputName="password"
+        inputContent="비밀번호"
+        labelId="password"
+        focusType="password"
       />
-      <div onClick={handleShowPassword}>{isShowPassword ? 'TEXT' : 'PASSWORD'}</div>
-      {errors && <p className="font-extrabold">{errors.password?.message}</p>}
-      <label htmlFor="passwordCheck">비밀번호 확인</label>
-      <input
-        className={`border ${errors.passwordCheck ? 'border-red' : 'border-black'} focus:border-blue`}
-        id="passwordCheck"
-        placeholder="비밀번호 확인"
-        type={isShowPasswordCheck ? 'TEXT' : 'PASSWORD'}
-        {...register('passwordCheck', {
+      <PasswordCheckInput
+        register={register('passwordcheck', {
           required: {
             value: true,
             message: '비밀번호를 입력해주세요.',
           },
           validate: (value) => value === getValues('password') || '비밀번호가 일치하지 않습니다.',
         })}
+        type="password"
+        clearError={clearErrors}
+        error={errors.passwordcheck as FieldError}
+        inputName="passwordcheck"
+        inputContent="비밀번호 확인"
+        labelId="passwordcheck"
+        focusType="passwordcheck"
       />
-      <div onClick={handleShowPasswordCheck}>{isShowPasswordCheck ? 'TEXT' : 'PASSWORD'}</div>
-      {errors && <p className="font-extrabold">{errors.passwordCheck?.message}</p>}
-      <label htmlFor="nickname">닉네임</label>
-      <input
-        className={`border ${errors.nickname ? 'border-red' : 'border-black'} focus:border-blue`}
-        id="nickname"
-        placeholder="닉네임"
-        {...register('nickname', {
+
+      <NickNameInput
+        register={register('nickname', {
           required: { value: true, message: '닉네임을 입력해주세요' },
         })}
+        type="text"
+        clearError={clearErrors}
+        error={errors.nickname as FieldError}
+        inputName="nickname"
+        inputContent="닉네임"
+        labelId="nickname"
+        focusType="nickname"
       />
-      {errors && <p className="font-extrabold">{errors.nickname?.message}</p>}
+
+      <UserNameInput
+        register={register('username', {
+          required: { value: true, message: '닉네임을 입력해주세요' },
+        })}
+        type="text"
+        clearError={clearErrors}
+        error={errors.username as FieldError}
+        inputName="userName"
+        inputContent="이름"
+        labelId="userName"
+        focusType="userName"
+      />
+
       <button type="submit" disabled={!isValid}>
         회원가입
       </button>
