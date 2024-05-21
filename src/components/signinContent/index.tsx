@@ -1,12 +1,13 @@
 import Image from 'next/image';
-import kakao from '@/public/assets/icon/kakao.svg';
 import naver from '@/public/assets/icon/naver.svg';
-// import mainLogo from '@/public/assets/logo/mainLogo.svg';
+import mainLogo from '@/public/assets/icon/mainLogo.png';
 import PasswordInput from '@/src/components/common/input/passwordInput';
 import Button from '@/src/components/common/button';
 import { FieldError, useForm } from 'react-hook-form';
 import Input from '@/src/components/common/input';
 import Link from 'next/link';
+import KakaoSignin from './KakaoSignin';
+import NaverSignin from './NaverSignin';
 // import postUser from '@/src/pages/api/userApi';
 // import { useRouter } from 'next/router';
 
@@ -42,10 +43,9 @@ const SigninContent = () => {
   // };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center gap-24">
+    <div className="flex flex-col justify-center items-center gap-24">
       <header className="flex flex-col items-center gap-10">
-        {/* <Image className="modile:w-120" src={mainLogo} alt="mainLogo" /> */}
-        {/* <h1 className="text-20 mb-6 font-medium">로그인</h1> */}
+        <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
       </header>
       <main>
         {/* <form onSubmit={handleSubmit(onSubmit)}> */}
@@ -76,10 +76,10 @@ const SigninContent = () => {
                   value: true,
                   message: '비밀번호를 입력해주세요.',
                 },
-                pattern: {
-                  value: /^(?=.*[A-Z])(?=.*[!@#$&*])(.{8,})$/,
-                  message: '8자 이상 입력해 주세요.',
-                },
+                // pattern: {
+                //   value: /^(?=.*[A-Z])(?=.*[!@#$&*])(.{8,})$/,
+                //   message: '8자 이상 입력해 주세요.',
+                // },
               })}
               type="password"
               clearError={clearErrors}
@@ -94,20 +94,20 @@ const SigninContent = () => {
           </Button>
         </form>
       </main>
-      <p>
-        회원이 아니신가요?
-        <Link className="underline text-violet pl-10" href="/signup">
-          회원가입하기
-        </Link>
-      </p>
-      <Button className="flex justify-center items-center" type="submit" bgColor="yellow" textColor="black">
-        <Image src={kakao} alt="kakao signin" width={24} height={24} className="relative right-10" />
-        카카오 계정으로 로그인
-      </Button>
-      <Button className="flex justify-center items-center" type="submit" bgColor="green" textColor="white">
-        <Image src={naver} alt="kakao signin" width={24} height={24} className="relative right-10" />
-        네이버 계정으로 로그인
-      </Button>
+      <div className="flex">
+        <p>
+          <Link className="underline text-violet pl-10" href="/signup">
+            회원가입
+          </Link>
+        </p>
+        <p>
+          <Link className="underline text-violet pl-10" href="/reset-password">
+            비밀번호 찾기
+          </Link>
+        </p>
+      </div>
+      <KakaoSignin />
+      <NaverSignin />
     </div>
   );
 };
