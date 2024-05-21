@@ -19,6 +19,7 @@ const verificationCode = generateRandomNumber();
 
 const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [resendEmail, setResendEmail] = useState(false);
 
   const sendVerificationEmail = () => {
     const templateParams = {
@@ -32,6 +33,8 @@ const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
       .then((response) => {
         if (response.status === 200) {
           const inputCode = prompt('번호입력'); // 모달
+
+          setResendEmail(true);
 
           if (inputCode === verificationCode) {
             setIsEmailSent(true);
@@ -56,7 +59,7 @@ const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
         <div>인증되었습니다.</div>
       ) : (
         <button className="border border-black" type="button" onClick={sendVerificationEmail}>
-          인증하기
+          {resendEmail ? '재인증하기' : '인증하기'}
         </button>
       )}
     </div>

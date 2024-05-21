@@ -19,7 +19,6 @@ interface InputForm {
   checkbox?: boolean;
   file?: string;
   nickname?: string;
-  username?: string;
 }
 
 const SigninContent = () => {

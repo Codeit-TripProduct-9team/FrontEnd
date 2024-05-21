@@ -7,7 +7,6 @@ export interface InputForm {
   password?: string;
   passwordcheck?: string;
   nickname?: string;
-  username?: string;
   file?: string;
 }
 interface InputProps {
@@ -75,8 +74,6 @@ const Input = ({
               return clearError ? clearError('password') : '';
             case 'nickname':
               return clearError ? clearError('nickname') : '';
-            case 'username':
-              return clearError ? clearError('username') : '';
             default:
               return clearError ? clearError('text') : '';
           }

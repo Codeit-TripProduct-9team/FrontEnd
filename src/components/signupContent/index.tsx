@@ -4,7 +4,6 @@ import { FieldError, useForm } from 'react-hook-form';
 import SendEmail from '../signupContent/sendEmail';
 import EmailInput from '../common/input';
 import NickNameInput from '../common/input';
-import UserNameInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
 
@@ -14,7 +13,6 @@ interface InputForm {
   password: string;
   newpassword?: string;
   passwordcheck: string;
-  username: string;
   nickname: string;
   checkbox?: boolean;
   file?: string;
@@ -154,19 +152,6 @@ const SingupContent = () => {
         inputContent="닉네임"
         labelId="nickname"
         focusType="nickname"
-      />
-
-      <UserNameInput
-        register={register('username', {
-          required: { value: true, message: '이름을 입력해주세요' },
-        })}
-        type="text"
-        clearError={clearErrors}
-        error={errors.username as FieldError}
-        inputName="username"
-        inputContent="이름"
-        labelId="username"
-        focusType="username"
       />
 
       <button type="submit" disabled={!isValid || !isVerifiedEmail}>
