@@ -104,6 +104,12 @@ const Singup = () => {
       />
       {errors && <p className="font-extrabold">{errors.email?.message}</p>}
 
+      {!errors.email && (
+        <button className="border border-black" onClick={sendVerificationEmail} type="button">
+          {sendVerifyEmail ? '인증메일 다시 보내기' : '인증메일 보내기'}
+        </button>
+      )}
+
       {isVerified ? (
         <div>인증되었습니다.</div>
       ) : (
@@ -130,9 +136,6 @@ const Singup = () => {
               {errors.verify && <p className="font-extrabold">{errors.verify.message}</p>}
             </div>
           )}
-          <button className="border border-black" onClick={sendVerificationEmail} type="button">
-            {sendVerifyEmail ? '인증메일 다시 보내기' : '인증메일 보내기'}
-          </button>
         </div>
       )}
 
