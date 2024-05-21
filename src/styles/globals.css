@@ -5,6 +5,12 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #__next {
+    height: 100%;
+  }
+
   html {
     font-size: 62.5%;
   }

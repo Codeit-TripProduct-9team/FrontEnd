@@ -8,19 +8,47 @@ type InputFieldProps = {
   type: string;
   name: string;
   register: UseFormRegister<any>;
-  required: string;
+  required?: boolean;
   pattern?: {
     value: RegExp;
     message: string;
   };
   error?: FieldError;
+  placeholder?: string;
+  onEnter?: () => void;
+  labelStyle?: string;
+  inputStyle?: string;
 };
 
-const InputField = ({ label, type, name, register, required, pattern, error }: InputFieldProps) => {
+const InputField = ({
+  label,
+  type,
+  name,
+  placeholder,
+  register,
+  required = false,
+  pattern,
+  error,
+  onEnter,
+  labelStyle,
+  inputStyle,
+}: InputFieldProps) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && onEnter) {
+      event.preventDefault();
+      onEnter();
+    }
+  };
   return (
     <div>
-      <label>{label}</label>
-      <input type={type} {...register(name, { required, pattern })} />
+      <p className={labelStyle}>{label}</p>
+      <input
+        className={inputStyle}
+        type={type}
+        placeholder={placeholder}
+        {...register(name, { required, pattern })}
+        onKeyDown={handleKeyDown}
+      />
       {error && <p className="text-red">{error.message}</p>}
     </div>
   );
