@@ -7,7 +7,7 @@ import Input from '@/src/components/common/input';
 import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
 import NaverSignin from './NaverSignin';
-// import postUser from '@/src/pages/api/userApi';
+import instance from '@/src/api/axios';
 // import { useRouter } from 'next/router';
 
 interface InputForm {
@@ -24,22 +24,27 @@ const SigninContent = () => {
   const {
     register,
     formState: { errors },
+    handleSubmit,
     clearErrors,
+    setError,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
   // const router = useRouter();
 
-  // const onSubmit = async (data: InputForm) => {
-  //   const body = { email: data.email, password: data.password };
-  //   const response = await postUser('auth/login', body);
-  //   if (response && response.status === 201) {
-  //     window.localStorage.setItem('accessToken', response.data.accessToken);
-  //     router.push('/my-dashboard');
-  //   } else {
-  //     setError(response ? response.data.message : '');
-  //     handleModal();
-  //   }
-  // };
+  const handleSignin = async (data: InputForm) => {
+    try {
+      const body = { email: data.email, password: data.password };
+      const response = await instance.post('auth/login', body);
+      console.log(response);
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status === 400) {
+        setError('password', { type: 'manual', message: error.response.data.message });
+      } else if (error.response.status === 404) {
+        setError('email', { type: 'manual', message: error.response.data.message });
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center gap-24">
@@ -47,8 +52,7 @@ const SigninContent = () => {
         <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
       </header>
       <main>
-        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-        <form>
+        <form onSubmit={handleSubmit(handleSignin)}>
           <div className="pb-16">
             <Input
               register={register('email', {
@@ -75,10 +79,6 @@ const SigninContent = () => {
                   value: true,
                   message: '비밀번호를 입력해주세요.',
                 },
-                // pattern: {
-                //   value: /^(?=.*[A-Z])(?=.*[!@#$&*])(.{8,})$/,
-                //   message: '8자 이상 입력해 주세요.',
-                // },
               })}
               type="password"
               clearError={clearErrors}
