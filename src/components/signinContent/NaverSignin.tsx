@@ -1,7 +1,7 @@
 import Button from '../common/button';
 import Image from 'next/image';
 import naver from '@/public/assets/icon/naver.svg';
-import NaverApi from '@/src/lib/NaverApi';
+import NaverApi from '@/src/lib/NaverAuth';
 
 const NaverSignin = () => {
   return (
