@@ -17,13 +17,9 @@ const Header = () => {
         <Image src={logo} alt="홈으로 가기" width={30} height={30} className="rounded-99" />
       </Link>
       <nav className="flex items-center gap-36 mobile:gap-20 mobile:text-14">
-        <Link href="/signin" className="">
-          로그인
+        <Link href="/signin" className="px-20 py-5 bg-violet text-white rounded-4">
+          Log In
         </Link>
-        <Link href="/singup" className="">
-          회원가입
-        </Link>
-
         <div className="flex items-center gap-10 relative">
           <div onClick={handleDropdown} className="cursor-pointer">
             {!dropDown ? (
