@@ -1,12 +1,17 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+
+import { useRouter } from 'next/router';
+
 import { FieldError, useForm } from 'react-hook-form';
+
 import SendEmail from '../signupContent/sendEmail';
+
 import EmailInput from '../common/input';
 import NickNameInput from '../common/input';
-import UserNameInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
+
+import { REGEX } from '@/src/utils/regex';
 
 interface InputForm {
   text?: string;
@@ -14,15 +19,10 @@ interface InputForm {
   password: string;
   newpassword?: string;
   passwordcheck: string;
-  username: string;
   nickname: string;
   checkbox?: boolean;
   file?: string;
 }
-
-const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-const PASSWORD_REGEX =
-  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;"'<>?,./~`-])[A-Za-z\d!@#$%^&*()_+{}[\]:;"'<>?,./~`-]{8,}$/;
 
 const SingupContent = () => {
   const [isValidateEmail, setIsValidateEmail] = useState(false);
@@ -79,6 +79,13 @@ const SingupContent = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSubmit(onSubmit);
+    }
+  };
+
   return (
     <form className="flex flex-col gap-20" onSubmit={handleSubmit(onSubmit)}>
       <EmailInput
@@ -88,7 +95,7 @@ const SingupContent = () => {
             message: '이메일을 입력해주세요',
           },
           pattern: {
-            value: EMAIL_REGEX,
+            value: REGEX.EMAIL,
             message: '이메일 형식으로 입력해주세요',
           },
           validate: async (emailValue) => {
@@ -114,7 +121,7 @@ const SingupContent = () => {
             message: '비밀번호를 입력해주세요',
           },
           pattern: {
-            value: PASSWORD_REGEX,
+            value: REGEX.PASSWORD,
             message: '대문자, 특수문자를 최소 하나씩 포함한 8자이상으로 입력해주세요',
           },
         })}
@@ -156,20 +163,7 @@ const SingupContent = () => {
         focusType="nickname"
       />
 
-      <UserNameInput
-        register={register('username', {
-          required: { value: true, message: '이름을 입력해주세요' },
-        })}
-        type="text"
-        clearError={clearErrors}
-        error={errors.username as FieldError}
-        inputName="username"
-        inputContent="이름"
-        labelId="username"
-        focusType="username"
-      />
-
-      <button type="submit" disabled={!isValid || !isVerifiedEmail}>
+      <button type="submit" disabled={!isValid || !isVerifiedEmail} onKeyDown={handleKeyDown}>
         회원가입
       </button>
     </form>

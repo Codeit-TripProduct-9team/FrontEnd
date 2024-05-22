@@ -5,7 +5,7 @@ const RedirectURI = () => {
   const router = useRouter();
 
   useEffect(() => {
-    let code = new URL(window.location.href).searchParams.get('code');
+    const code = new URL(window.location.href).searchParams.get('code');
     console.log(code);
     // const deliverCode = async (code: string) => {
     //   try {
@@ -19,7 +19,8 @@ const RedirectURI = () => {
     //     return response.status !== 409;
     //   } catch (error) {}
     // };
-    // router.push("/main")
+
+    setTimeout(() => router.push('/signin'), 3000);
   });
 
   return (

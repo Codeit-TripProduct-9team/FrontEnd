@@ -1,5 +1,8 @@
-import emailjs from 'emailjs-com';
 import { useState } from 'react';
+
+import emailjs from 'emailjs-com';
+
+import { generateRandomNumber } from '@/src/utils/randomNumber';
 
 interface SendEmailProps {
   userEmail: string;
@@ -10,15 +13,11 @@ const SERVICE_ID = 'service_4wlh35v';
 const TEMPLATE_ID = 'trip';
 const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
-const generateRandomNumber = () => {
-  const randomNumber = Math.floor(Math.random() * 1000000).toString();
-  return randomNumber.padStart(6, '0');
-};
-
-const verificationCode = generateRandomNumber();
-
 const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [resendEmail, setResendEmail] = useState(false);
+
+  const verificationCode = generateRandomNumber();
 
   const sendVerificationEmail = () => {
     const templateParams = {
@@ -32,6 +31,8 @@ const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
       .then((response) => {
         if (response.status === 200) {
           const inputCode = prompt('번호입력'); // 모달
+
+          setResendEmail(true);
 
           if (inputCode === verificationCode) {
             setIsEmailSent(true);
@@ -56,7 +57,7 @@ const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
         <div>인증되었습니다.</div>
       ) : (
         <button className="border border-black" type="button" onClick={sendVerificationEmail}>
-          인증하기
+          {resendEmail ? '재인증하기' : '인증하기'}
         </button>
       )}
     </div>
