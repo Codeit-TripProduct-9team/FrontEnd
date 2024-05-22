@@ -1,5 +1,3 @@
-import RedirectURI from '../lib/RedirectURI';
-
 export default function Home() {
   return (
     <div>
