@@ -54,7 +54,7 @@
   <tbody>
     <tr>
       <td align="center"><a href="">
-      <img width=140px src="" alt=""/><br />
+      <img width=140px src="https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/8645321/f650502a-3433-4d47-ba38-bff3ea6ae77c" alt=""/><br />
       <sub><b>[UI/UX] 김이수</b></sub></a><br /></td>
     </tr>
   </tbody>
