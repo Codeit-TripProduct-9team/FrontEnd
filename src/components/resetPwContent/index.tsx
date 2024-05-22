@@ -1,11 +1,12 @@
 import InputField from '@/src/components/common/input/InputField';
+import sendVerificationEmail from '@/src/utils/sendEmail';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type FormValues = {
   email: string;
 };
 
-const FindPwPage = () => {
+function ResetPwContent() {
   const {
     register,
     handleSubmit,
@@ -13,7 +14,8 @@ const FindPwPage = () => {
   } = useForm<FormValues>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    console.log(data.email);
+    sendVerificationEmail({ userEmail: data.email });
   };
 
   return (
@@ -56,6 +58,6 @@ const FindPwPage = () => {
       </article>
     </section>
   );
-};
+}
 
-export default FindPwPage;
+export default ResetPwContent;
