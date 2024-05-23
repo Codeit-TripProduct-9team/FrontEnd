@@ -1,26 +1,31 @@
+import { useState } from 'react';
+
 import DetailInformation from './DetailInformation';
 import Button from '../common/button';
 import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';
-import { useState } from 'react';
 
 const DetailContent = () => {
-  const [changeContent, setChageContent] = useState(true);
-  const handleChangeContent = () => {
-    setChageContent(!changeContent);
+  const [changeContent, setChangeContent] = useState('information');
+
+  const handleChangeContent = (content: string) => {
+    setChangeContent(content);
   };
+
+  const selectContent = changeContent === 'information';
+
   return (
     <main className="flex flex-col justify-center items-center gap-30">
       <DetailInformation />
       <div className="flex gap-30">
-        <Button bgColor={'violet'} textColor={'white'} onClick={handleChangeContent}>
+        <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('information')}>
           상품설명
         </Button>
-        <Button bgColor={'violet'} textColor={'white'} onClick={handleChangeContent}>
+        <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('review')}>
           리뷰
         </Button>
       </div>
-      {changeContent ? <ProductDescription /> : <ProductReview />}
+      {selectContent ? <ProductDescription /> : <ProductReview />}
     </main>
   );
 };
