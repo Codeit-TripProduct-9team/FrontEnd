@@ -2,63 +2,68 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
-import { generateRandomNumber } from '@/src/utils/randomNumber';
+import Button from '../../common/button';
 
 interface SendEmailProps {
+  disabled: boolean;
   userEmail: string;
-  setIsVerifiedEmail: (isVerified: boolean) => void;
+  checkVerifyCode: () => void;
+  setVerificationCode: (code: string) => void;
 }
 
 const SERVICE_ID = 'service_4wlh35v';
 const TEMPLATE_ID = 'trip';
 const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
-const SendEmail = ({ userEmail, setIsVerifiedEmail }: SendEmailProps) => {
-  const [isEmailSent, setIsEmailSent] = useState(false);
-  const [resendEmail, setResendEmail] = useState(false);
+const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }: SendEmailProps) => {
+  const [isSendEmail, setIsSendEmail] = useState(false);
 
-  const verificationCode = generateRandomNumber();
+  const getVerificationCode = () => {
+    // 코드 받아오는 로직
+    const randomCode = '123456';
+    return randomCode;
+  };
+
+  const verficationCode = getVerificationCode();
+
+  console.log(verficationCode);
 
   const sendVerificationEmail = () => {
     const templateParams = {
       to_email: userEmail,
       from_name: 'test',
-      message: verificationCode,
+      message: verficationCode,
     };
 
     emailjs
       .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then((response) => {
         if (response.status === 200) {
-          const inputCode = prompt('번호입력'); // 모달
-
-          setResendEmail(true);
-
-          if (inputCode === verificationCode) {
-            setIsEmailSent(true);
-            setIsVerifiedEmail(true);
-            alert('이메일 인증이 완료되었습니다.');
-          }
-          if (inputCode !== verificationCode) {
-            alert('인증 코드가 일치하지 않습니다.');
-            setIsEmailSent(false);
-          }
+          setIsSendEmail(true);
+          setVerificationCode(verficationCode);
         }
       })
       .catch((error) => {
         console.error(error);
-        alert('인증 이메일 발송에 실패했습니다. ');
       });
   };
 
   return (
-    <div>
-      {isEmailSent ? (
-        <div>인증되었습니다.</div>
+    <div className="w-full">
+      {isSendEmail ? (
+        <Button className="w-full" textColor={'white'} bgColor={'violet'} onClick={checkVerifyCode}>
+          인증하기
+        </Button>
       ) : (
-        <button className="border border-black" type="button" onClick={sendVerificationEmail}>
-          {resendEmail ? '재인증하기' : '인증하기'}
-        </button>
+        <Button
+          className="w-full"
+          textColor={'white'}
+          bgColor={'violet'}
+          onClick={sendVerificationEmail}
+          disabled={disabled}
+        >
+          send email
+        </Button>
       )}
     </div>
   );
