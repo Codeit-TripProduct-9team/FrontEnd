@@ -10,7 +10,7 @@ const ProductDescription = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-30">
-        <img className="w-300" src={placeData.imageSource} alt="place-image" />
+        <img className="w-full" src={placeData.imageSource} alt="place-image" />
         <h2>{placeData.title}</h2>
         <p>{placeData.description}</p>
         <img src={placeData.map} width={300} height={200} alt="map" />

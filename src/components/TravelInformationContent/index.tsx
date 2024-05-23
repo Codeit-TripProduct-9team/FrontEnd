@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Button from '../common/button';
 
+import InformationList from './informationContent';
 import ProductInformation from './ProductInformation';
 import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';
@@ -17,12 +18,13 @@ const TravelInformation = () => {
 
   return (
     <main className="flex flex-col justify-center items-center gap-30">
+      <InformationList />
       <ProductInformation />
       <div className="flex gap-30">
-        <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('information')}>
+        <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('information')}>
           상품설명
         </Button>
-        <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('review')}>
+        <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('review')}>
           리뷰
         </Button>
       </div>
