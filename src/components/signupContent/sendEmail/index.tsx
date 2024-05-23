@@ -26,8 +26,6 @@ const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }
 
   const verficationCode = getVerificationCode();
 
-  console.log(verficationCode);
-
   const sendVerificationEmail = () => {
     const templateParams = {
       to_email: userEmail,
@@ -62,7 +60,7 @@ const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }
           onClick={sendVerificationEmail}
           disabled={disabled}
         >
-          send email
+          인증메일 보내기
         </Button>
       )}
     </div>
