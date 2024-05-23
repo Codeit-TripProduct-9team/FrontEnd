@@ -30,6 +30,7 @@ module.exports = {
           d9: '#D9D9D9',
           ee: '#EEEEEE',
           fa: '#FAFAFA',
+          ae: '#AEAEAE',
         },
         black: {
           DEFAULT: '#000',

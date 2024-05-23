@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@toss/use-overlay": "^1.4.0",
+=======
+    "@heroicons/react": "^2.1.3",
+>>>>>>> aa75ce8a3ce4dd2554bf05b9ca5cf68e0447128a
     "axios": "^1.7.1",
     "emailjs-com": "^3.2.0",
     "next": "14.2.3",

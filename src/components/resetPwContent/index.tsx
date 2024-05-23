@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '@/src/components/common/input/InputField';
 import emailjs from 'emailjs-com';
-import { generateRandomNumber } from '@/src/utils/randomNumber';
 import EmailConfirmModal from '@/src/components/common/modal/emailConfirmModal';
 import { useOverlay } from '@toss/use-overlay';
 
@@ -28,11 +27,11 @@ const ResetPwContent = () => {
 
   // 이메일 인증 코드 전송 함수
   const sendVerificationEmail = (userEmail: string) => {
-    const code = generateRandomNumber(); // 랜덤 인증 코드 생성
+    const code = Math.floor(Math.random() * 1000000).toString(); // 랜덤 인증 코드 생성
     const templateParams = {
       to_email: userEmail,
       from_name: 'test',
-      message: code,
+      message: code.padStart(6, '0'),
     };
 
     const onModal = () => {

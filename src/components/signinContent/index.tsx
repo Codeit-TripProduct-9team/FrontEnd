@@ -19,6 +19,7 @@ interface InputForm {
   checkbox?: boolean;
   file?: string;
   nickname?: string;
+  verify?: string;
 }
 
 const SigninContent = () => {
@@ -48,67 +49,75 @@ const SigninContent = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-24">
-      <header className="flex flex-col items-center gap-10">
-        <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
-      </header>
-      <main>
+    <main className="flex justify-center items-center h-screen gap-24 relative bottom-100">
+      <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
+      <div className="flex flex-col gap-10">
+        <label className="text-24 font-bold text-black-4b">Log in</label>
         <form onSubmit={handleSubmit(handleSignin)}>
-          <div className="pb-16">
-            <Input
-              register={register('email', {
-                required: {
-                  value: true,
-                  message: '이메일을 입력해주세요.',
-                },
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: '이메일 형식으로 작성해 주세요.',
-                },
-              })}
-              type="email"
-              clearError={clearErrors}
-              error={errors.email as FieldError}
-              inputName="email"
-              inputContent="이메일"
-              labelId="email"
-              focusType="email"
-            />
-            <PasswordInput
-              register={register('password', {
-                required: {
-                  value: true,
-                  message: '비밀번호를 입력해주세요.',
-                },
-              })}
-              type="password"
-              clearError={clearErrors}
-              error={errors.password as FieldError}
-              inputName="password"
-              inputContent="비밀번호"
-              labelId="password"
-            />
+          <Input
+            register={register('email', {
+              required: {
+                value: true,
+                message: '이메일을 입력해주세요.',
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '이메일 형식으로 작성해 주세요.',
+              },
+            })}
+            type="email"
+            clearError={clearErrors}
+            error={errors.email as FieldError}
+            inputName="email"
+            inputContent="Email"
+            labelId="email"
+            focusType="email"
+          />
+          <PasswordInput
+            register={register('password', {
+              required: {
+                value: true,
+                message: '비밀번호를 입력해주세요.',
+              },
+            })}
+            type="password"
+            clearError={clearErrors}
+            error={errors.password as FieldError}
+            inputName="password"
+            inputContent="Password"
+            labelId="password"
+          />
+          <div className="flex justify-end gap-16">
+            <p>
+              <Link className="text-gray-ae text-14" href="/reset-password">
+                ID/PW 찾기
+              </Link>
+            </p>
+            <p>
+              <Link className=" text-gray-ae text-14" href="/signup">
+                회원가입
+              </Link>
+            </p>
           </div>
-          <Button type="submit" bgColor="violet" textColor="white" disabled={Object.keys(errors).length !== 0}>
+          <Button
+            type="submit"
+            bgColor="violet"
+            textColor="white"
+            disabled={Object.keys(errors).length !== 0}
+            className="my-10"
+          >
             로그인
           </Button>
         </form>
-      </main>
-      <div className="flex">
-        <p>
-          <Link className="underline text-violet pl-10" href="/signup">
-            회원가입
-          </Link>
-        </p>
-        <p>
-          <Link className="underline text-violet pl-10" href="/reset-password">
-            비밀번호 찾기
-          </Link>
-        </p>
+        <div className="flex items-center">
+          <hr className="flex-grow border-gray-ae" />
+          <span className="px-20 text-gray-ae">or</span>
+          <hr className="flex-grow border-gray-ae" />
+        </div>
+        <NaverSignin />
+        <KakaoSignin />
       </div>
-      <KakaoSignin />
-      <NaverSignin />
-    </div>
+    </main>
   );
 };
 

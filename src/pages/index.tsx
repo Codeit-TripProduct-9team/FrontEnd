@@ -1,7 +1,11 @@
-export default function Home() {
+import Layout from '../components/common/layout';
+
+const Home = () => {
   return (
-    <div>
+    <Layout>
       <h1>Home</h1>
-    </div>
+    </Layout>
   );
-}
+};
+
+export default Home;
