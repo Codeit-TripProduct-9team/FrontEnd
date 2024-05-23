@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from '../signupContent/sendEmail';
+import SendEmail from './sendEmail';
 
 import EmailInput from '../common/input';
 import NickNameInput from '../common/input';
