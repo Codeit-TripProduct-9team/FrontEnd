@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Button from '../common/button';
 
-import YoutubeInformation from './YoutubeInformation';
+import ProductInformation from './ProductInformation';
 import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';
 
@@ -17,7 +17,7 @@ const TravelInformation = () => {
 
   return (
     <main className="flex flex-col justify-center items-center gap-30">
-      <YoutubeInformation />
+      <ProductInformation />
       <div className="flex gap-30">
         <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('information')}>
           상품설명
