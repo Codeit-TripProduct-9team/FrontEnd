@@ -10,7 +10,7 @@ const KakaoMap = () => {
       <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
       {/* <Script src={KAKAO_SDK_LIB_URL} strategy="beforeInteractive" /> */}
 
-      <Map center={{ lat: 33.450701, lng: 126.570667 }} className="w-500 h-500" />
+      <Map center={{ lat: 33.450701, lng: 126.570667 }} className="w-500 h-500 rounded-8" />
     </>
   );
 };
