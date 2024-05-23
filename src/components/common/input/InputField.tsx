@@ -1,6 +1,3 @@
-// components/InputField.tsx
-
-import React from 'react';
 import { UseFormRegister, FieldError } from 'react-hook-form';
 
 type InputFieldProps = {
