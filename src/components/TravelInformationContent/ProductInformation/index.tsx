@@ -1,6 +1,6 @@
 import YoutubePlayer from './YoutubePlyaer';
 import Button from '../../common/button';
-import SelectLike from './SelectLike';
+import SelectLike from '../ProductInformation/selectLike';
 import ShareYoutube from './SahreYotube';
 
 const youtubeData = {
@@ -13,7 +13,7 @@ const youtubeData = {
   youtuber: '백종원 PAIK JONG WON',
 };
 
-const DetailInformation = () => {
+const TravelProduct = () => {
   return (
     <section className="flex gap-30">
       <YoutubePlayer youtubeLink={youtubeData.url} />
@@ -38,4 +38,4 @@ const DetailInformation = () => {
   );
 };
 
-export default DetailInformation;
+export default TravelProduct;

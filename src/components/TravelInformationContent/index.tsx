@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
-import DetailInformation from './DetailInformation';
 import Button from '../common/button';
+
+import YoutubeInformation from './YoutubeInformation';
 import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';
 
-const DetailContent = () => {
+const TravelInformation = () => {
   const [changeContent, setChangeContent] = useState('information');
 
   const handleChangeContent = (content: string) => {
@@ -16,7 +17,7 @@ const DetailContent = () => {
 
   return (
     <main className="flex flex-col justify-center items-center gap-30">
-      <DetailInformation />
+      <YoutubeInformation />
       <div className="flex gap-30">
         <Button bgColor={'violet'} textColor={'white'} onClick={() => handleChangeContent('information')}>
           상품설명
@@ -30,4 +31,4 @@ const DetailContent = () => {
   );
 };
 
-export default DetailContent;
+export default TravelInformation;
