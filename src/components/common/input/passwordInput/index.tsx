@@ -64,6 +64,7 @@ const PasswordInput = ({
           className="w-full text-black-33"
           placeholder={inputContent}
           id={labelId}
+          autoComplete="new-password"
           onFocus={() => {
             switch (focusType) {
               case 'password':

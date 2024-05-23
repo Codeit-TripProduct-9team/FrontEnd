@@ -8,6 +8,7 @@ export interface InputForm {
   passwordcheck?: string;
   nickname?: string;
   file?: string;
+  verify?: string;
 }
 interface InputProps {
   inputName: string;
@@ -25,6 +26,7 @@ interface InputProps {
   children?: React.ReactNode;
   defaultValue?: string;
   value?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -42,6 +44,7 @@ const Input = ({
   inputErrorFixStyle,
   defaultValue,
   value,
+  disabled,
 }: InputProps) => {
   const divStyle = twMerge(`flex flex-col items-start py-8 text-gray-9f text-16`, divCheckStyle);
   const inputStyle = twMerge(
@@ -64,6 +67,7 @@ const Input = ({
         id={labelId}
         value={value}
         defaultValue={defaultValue}
+        disabled={disabled}
         onFocus={() => {
           switch (focusType) {
             case 'text':
@@ -72,6 +76,8 @@ const Input = ({
               return clearError ? clearError('email') : '';
             case 'password':
               return clearError ? clearError('password') : '';
+            case 'verify':
+              return clearError ? clearError('verify') : '';
             case 'nickname':
               return clearError ? clearError('nickname') : '';
             default:
