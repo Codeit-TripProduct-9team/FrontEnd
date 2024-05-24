@@ -92,9 +92,9 @@ const SingupContent = () => {
   };
 
   return (
-    <div className=" flex flex-col px-75">
-      <label className="text-24 font-bold">회원가입</label>
-      <form className=" flex flex-col " onSubmit={handleSubmit(onSubmit)}>
+    <div className=" flex flex-col px-75 ">
+      <h1 className="text-24 font-bold pb-24">회원가입</h1>
+      <form className=" flex flex-col gap-16" onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
             required: { value: true, message: '닉네임을 입력해주세요' },
@@ -107,30 +107,40 @@ const SingupContent = () => {
           labelId="nickname"
           focusType="nickname"
         />
-        <EmailInput
-          register={register('email', {
-            required: {
-              value: true,
-              message: '이메일을 입력해주세요',
-            },
-            pattern: {
-              value: REGEX.EMAIL,
-              message: '이메일 형식으로 입력해주세요',
-            },
-            validate: async (emailValue) => {
-              const isDuplicate = await checkDuplicate(emailValue);
-              return isDuplicate || '이미 사용중인 이메일입니다.';
-            },
-          })}
-          type="email"
-          clearError={clearErrors}
-          error={errors.email as FieldError}
-          inputName="email"
-          inputContent="이메일"
-          labelId="email"
-          focusType="email"
-        />
-        <div className="flex items-center w-full gap-10">
+        <div className="flex items-center w-full gap-16">
+          <div className="w-full">
+            <EmailInput
+              register={register('email', {
+                required: {
+                  value: true,
+                  message: '이메일을 입력해주세요',
+                },
+                pattern: {
+                  value: REGEX.EMAIL,
+                  message: '이메일 형식으로 입력해주세요',
+                },
+                validate: async (emailValue) => {
+                  const isDuplicate = await checkDuplicate(emailValue);
+                  return isDuplicate || '이미 사용중인 이메일입니다.';
+                },
+              })}
+              type="email"
+              clearError={clearErrors}
+              error={errors.email as FieldError}
+              inputName="email"
+              inputContent="ID (이메일 형식)"
+              labelId="email"
+              focusType="email"
+            />
+          </div>
+          <SendEmail
+            isVerified={isVerified}
+            userEmail={emailValue}
+            disabled={!isEmailvalid}
+            setVerificationCode={setVerificationCode}
+          />
+        </div>
+        <div className="flex items-center w-full gap-16">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
@@ -147,18 +157,16 @@ const SingupContent = () => {
               inputContent="인증코드"
               labelId="verify"
               focusType="verify"
-              disabled={!isEmailvalid}
+              disabled={!isEmailvalid || isVerified}
+              isSuccess={isVerified}
             />
           </div>
           {!isVerified ? (
-            <SendEmail
-              userEmail={emailValue}
-              disabled={!isEmailvalid}
-              setVerificationCode={setVerificationCode}
-              checkVerifyCode={checkVerifyCode}
-            />
+            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerifyCode}>
+              인증 요청
+            </Button>
           ) : (
-            <Button className="w-full" textColor="white" bgColor={'violet'} disabled={true}>
+            <Button type="button" className="w-182 h-60" disabled={true}>
               인증되었습니다
             </Button>
           )}
@@ -199,10 +207,10 @@ const SingupContent = () => {
           focusType="passwordcheck"
         />
 
-        <Button type="submit" textColor={'white'} bgColor={'violet'} disabled={isValid}>
+        <Button className="w-full" type="submit" disabled={isValid}>
           회원가입
         </Button>
-        <Link href={'/signin'} className="flex justify-center py-10">
+        <Link href={'/signin'} className="flex justify-center py-10 text-14">
           로그인으로 돌아가기
         </Link>
       </form>
