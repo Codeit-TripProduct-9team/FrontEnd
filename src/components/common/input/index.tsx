@@ -48,11 +48,11 @@ const Input = ({
 }: InputProps) => {
   const divStyle = twMerge(`flex flex-col items-start py-8 text-gray-9f text-16`, divCheckStyle);
   const inputStyle = twMerge(
-    'w-full h-50 py-15 px-16 border-1 rounded-lg border-gray-9f text-black-33 focus:outline-none  focus:border-violet',
+    'w-full h-60 py-15 px-16 border-1 rounded-s border-gray-9f text-black-33 focus:outline-none  focus:border-violet',
     inputCheckStyle,
   );
   const inputErrorStyle = twMerge(
-    `w-full h-50 py-15 px-16 border-1 rounded-lg border-red text-black-33`,
+    `w-full h-60 py-15 px-16 border-1 rounded-s border-red text-black-33`,
     inputErrorFixStyle,
   );
   return (

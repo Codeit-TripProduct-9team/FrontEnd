@@ -44,11 +44,11 @@ const PasswordInput = ({
   };
 
   const divStyle = twMerge(
-    `flex flex-row  justify-between w-full h-50 py-15 px-16 border-1 rounded-lg border-gray-9f focus:outline-none  focus-within:border-violet`,
+    `flex flex-row  justify-between w-full h-60 py-15 px-16 border-1 rounded-s border-gray-9f focus:outline-none  focus-within:border-violet`,
     divCheckStyle,
   );
   const divErrorStyle = twMerge(
-    `flex flex-row justify-between w-full h-50 py-15 px-16 border-1 rounded-lg border-red`,
+    `flex flex-row justify-between w-full h-60 py-15 px-16 border-1 rounded-s border-red`,
     divErrorFixStyle,
   );
   return (

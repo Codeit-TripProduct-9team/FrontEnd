@@ -5,15 +5,9 @@ import NaverApi from '@/src/lib/NaverAuth';
 
 const NaverSignin = () => {
   return (
-    <Button
-      onClick={NaverApi}
-      className="flex justify-center items-center"
-      type="submit"
-      bgColor="green"
-      textColor="white"
-    >
-      <Image src={naver} alt="kakao signin" width={24} height={24} className="relative right-10" />
-      네이버 로그인
+    <Button onClick={NaverApi} rounded={4} bgColor="green-naver">
+      <Image src={naver} alt="naver signin" width={16} height={16} className="relative right-10" />
+      네이버로 간편 로그인
     </Button>
   );
 };
