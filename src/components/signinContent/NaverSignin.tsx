@@ -7,12 +7,12 @@ const NaverSignin = () => {
   return (
     <Button
       onClick={NaverApi}
-      className="flex justify-center items-center"
+      className="flex justify-center items-center rounded-3"
       type="submit"
       bgColor="green"
       textColor="white"
     >
-      <Image src={naver} alt="kakao signin" width={24} height={24} className="relative right-10" />
+      <Image src={naver} alt="naver signin" width={16} height={16} className="relative right-10" />
       네이버로 간편 로그인
     </Button>
   );

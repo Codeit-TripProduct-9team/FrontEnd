@@ -101,15 +101,15 @@ const SigninContent = () => {
             bgColor="blue"
             textColor="white"
             disabled={Object.keys(errors).length !== 0}
-            className="my-10"
+            className="my-10 text-18 font-bold h-60"
           >
             로그인
           </Button>
         </form>
         <div className="flex items-center">
-          <hr className="flex-grow border-gray-50" />
+          <hr className="flex-grow border-gray-30 border-1" />
           <span className="px-20 text-gray-50">or</span>
-          <hr className="flex-grow border-gray-50" />
+          <hr className="flex-grow border-gray-30 border-1" />
         </div>
         <NaverSignin />
         <KakaoSignin />
