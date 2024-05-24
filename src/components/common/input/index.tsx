@@ -27,6 +27,7 @@ interface InputProps {
   defaultValue?: string;
   value?: string;
   disabled?: boolean;
+  isSuccess?: boolean;
 }
 
 const Input = ({
@@ -45,6 +46,7 @@ const Input = ({
   defaultValue,
   value,
   disabled,
+  isSuccess,
 }: InputProps) => {
   const divStyle = twMerge(`flex flex-col items-start py-8 text-gray-9f text-16`, divCheckStyle);
   const inputStyle = twMerge(
@@ -62,7 +64,7 @@ const Input = ({
         {...register}
         type={type}
         name={inputName}
-        className={error?.message ? inputErrorStyle : inputStyle}
+        className={`${error?.message ? inputErrorStyle : inputStyle} ${isSuccess && 'border-2 border-green-naver'}`}
         placeholder={inputContent}
         id={labelId}
         value={value}

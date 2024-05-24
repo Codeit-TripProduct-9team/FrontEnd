@@ -7,7 +7,7 @@ import Button from '../../common/button';
 interface SendEmailProps {
   disabled: boolean;
   userEmail: string;
-  checkVerifyCode: () => void;
+  isVerified?: boolean;
   setVerificationCode: (code: string) => void;
 }
 
@@ -16,7 +16,7 @@ const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 
-const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }: SendEmailProps) => {
+const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
 
   const getVerificationCode = () => {
@@ -48,20 +48,20 @@ const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }
   };
 
   return (
-    <div className="w-full">
+    <div className="w-182 h-60">
       {isSendEmail ? (
-        <Button className="w-full" textColor={'white'} bgColor={'violet'} onClick={checkVerifyCode}>
-          인증하기
+        <Button className="w-full h-60" onClick={sendVerificationEmail} disabled={isVerified}>
+          다시 보내기
         </Button>
       ) : (
         <Button
-          className="w-full"
-          textColor={'white'}
-          bgColor={'violet'}
+          className="w-full h-60 border border-blue"
+          bgColor="white"
+          textColor="blue"
           onClick={sendVerificationEmail}
           disabled={disabled}
         >
-          인증메일 보내기
+          코드 발송
         </Button>
       )}
     </div>
