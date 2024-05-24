@@ -17,5 +17,6 @@
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off"
-  }
+  },
+  "ignorePatterns": ["next.config.mjs"]
 }
