@@ -4,7 +4,7 @@ import { Place } from './PlaceList';
 
 const PlaceItem = ({ place }: Place) => {
   return (
-    <li className="flex justify-between rounded-8 bg-white p-15 items-center">
+    <li className="flex justify-between rounded-8 bg-white p-15 items-center shadow-lg">
       <div className="flex gap-30">
         <span className="text-gray-400">{place.id}</span>
         <span className="font-bold">{place.name}</span>
