@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const placeData = {
   imageSource: 'https://i.ytimg.com/vi/or2TgTRjPq8/maxresdefault.jpg',
   title: '충남 예산',
@@ -10,10 +12,10 @@ const ProductDescription = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-30">
-        <img className="w-full" src={placeData.imageSource} alt="place-image" />
+        <Image className="w-full" width={800} height={600} src={placeData.imageSource} alt="place-image" />
         <h2>{placeData.title}</h2>
         <p>{placeData.description}</p>
-        <img src={placeData.map} width={300} height={200} alt="map" />
+        <Image src={placeData.map} width={300} height={200} alt="map" />
       </div>
     </section>
   );
