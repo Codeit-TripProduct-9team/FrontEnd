@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import mainLogo from '@/public/assets/icon/mainLogo.png';
 import PasswordInput from '@/src/components/common/input/passwordInput';
 import Button from '@/src/components/common/button';
 import { FieldError, useForm } from 'react-hook-form';
