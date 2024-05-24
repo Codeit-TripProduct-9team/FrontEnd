@@ -11,9 +11,10 @@ interface SendEmailProps {
   setVerificationCode: (code: string) => void;
 }
 
-const SERVICE_ID = 'service_4wlh35v';
+const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
+const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
+
 const TEMPLATE_ID = 'trip';
-const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
@@ -34,7 +35,7 @@ const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }
     };
 
     emailjs
-      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .send(PULBIC_NEXT_EMAIL_SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_NEXT_EMAIL_PUBLIC_KEY)
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
