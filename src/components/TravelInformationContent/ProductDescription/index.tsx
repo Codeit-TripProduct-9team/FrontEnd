@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import KakaoMap from '../../MyRouteContent/KakaoMap';
 
 const placeData = {
   imageSource: 'https://i.ytimg.com/vi/or2TgTRjPq8/maxresdefault.jpg',
@@ -15,7 +16,7 @@ const ProductDescription = () => {
         <Image className="w-full" width={800} height={600} src={placeData.imageSource} alt="place-image" />
         <h2>{placeData.title}</h2>
         <p>{placeData.description}</p>
-        <Image src={placeData.map} width={300} height={200} alt="map" />
+        <KakaoMap />
       </div>
     </section>
   );
