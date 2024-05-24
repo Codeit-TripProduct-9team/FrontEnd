@@ -8,7 +8,7 @@ import { FieldError, useForm } from 'react-hook-form';
 
 import mainLogo from '@/public/assets/icon/mainLogo.png';
 
-import SendEmail from '../signupContent/sendEmail';
+import SendEmail from './sendEmail';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
