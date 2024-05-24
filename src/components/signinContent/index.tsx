@@ -52,7 +52,7 @@ const SigninContent = () => {
     <main className="flex justify-center items-center h-screen gap-24 relative bottom-100">
       <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
       <div className="flex flex-col gap-10">
-        <label className="text-24 font-bold text-black-4b">Log in</label>
+        <label className="text-24 font-bold text-black-4b">로그인</label>
         <form onSubmit={handleSubmit(handleSignin)}>
           <Input
             register={register('email', {
@@ -87,21 +87,18 @@ const SigninContent = () => {
             inputContent="Password"
             labelId="password"
           />
-          <div className="flex justify-end gap-16">
+          <div className="flex justify-end items-center gap-8 text-gray-50 text-14">
             <p>
-              <Link className="text-gray-ae text-14" href="/reset-password">
-                ID/PW 찾기
-              </Link>
+              <Link href="/reset-password">ID/PW 찾기</Link>
             </p>
+            <span className="border h-16 " />
             <p>
-              <Link className=" text-gray-ae text-14" href="/signup">
-                회원가입
-              </Link>
+              <Link href="/signup">회원가입</Link>
             </p>
           </div>
           <Button
             type="submit"
-            bgColor="violet"
+            bgColor="blue"
             textColor="white"
             disabled={Object.keys(errors).length !== 0}
             className="my-10"
@@ -110,9 +107,9 @@ const SigninContent = () => {
           </Button>
         </form>
         <div className="flex items-center">
-          <hr className="flex-grow border-gray-ae" />
-          <span className="px-20 text-gray-ae">or</span>
-          <hr className="flex-grow border-gray-ae" />
+          <hr className="flex-grow border-gray-50" />
+          <span className="px-20 text-gray-50">or</span>
+          <hr className="flex-grow border-gray-50" />
         </div>
         <NaverSignin />
         <KakaoSignin />

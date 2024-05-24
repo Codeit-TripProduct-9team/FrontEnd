@@ -13,7 +13,7 @@ const NaverSignin = () => {
       textColor="white"
     >
       <Image src={naver} alt="kakao signin" width={24} height={24} className="relative right-10" />
-      네이버 로그인
+      네이버로 간편 로그인
     </Button>
   );
 };

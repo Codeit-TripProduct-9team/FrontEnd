@@ -11,13 +11,13 @@ interface ButtonProps {
   className?: string;
 }
 
-type BgColor = 'violet' | 'white' | 'yellow' | 'green';
+type BgColor = 'blue' | 'white' | 'yellow' | 'green';
 
-type TextColor = 'white' | 'black' | 'violet' | 'gray';
+type TextColor = 'white' | 'black' | 'blue' | 'gray';
 
 const defaultStyle = 'w-400 h-50 rounded-8 text-18 font-bold mobile:w-351';
 const bgColorClasses: Record<BgColor, string> = {
-  violet: 'bg-violet disabled:bg-gray-9f',
+  blue: 'bg-blue disabled:bg-gray-9f',
   white: 'bg-white border-1 border-gray-d9',
   yellow: 'bg-yellow',
   green: 'bg-green-naver',
@@ -26,7 +26,7 @@ const bgColorClasses: Record<BgColor, string> = {
 const textColorClasses: Record<TextColor, string> = {
   white: 'text-white',
   black: 'text-black-33',
-  violet: 'text-violet',
+  blue: 'text-blue',
   gray: 'text-gray-78',
 };
 

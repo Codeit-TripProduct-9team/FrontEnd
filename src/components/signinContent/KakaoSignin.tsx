@@ -13,7 +13,7 @@ const KakaoSignin = () => {
       onClick={KakaoAuth}
     >
       <Image src={kakao} alt="kakao signin" width={24} height={24} className="relative right-10" />
-      카카오 로그인
+      카카오로 간편 로그인
     </Button>
   );
 };
