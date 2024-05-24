@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
-
-import mainLogo from '@/public/assets/icon/mainLogo.png';
 
 import SendEmail from './sendEmail';
 import Button from '../common/button';
@@ -95,9 +92,9 @@ const SingupContent = () => {
   };
 
   return (
-    <main className="flex justify-center items-center h-screen gap-24 relative bottom-100">
-      <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
-      <form className="w-400 flex flex-col gap-20" onSubmit={handleSubmit(onSubmit)}>
+    <div className=" flex flex-col px-75">
+      <label className="text-24 font-bold">회원가입</label>
+      <form className=" flex flex-col " onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
             required: { value: true, message: '닉네임을 입력해주세요' },
@@ -209,7 +206,7 @@ const SingupContent = () => {
           로그인으로 돌아가기
         </Link>
       </form>
-    </main>
+    </div>
   );
 };
 
