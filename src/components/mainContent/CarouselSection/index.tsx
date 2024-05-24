@@ -1,4 +1,3 @@
-import { MockData } from '@/src/lib/types';
 import React from 'react';
 import CarouselCard from './CarouselCard';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -6,8 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-const CarouselSection = ({ data }: MockData) => {
+import { mock } from '@/src/components/mainContent/mock';
+const CarouselSection = () => {
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
@@ -24,7 +23,7 @@ const CarouselSection = ({ data }: MockData) => {
       w-1200 h-450
        `}
     >
-      {data.map((datas, index) => (
+      {mock.data.map((datas, index) => (
         <SwiperSlide key={`carousel${index}`}>
           <CarouselCard data={datas} key={index} />
         </SwiperSlide>
