@@ -52,7 +52,7 @@ const SigninContent = () => {
     <main className="flex justify-center items-center h-screen gap-24 relative bottom-100">
       <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
       <div className="flex flex-col gap-10">
-        <label className="text-24 font-bold text-black-4b">로그인</label>
+        <label className="text-24 font-bold text-black">로그인</label>
         <form onSubmit={handleSubmit(handleSignin)}>
           <Input
             register={register('email', {
@@ -101,7 +101,7 @@ const SigninContent = () => {
             bgColor="blue"
             textColor="white"
             disabled={Object.keys(errors).length !== 0}
-            className="my-10 text-18 font-bold h-60"
+            className="text-20 font-bold h-60 mt-20 mb-30"
           >
             로그인
           </Button>
