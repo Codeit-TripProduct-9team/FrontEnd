@@ -1,19 +1,54 @@
-import InputField from '@/src/components/common/input/InputField';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import InputField from '@/src/components/common/input/InputField';
+import emailjs from 'emailjs-com';
+import EmailConfirmModal from '@/src/components/common/modal/emailConfirmModal';
+import { useOverlay } from '@toss/use-overlay';
 
 type FormValues = {
   email: string;
 };
 
-const FindPwPage = () => {
+const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID as string;
+const TEMPLATE_ID = 'trip';
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+
+const ResetPwContent = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: 'onChange' });
+  const overlay = useOverlay();
 
+  // 폼 제출 핸들러
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    sendVerificationEmail(data.email); // 이메일 인증 코드 전송
+  };
+
+  // 이메일 인증 코드 전송 함수
+  const sendVerificationEmail = (userEmail: string) => {
+    const code = Math.floor(Math.random() * 1000000).toString(); // 랜덤 인증 코드 생성
+    const templateParams = {
+      to_email: userEmail,
+      from_name: 'test',
+      message: code.padStart(6, '0'),
+    };
+
+    const onModal = () => {
+      overlay.open(({ isOpen, close }) => <EmailConfirmModal isOpen={isOpen} close={close} code={code} />);
+    };
+
+    emailjs
+      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .then((response) => {
+        if (response.status === 200) {
+          onModal();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('인증 이메일 발송에 실패했습니다.');
+      });
   };
 
   return (
@@ -46,7 +81,7 @@ const FindPwPage = () => {
           </form>
         </div>
         <button
-          className={`mt-30 w-full  h-40 ${isValid ? 'bg-sky-200 hover:bg-sky-300' : 'bg-gray-200 hover:bg-gray-300'} `}
+          className={`mt-30 w-full h-40 ${isValid ? 'bg-sky-200 hover:bg-sky-300' : 'bg-gray-200 hover:bg-gray-300'}`}
           type="submit"
           onClick={handleSubmit(onSubmit)}
           disabled={!isValid}
@@ -58,4 +93,4 @@ const FindPwPage = () => {
   );
 };
 
-export default FindPwPage;
+export default ResetPwContent;

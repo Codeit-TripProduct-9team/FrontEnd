@@ -11,6 +11,12 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    borderRadius: {
+      s: '10px',
+      m: '15px',
+      l: '30px',
+      full: '100px',
+    },
     extend: {
       borderWidth: rem0_10,
       borderRadius: rem0_100,
@@ -21,26 +27,25 @@ module.exports = {
       spacing: rem0_1200,
       colors: {
         blue: {
-          DEFAULT: '#4981D5',
-          bg: '#DBE6F7',
+          DEFAULT: '#0094FF',
         },
         gray: {
-          78: '#787486',
-          '9f': '#9FA6B2',
-          d9: '#D9D9D9',
-          ee: '#EEEEEE',
-          fa: '#FAFAFA',
+          10: '#F7F7F8',
+          20: '#F1F1F1',
+          30: '#DCDCDC',
+          40: '#C1C1C1',
+          50: '#99999A',
+          60: '#818181',
+          70: '#5A5A5B',
+          80: '#3D3D3D',
         },
         black: {
           DEFAULT: '#000',
-          17: '#171717',
-          33: '#333236',
-          '4b': '#4B4B4B',
           overlay: 'rgba(0, 0, 0, 0.70)', // 모달창 뒷 배경
         },
-        red: '#D6173A',
+        red: '#F23B3B',
         green: {
-          DEFAULT: '#86D549',
+          DEFAULT: '#34C231',
           bg: '#E7F7DB',
           naver: '#03CF5D',
         },
@@ -77,6 +82,10 @@ module.exports = {
         overlay: '800',
         modal: '1000',
         toast: '1200',
+      },
+      boxShadow: {
+        main: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        sub: '0px 4px 10px rgba(0, 0, 0, 0.25)',
       },
     },
   },
