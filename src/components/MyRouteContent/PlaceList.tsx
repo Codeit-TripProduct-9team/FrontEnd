@@ -1,7 +1,7 @@
-import { PencilIcon } from '@heroicons/react/24/outline';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import React from 'react';
+import PlaceItem from './PlaceItem';
 
+//맵에 표시할 때 좌표값 필요
 const DATA = [
   {
     day: 1,
@@ -19,20 +19,25 @@ const DATA = [
   },
 ];
 
+export type PlaceList = {
+  day: number;
+  places: Place[];
+};
+
+export type Place = {
+  place: {
+    id: number;
+    name: string;
+  };
+};
+
 const PlaceList = () => {
   return DATA.map((data) => (
     <React.Fragment key={data.day}>
-      <h2>{data.day}일차</h2>
+      <h2 className="font-bold">{data.day}일차</h2>
       <ul className="flex flex-col gap-8">
-        {/* <span>{index}</span> */}
         {data.places.map((place) => (
-          <li key={place.id} className="flex justify-between rounded-8 bg-white p-15 items-center">
-            {place.name}
-            <div className="flex justify-end gap-10">
-              <PencilIcon className="w-16 h-16 text-gray-400" />
-              <TrashIcon className="w-16 h-16 text-gray-400" />
-            </div>
-          </li>
+          <PlaceItem key={place.id} place={place} />
         ))}
       </ul>
     </React.Fragment>
