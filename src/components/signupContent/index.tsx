@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
-
-import mainLogo from '@/public/assets/icon/mainLogo.png';
 
 import SendEmail from './sendEmail';
 import Button from '../common/button';
@@ -49,6 +46,8 @@ const SingupContent = () => {
   const route = useRouter();
 
   const emailValue = watch('email');
+
+  const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
 
   const checkDuplicate = async (emailValue: string) => {
@@ -60,8 +59,11 @@ const SingupContent = () => {
       }
 
       return response.status !== 409;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.response.status === 409) {
+        console.log('중복된 이메일 입니다');
+      }
     }
   };
 
@@ -81,15 +83,18 @@ const SingupContent = () => {
         alert('회원가입확인 모달로 변경');
         route.push('/signin');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.response.status === 422) {
+        console.log('The recipients address is corrupted');
+      }
     }
   };
 
   return (
-    <main className="flex justify-center items-center h-screen gap-24 relative bottom-100">
-      <Image className="modile:w-120" src={mainLogo} alt="mainLogo" width={400} />
-      <form className="w-400 flex flex-col gap-20" onSubmit={handleSubmit(onSubmit)}>
+    <div className=" flex flex-col px-75">
+      <label className="text-24 font-bold">회원가입</label>
+      <form className=" flex flex-col " onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
             required: { value: true, message: '닉네임을 입력해주세요' },
@@ -114,7 +119,7 @@ const SingupContent = () => {
             },
             validate: async (emailValue) => {
               const isDuplicate = await checkDuplicate(emailValue);
-              return isDuplicate || '중복된 이메일입니다.';
+              return isDuplicate || '이미 사용중인 이메일입니다.';
             },
           })}
           type="email"
@@ -131,7 +136,7 @@ const SingupContent = () => {
               register={register('verify', {
                 required: {
                   value: true,
-                  message: '인증코드를 입력해주세요',
+                  message: '인증번호를 입력해주세요',
                 },
                 validate: (value) => value === verificationCode || '인증번호가 일치하지 않습니다.',
               })}
@@ -194,14 +199,14 @@ const SingupContent = () => {
           focusType="passwordcheck"
         />
 
-        <Button type="submit" textColor={'white'} bgColor={'violet'} disabled={Object.keys(errors).length !== 0}>
+        <Button type="submit" textColor={'white'} bgColor={'violet'} disabled={isValid}>
           회원가입
         </Button>
         <Link href={'/signin'} className="flex justify-center py-10">
           로그인으로 돌아가기
         </Link>
       </form>
-    </main>
+    </div>
   );
 };
 
