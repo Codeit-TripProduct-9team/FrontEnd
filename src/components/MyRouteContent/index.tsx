@@ -2,10 +2,10 @@ import SearchBar from '../common/searchBar';
 import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 
 const MyRouteContent = () => {
-  const handleOnDragEnd = (result: any) => {
+  const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -13,7 +13,7 @@ const MyRouteContent = () => {
     }
 
     if (destination.droppableId === 'searchBar' && source.droppableId === 'placeList') {
-      console.log(`Draggable item ${draggableId} was moved from the place list to the search bar.`);
+      console.log(`${draggableId}`);
     }
   };
 
