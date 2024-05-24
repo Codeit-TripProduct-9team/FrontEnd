@@ -5,8 +5,8 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 
 const MyRouteContent = () => {
   return (
-    <main className="flex gap-30 bg-gray-200 rounded-8">
-      <div className="bg-gray-50 p-20 flex flex-col gap-10">
+    <main className="flex gap-30 m-30">
+      <div className="bg-gray-50 pt-20 pb-50 px-30 flex flex-col gap-10 rounded-8 ">
         <KakaoMap />
         <PlaceList />
         <button className="w-full bg-blue-500 text-white rounded-8 p-15 flex justify-center items-center">
