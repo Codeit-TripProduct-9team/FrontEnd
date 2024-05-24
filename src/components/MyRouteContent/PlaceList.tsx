@@ -1,5 +1,6 @@
 import React from 'react';
 import PlaceItem from './PlaceItem';
+import { Droppable } from '@hello-pangea/dnd';
 
 //맵에 표시할 때 좌표값 필요
 const DATA = [
@@ -35,11 +36,16 @@ const PlaceList = () => {
   return DATA.map((data) => (
     <React.Fragment key={data.day}>
       <h2 className="font-bold">{data.day}일차</h2>
-      <ul className="flex flex-col gap-8">
-        {data.places.map((place) => (
-          <PlaceItem key={place.id} place={place} />
-        ))}
-      </ul>
+      <Droppable droppableId={`day-${data.day}`}>
+        {(provided) => (
+          <ul className="flex flex-col gap-8" ref={provided.innerRef} {...provided.droppableProps}>
+            {data.places.map((place, index) => (
+              <PlaceItem key={place.id} place={place} index={index} />
+            ))}
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
     </React.Fragment>
   ));
 };
