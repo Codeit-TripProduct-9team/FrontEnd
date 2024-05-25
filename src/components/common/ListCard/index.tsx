@@ -19,7 +19,8 @@ const ListCard = ({ data }: ListCardProps) => {
         </div>
         <div>
           <h2 className="font-bold text-20 mb-5">{data.title}</h2>
-          <p>{truncateText(data.description, 50)}</p>
+          {/* <p>{truncateText(data.description, 50)}</p> */}
+          <p className="overflow-ellipsis-3">{data.description}</p>
         </div>
         <div className="flex">
           {data.tag.map((tag, index) => (
