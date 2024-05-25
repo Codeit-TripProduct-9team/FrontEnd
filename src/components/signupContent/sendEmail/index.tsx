@@ -47,7 +47,7 @@ const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: Sen
   };
 
   return (
-    <div className="w-182 h-60">
+    <>
       {isSendEmail ? (
         <Button type="button" className="w-full h-60" onClick={sendVerificationEmail} disabled={isVerified}>
           {isVerified ? '인증 완료' : '다시 보내기'}
@@ -63,7 +63,7 @@ const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: Sen
           코드 발송
         </Button>
       )}
-    </div>
+    </>
   );
 };
 

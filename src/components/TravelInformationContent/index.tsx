@@ -38,10 +38,10 @@ const TravelInformation = () => {
         <InformationList />
         <ProductInformation youtubeData={youtubeData} />
         <div className="flex gap-30">
-          <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('information')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('information')}>
             상품설명
           </Button>
-          <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('review')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('review')}>
             리뷰
           </Button>
         </div>
