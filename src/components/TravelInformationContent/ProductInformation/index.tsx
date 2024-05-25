@@ -20,10 +20,10 @@ const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
           <ShareYoutube />
         </div>
         <div className="flex gap-30">
-          <Button bgColor={'violet'} textColor={'white'}>
+          <Button className="bg-blue" textColor={'white'}>
             마이플레이스 등록
           </Button>
-          <Button bgColor={'violet'} textColor={'white'}>
+          <Button className="bg-blue" textColor={'white'}>
             지금 코스짜기
           </Button>
         </div>
