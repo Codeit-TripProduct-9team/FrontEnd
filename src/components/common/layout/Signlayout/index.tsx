@@ -16,7 +16,7 @@ const SignLayout = ({ children }: PropsWithChildren) => {
           <h1 className="font-bold pt-20 text-24 text-blue ">유튜버의 여행지를 그대로!</h1>
           <div className="flex gap-5">
             {[...Array(5)].map((_, i) => (
-              <Image key={i} src={SignStar} width={30} height={30} alt="star" />
+              <Image key={i} src={SignStar} width={25} height={25} alt="star" />
             ))}{' '}
           </div>
           <p className="w-347 mt-36 mb-16 mx-112 text-left">

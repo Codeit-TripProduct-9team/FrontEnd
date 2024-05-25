@@ -162,11 +162,11 @@ const SingupContent = () => {
             />
           </div>
           {!isVerified ? (
-            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerifyCode}>
+            <Button disabled={!isEmailvalid} onClick={checkVerifyCode} className="min-w-182 h-60">
               인증 요청
             </Button>
           ) : (
-            <Button type="button" className="w-182 h-60" disabled={true}>
+            <Button className="min-w-182 h-60" disabled={true}>
               인증되었습니다
             </Button>
           )}
@@ -207,7 +207,7 @@ const SingupContent = () => {
           focusType="passwordcheck"
         />
 
-        <Button className="w-full mt-20" type="submit" disabled={isValid}>
+        <Button className="w-full mt-20" disabled={isValid}>
           회원가입
         </Button>
         <Link href={'/signin'} className="flex justify-center py-10 text-14">
