@@ -55,8 +55,7 @@ const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: Sen
         </Button>
       ) : (
         <Button
-          className="w-full h-60 border border-blue"
-          bgColor="white"
+          className="w-full h-60 border border-blue bg-white font-bold"
           textColor="blue"
           onClick={sendVerificationEmail}
           disabled={disabled}

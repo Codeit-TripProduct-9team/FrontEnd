@@ -92,9 +92,9 @@ const SingupContent = () => {
   };
 
   return (
-    <div className=" flex flex-col px-75 ">
+    <div className=" flex flex-col w-408">
       <h1 className="text-24 font-bold pb-24">회원가입</h1>
-      <form className=" flex flex-col gap-16" onSubmit={handleSubmit(onSubmit)}>
+      <form className=" flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
             required: { value: true, message: '닉네임을 입력해주세요' },
@@ -207,7 +207,7 @@ const SingupContent = () => {
           focusType="passwordcheck"
         />
 
-        <Button className="w-full" type="submit" disabled={isValid}>
+        <Button className="w-full mt-20" type="submit" disabled={isValid}>
           회원가입
         </Button>
         <Link href={'/signin'} className="flex justify-center py-10 text-14">
