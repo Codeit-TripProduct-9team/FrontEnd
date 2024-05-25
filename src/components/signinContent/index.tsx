@@ -47,7 +47,7 @@ const SigninContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 px-75">
+    <div className="flex flex-col gap-10 w-408">
       <label className="text-24 font-bold text-black">로그인</label>
       <form onSubmit={handleSubmit(handleSignin)}>
         <Input
