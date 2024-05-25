@@ -1,4 +1,5 @@
 export interface MockDataItem {
+  cardId: number;
   thumbnail: string;
   likes: number;
   title: string;
