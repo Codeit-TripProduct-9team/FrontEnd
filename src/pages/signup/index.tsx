@@ -1,5 +1,5 @@
 import SignupContent from '@/src/components/SignupContent';
-import SignLayout from '@/src/components/common/layout/Signlayout';
+import SignLayout from '@/src/components/common/layout/SignLayout';
 
 const Signup = () => {
   return (

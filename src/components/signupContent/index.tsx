@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './sendEmail';
+import SendEmail from './SendEmail';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -16,18 +16,8 @@ import PasswordCheckInput from '../common/input/passwordInput';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
-
-interface InputForm {
-  text?: string;
-  email: string;
-  password: string;
-  newpassword?: string;
-  passwordcheck: string;
-  nickname: string;
-  checkbox?: boolean;
-  file?: string;
-  verify?: string;
-}
+import { InputForm } from '@/src/types/InputType';
+import { ERROR_MESSAGE } from './constats';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -62,14 +52,15 @@ const SingupContent = () => {
     } catch (error: any) {
       console.error(error);
       if (error.response.status === 409) {
-        console.log('중복된 이메일 입니다');
+        console.log(ERROR_MESSAGE.DUPLICATE_EMAIL);
       }
     }
   };
 
-  const checkVerifyCode = () => {
+  const checkVerificationCode = () => {
     const verifyValue = getValues('verify');
-    if (verifyValue === verificationCode) {
+    const validCode = verifyValue === verificationCode;
+    if (validCode) {
       setIsVerified(true);
       alert('인증이 성공되었습니다.'); //모달
     }
@@ -85,19 +76,16 @@ const SingupContent = () => {
       }
     } catch (error: any) {
       console.error(error);
-      if (error.response.status === 422) {
-        console.log('The recipients address is corrupted');
-      }
     }
   };
 
   return (
     <div className=" flex flex-col px-75 ">
       <h1 className="text-24 font-bold pb-24">회원가입</h1>
-      <form className=" flex flex-col gap-16" onSubmit={handleSubmit(onSubmit)}>
+      <form className=" flex flex-col gap-10" onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
-            required: { value: true, message: '닉네임을 입력해주세요' },
+            required: { value: true, message: ERROR_MESSAGE.NICKNAME_INPUT_PROMPT },
           })}
           type="text"
           clearError={clearErrors}
@@ -107,21 +95,21 @@ const SingupContent = () => {
           labelId="nickname"
           focusType="nickname"
         />
-        <div className="flex items-center w-full gap-16">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <EmailInput
               register={register('email', {
                 required: {
                   value: true,
-                  message: '이메일을 입력해주세요',
+                  message: ERROR_MESSAGE.EMAIL_INPUT_PROMPT,
                 },
                 pattern: {
                   value: REGEX.EMAIL,
-                  message: '이메일 형식으로 입력해주세요',
+                  message: ERROR_MESSAGE.INVALID_EMAIL_FORMAT,
                 },
                 validate: async (emailValue) => {
                   const isDuplicate = await checkDuplicate(emailValue);
-                  return isDuplicate || '이미 사용중인 이메일입니다.';
+                  return isDuplicate || ERROR_MESSAGE.DUPLICATE_EMAIL;
                 },
               })}
               type="email"
@@ -131,6 +119,7 @@ const SingupContent = () => {
               inputContent="ID (이메일 형식)"
               labelId="email"
               focusType="email"
+              disabled={isVerified}
             />
           </div>
           <SendEmail
@@ -140,15 +129,15 @@ const SingupContent = () => {
             setVerificationCode={setVerificationCode}
           />
         </div>
-        <div className="flex items-center w-full gap-16">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
                 required: {
                   value: true,
-                  message: '인증번호를 입력해주세요',
+                  message: ERROR_MESSAGE.CODE_INPUT_PROMPT,
                 },
-                validate: (value) => value === verificationCode || '인증번호가 일치하지 않습니다.',
+                validate: (value) => value === verificationCode || ERROR_MESSAGE.INVALID_CODE_FORMAT,
               })}
               type="text"
               clearError={clearErrors}
@@ -161,13 +150,13 @@ const SingupContent = () => {
               isSuccess={isVerified}
             />
           </div>
-          {!isVerified ? (
-            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerifyCode}>
-              인증 요청
-            </Button>
-          ) : (
+          {isVerified ? (
             <Button type="button" className="w-182 h-60" disabled={true}>
               인증되었습니다
+            </Button>
+          ) : (
+            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerificationCode}>
+              인증 요청
             </Button>
           )}
         </div>
@@ -175,11 +164,11 @@ const SingupContent = () => {
           register={register('password', {
             required: {
               value: true,
-              message: '비밀번호를 입력해주세요',
+              message: ERROR_MESSAGE.PASSWORD_INPUT_PROMPT,
             },
             pattern: {
               value: REGEX.PASSWORD,
-              message: '대문자, 특수문자를 최소 하나씩 포함한 8자이상으로 입력해주세요',
+              message: ERROR_MESSAGE.INVALID_PASSWORD_FORMAT,
             },
           })}
           type="password"
@@ -194,9 +183,9 @@ const SingupContent = () => {
           register={register('passwordcheck', {
             required: {
               value: true,
-              message: '비밀번호를 입력해주세요.',
+              message: ERROR_MESSAGE.PASSWORD_INPUT_PROMPT,
             },
-            validate: (value) => value === getValues('password') || '비밀번호가 일치하지 않습니다.',
+            validate: (value) => value === getValues('password') || ERROR_MESSAGE.PASSWORDS_DO_NOT_MATCH,
           })}
           type="password"
           clearError={clearErrors}

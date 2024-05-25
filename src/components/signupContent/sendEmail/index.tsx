@@ -3,6 +3,9 @@ import { useState } from 'react';
 import emailjs from 'emailjs-com';
 
 import Button from '../../common/button';
+import { ERROR_MESSAGE } from '../constats';
+
+import randomCode from '@/src/utils/randomCode';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -19,19 +22,13 @@ const TEMPLATE_ID = 'trip';
 const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
 
-  const getVerificationCode = () => {
-    // 코드 받아오는 로직
-    const randomCode = '123456';
-    return randomCode;
-  };
-
-  const verficationCode = getVerificationCode();
-
   const sendVerificationEmail = () => {
+    const verifyCode = randomCode();
+
     const templateParams = {
       to_email: userEmail,
       from_name: 'test',
-      message: verficationCode,
+      message: verifyCode,
     };
 
     emailjs
@@ -39,24 +36,26 @@ const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: Sen
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
-          setVerificationCode(verficationCode);
+          setVerificationCode(templateParams.message);
         }
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((error: any) => {
+        if (error.status === 422) {
+          alert(ERROR_MESSAGE.EMAIL_NOT_FOUND); //모달
+        }
       });
   };
 
   return (
     <div className="w-182 h-60">
       {isSendEmail ? (
-        <Button className="w-full h-60" onClick={sendVerificationEmail} disabled={isVerified}>
-          다시 보내기
+        <Button type="button" className="w-full h-60" onClick={sendVerificationEmail} disabled={isVerified}>
+          {isVerified ? '인증 완료' : '다시 보내기'}
         </Button>
       ) : (
         <Button
-          className="w-full h-60 border border-blue"
-          bgColor="white"
+          type="button"
+          className="w-full h-60 bg-white border border-blue"
           textColor="blue"
           onClick={sendVerificationEmail}
           disabled={disabled}
