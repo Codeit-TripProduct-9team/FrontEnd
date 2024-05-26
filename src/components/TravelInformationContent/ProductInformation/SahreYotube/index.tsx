@@ -15,7 +15,7 @@ const ShareYoutube = () => {
     script.onload = () => {
       const { Kakao }: any = window;
       Kakao.cleanup();
-      Kakao.init('85c33ac4bef04e22351db00aedc485cd');
+      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_SHARE_KEY);
       Kakao.Share.createDefaultButton({
         container: '#kakaotalk-sharing-btn',
         objectType: 'feed',

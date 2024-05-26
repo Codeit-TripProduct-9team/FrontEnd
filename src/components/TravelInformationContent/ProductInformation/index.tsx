@@ -1,6 +1,6 @@
 import YoutubePlayer from './YoutubePlyaer';
 import Button from '../../common/button';
-import SelectLike from '../ProductInformation/selectLike';
+import SelectLike from './SelectLike';
 import ShareYoutube from './SahreYotube';
 
 interface YoutubedataProps {
