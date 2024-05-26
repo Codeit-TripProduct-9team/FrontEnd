@@ -85,7 +85,7 @@ const SingupContent = () => {
       <form className=" flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <NickNameInput
           register={register('nickname', {
-            required: { value: true, message: ERROR_MESSAGE.NICKNAME_INPUT_PROMPT },
+            required: { value: true, message: ERROR_MESSAGE.EMPTY_NICKNAME },
           })}
           type="text"
           clearError={clearErrors}
@@ -95,13 +95,13 @@ const SingupContent = () => {
           labelId="nickname"
           focusType="nickname"
         />
-        <div className="flex items-center w-full gap-10">
+        <div className="flex  w-full gap-10">
           <div className="w-full">
             <EmailInput
               register={register('email', {
                 required: {
                   value: true,
-                  message: ERROR_MESSAGE.EMAIL_INPUT_PROMPT,
+                  message: ERROR_MESSAGE.EMPTY_EMAIL,
                 },
                 pattern: {
                   value: REGEX.EMAIL,
@@ -129,13 +129,13 @@ const SingupContent = () => {
             setVerificationCode={setVerificationCode}
           />
         </div>
-        <div className="flex items-center w-full gap-10">
+        <div className="flex w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
                 required: {
                   value: true,
-                  message: ERROR_MESSAGE.CODE_INPUT_PROMPT,
+                  message: ERROR_MESSAGE.EMPTY_CODE,
                 },
                 validate: (value) => value === verificationCode || ERROR_MESSAGE.INVALID_CODE_FORMAT,
               })}
@@ -164,7 +164,7 @@ const SingupContent = () => {
           register={register('password', {
             required: {
               value: true,
-              message: ERROR_MESSAGE.PASSWORD_INPUT_PROMPT,
+              message: ERROR_MESSAGE.EMPTY_PASSWORD,
             },
             pattern: {
               value: REGEX.PASSWORD,
@@ -183,7 +183,7 @@ const SingupContent = () => {
           register={register('passwordcheck', {
             required: {
               value: true,
-              message: ERROR_MESSAGE.PASSWORD_INPUT_PROMPT,
+              message: ERROR_MESSAGE.EMPTY_PASSWORD,
             },
             validate: (value) => value === getValues('password') || ERROR_MESSAGE.PASSWORDS_DO_NOT_MATCH,
           })}
