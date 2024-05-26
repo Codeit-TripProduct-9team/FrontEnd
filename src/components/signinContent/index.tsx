@@ -47,8 +47,8 @@ const SigninContent = () => {
   };
 
   return (
-    <div className=" flex flex-col px-75 gap-10">
-      <label className="text-24 font-bold text-black-4b">로그인</label>
+    <div className="flex flex-col gap-10 w-408">
+      <label className="text-24 font-bold text-black">로그인</label>
       <form onSubmit={handleSubmit(handleSignin)}>
         <Input
           register={register('email', {
@@ -83,32 +83,23 @@ const SigninContent = () => {
           inputContent="Password"
           labelId="password"
         />
-        <div className="flex justify-end gap-16">
+        <div className="flex justify-end items-center gap-8 text-gray-50 text-14">
           <p>
-            <Link className="text-gray-ae text-14" href="/reset-password">
-              ID/PW 찾기
-            </Link>
+            <Link href="/reset-password">ID/PW 찾기</Link>
           </p>
+          <span className="border h-16 " />
           <p>
-            <Link className=" text-gray-ae text-14" href="/signup">
-              회원가입
-            </Link>
+            <Link href="/signup">회원가입</Link>
           </p>
         </div>
-        <Button
-          type="submit"
-          bgColor="violet"
-          textColor="white"
-          disabled={Object.keys(errors).length !== 0}
-          className="my-10"
-        >
+        <Button disabled={Object.keys(errors).length !== 0} className="text-20 font-bold h-60 mt-20 mb-30">
           로그인
         </Button>
       </form>
       <div className="flex items-center">
-        <hr className="flex-grow border-gray-ae" />
-        <span className="px-20 text-gray-ae">or</span>
-        <hr className="flex-grow border-gray-ae" />
+        <hr className="flex-grow border-gray-30 border-1" />
+        <span className="px-20 text-gray-50 text-14">or</span>
+        <hr className="flex-grow border-gray-30 border-1" />
       </div>
       <NaverSignin />
       <KakaoSignin />
