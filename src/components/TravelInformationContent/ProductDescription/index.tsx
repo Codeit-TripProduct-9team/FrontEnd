@@ -16,6 +16,31 @@ const ProductDescription = () => {
         <Image className="w-full" width={800} height={600} src={placeData.imageSource} alt="place-image" />
         <h2>{placeData.title}</h2>
         <p>{placeData.description}</p>
+        {/* <div>
+          <div>근처 가볼만한 여행지</div>
+          <ul className="flex gap-30">
+            <li>
+              <h3>예당호출렁다리</h3>
+              <p>설명</p>
+              <div>이미지</div>
+            </li>
+            <li>
+              <h3>예당호출렁다리</h3>
+              <p>설명</p>
+              <div>이미지</div>
+            </li>
+            <li>
+              <h3>예당호출렁다리</h3>
+              <p>설명</p>
+              <div>이미지</div>
+            </li>
+            <li>
+              <h3>예당호출렁다리</h3>
+              <p>설명</p>
+              <div>이미지</div>
+            </li>
+          </ul>
+        </div> */}
         <KakaoMap />
       </div>
     </section>

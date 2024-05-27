@@ -64,7 +64,9 @@ const Input = ({
         {...register}
         type={type}
         name={inputName}
-        className={`${error?.message ? inputErrorStyle : inputStyle} ${isSuccess && 'border-2 border-green-naver'}`}
+        className={`${error?.message ? inputErrorStyle : inputStyle} ${
+          isSuccess && 'text-green-naver border-2 border-green-naver'
+        }`}
         placeholder={inputContent}
         id={labelId}
         value={value}
