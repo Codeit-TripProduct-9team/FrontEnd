@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './SendEmail';
+import SendEmail from './sendEmail';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
