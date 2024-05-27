@@ -1,27 +1,25 @@
 import Image from 'next/image';
-import email from '@/public/assets/icon/email.svg';
-import facebook from '@/public/assets/icon/facebook.svg';
-import instagram from '@/public/assets/icon/instagram.svg';
+// import email from '@/public/assets/icon/email.svg';
+// import facebook from '@/public/assets/icon/facebook.svg';
+// import instagram from '@/public/assets/icon/instagram.svg';
 import Link from 'next/link';
+import logo from '@/public/assets/icon/logo-footer.svg';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 text-gray-9f flex w-full pl-141 pr-141 pt-41 pb-40 mx-auto justify-between tablet:pl-40 tablet:pr-40 mobile:flex-col mobile:items-center mobile:pb-90">
-      <p>©Utrip</p>
-      <div className="flex space-x-32 mobile:space-x-20 mobile:mt-14 mobile:mb-68">
-        <p>Privacy Policy</p>
-        <p>FAQ</p>
+    <footer className="bg-gray-80 text-white flex flex-col w-full px-140 h-200 py-40 gap-30">
+      <div className="flex flex-col gap-10">
+        <Image src={logo} alt="logo" width={54} height={30} />
+        <p className="text-12">
+          유튜버로 보는 여행 기록 서비스, Utrip <br />
+          <Link href="/privacy">개인정보처리방침</Link> | <Link href="/service">서비스 이용약관</Link>
+        </p>
       </div>
-      <div className="flex space-x-14 mobile:space-x-24">
-        <Link href="https://www.google.com/" target="_blank" rel="noopener noreferrer">
-          <Image src={email} alt="email" width={20} />
-        </Link>
-        <Link href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-          <Image src={facebook} alt="facebook" width={20} />
-        </Link>
-        <Link href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-          <Image src={instagram} alt="instagram" width={20} />
-        </Link>
+      <div>
+        <p className="text-8 text-gray-50">
+          ⓒ 2024 Utrip. All rights reserved
+          <br /> Contact
+        </p>
       </div>
     </footer>
   );
