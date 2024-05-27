@@ -12,12 +12,12 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center p-16 px-120 bg-gray-10">
+    <header className="flex justify-between items-center py-16 px-120 bg-gray-10">
       <Link href="/" className="">
         <Image src={logo} alt="홈으로 가기" width={78} height={39} />
       </Link>
-      <nav className="flex items-center gap-16 mobile:gap-20 mobile:text-14">
-        <Link href="/signin" className="px-20 py-5 bg-gray-70 text-white rounded-s">
+      <nav className="flex items-center gap-16">
+        <Link href="/signin" className="px-16 py-6 bg-gray-70 text-white rounded-s">
           로그인
         </Link>
         <div className="flex items-center gap-10 relative">
