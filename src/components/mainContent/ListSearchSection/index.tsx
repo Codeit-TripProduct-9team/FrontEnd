@@ -5,6 +5,7 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 import { MockDataItem } from '@/src/lib/types';
+import NoSearchData from './NoSearchData';
 
 const ListSearchSection = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -19,7 +20,7 @@ const ListSearchSection = () => {
     }
   };
 
-  console.log(searchValue);
+  console.log(filteredData);
 
   return (
     <article className="flex flex-col items-center">
@@ -45,12 +46,15 @@ const ListSearchSection = () => {
         )}
       </div>
       {/*  VISIBLE 안으로 넣기*/}
-
-      <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
-        {filteredData.map((datas, index) => (
-          <ListCard key={index} data={datas} />
-        ))}
-      </div>
+      {filteredData.length !== 0 ? (
+        <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
+          {filteredData.map((datas, index) => (
+            <ListCard key={index} data={datas} />
+          ))}
+        </div>
+      ) : (
+        <NoSearchData />
+      )}
     </article>
   );
 };
