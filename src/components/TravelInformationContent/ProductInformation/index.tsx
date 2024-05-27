@@ -1,5 +1,6 @@
-import YoutubePlayer from './YoutubePlyaer';
 import Button from '../../common/button';
+
+import YoutubePlayer from './YoutubePlyaer';
 import SelectLike from './SelectLike';
 import ShareContents from './SahreContents';
 
