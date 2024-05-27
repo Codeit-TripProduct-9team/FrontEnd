@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { mock } from '@/src/components/mainContent/mock';
 const CarouselSection = () => {
+  const hotCards = mock.data.slice(0, 5);
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
@@ -23,7 +24,7 @@ const CarouselSection = () => {
       w-1200 h-450
        `}
     >
-      {mock.data.map((datas, index) => (
+      {hotCards.map((datas, index) => (
         <SwiperSlide key={`carousel${index}`}>
           <CarouselCard data={datas} key={index} />
         </SwiperSlide>
