@@ -7,6 +7,20 @@ import { reviewData } from './mock';
 const ProductReview = () => {
   const [sortedReview, setSortedReview] = useState(reviewData);
 
+  // 리뷰받오기
+  // const getReview = async () => {
+  //   try {
+  //     const response = await instance.get('/review');
+  //     return response;
+  //   } catch (error: any) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(()=>{
+  //   getReview()
+  // },[])
+
   const handleSortByNewest = () => {
     const sorted = [...sortedReview].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     setSortedReview(sorted);

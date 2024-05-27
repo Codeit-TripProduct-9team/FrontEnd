@@ -26,11 +26,11 @@ const TravelInformation = () => {
   const route = useRouter();
   const pageUrl = route.asPath;
 
+  const selectContent = changeContent === 'information';
+
   const handleChangeContent = (content: string) => {
     setChangeContent(content);
   };
-
-  const selectContent = changeContent === 'information';
 
   return (
     <>

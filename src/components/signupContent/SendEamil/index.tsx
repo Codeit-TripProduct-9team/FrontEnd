@@ -13,6 +13,7 @@ interface SendEmailProps {
   userEmail: string;
   isVerified?: boolean;
   setVerificationCode: (code: string) => void;
+  error: any;
 }
 
 const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
@@ -20,7 +21,7 @@ const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 
-const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: SendEmailProps) => {
+const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
 
   const sendVerificationEmail = () => {
@@ -50,13 +51,19 @@ const SendEmail = ({ userEmail, disabled, isVerified, setVerificationCode }: Sen
   return (
     <>
       {isSendEmail ? (
-        <Button type="button" className="min-w-182 h-60" onClick={sendVerificationEmail} disabled={isVerified}>
+        <Button
+          type="button"
+          className={`min-w-182 h-60 bg-white border border-blue ${error ? 'mb-25' : 'm-2b-0'}`}
+          textColor="blue"
+          onClick={sendVerificationEmail}
+          disabled={isVerified}
+        >
           {isVerified ? '인증 완료' : '다시 보내기'}
         </Button>
       ) : (
         <Button
           type="button"
-          className="min-w-182 h-60 bg-white border border-blue"
+          className={`min-w-182 h-60 bg-white border border-blue ${error ? 'mb-25' : 'm-2b-0'}`}
           textColor="blue"
           onClick={sendVerificationEmail}
           disabled={disabled}
