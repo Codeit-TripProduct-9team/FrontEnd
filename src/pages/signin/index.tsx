@@ -1,4 +1,4 @@
-import SignLayout from '@/src/components/common/layout/SignLayout';
+import SignLayout from '@/src/components/common/layout/Signlayout';
 import SigninContent from '@/src/components/signinContent';
 
 const Signin = () => {
