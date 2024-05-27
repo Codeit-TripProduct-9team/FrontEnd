@@ -4,5 +4,5 @@
     }
     return text;
 };
-  
+
 export default truncateText
