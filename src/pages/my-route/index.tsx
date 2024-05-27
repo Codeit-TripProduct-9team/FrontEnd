@@ -6,7 +6,7 @@ import MyRouteContent from '@/src/components/MyRouteContent';
 
 const MyRoute = () => {
   return (
-    <Layout>
+    <Layout hasFooter={false}>
       <MyRouteContent />
     </Layout>
   );
