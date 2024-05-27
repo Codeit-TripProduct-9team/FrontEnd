@@ -3,6 +3,7 @@ import InputField from '@/src/components/common/input/InputField';
 import emailjs from 'emailjs-com';
 import EmailConfirmModal from '@/src/components/common/modal/emailConfirmModal';
 import { useOverlay } from '@toss/use-overlay';
+import Modal from '../common/modal';
 
 type FormValues = {
   email: string;
@@ -18,7 +19,7 @@ const ResetPwContent = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: 'onChange' });
-  const overlay = useOverlay();
+  const overlay = useOverlay(); //모달
 
   // 폼 제출 핸들러
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -27,28 +28,33 @@ const ResetPwContent = () => {
 
   // 이메일 인증 코드 전송 함수
   const sendVerificationEmail = (userEmail: string) => {
-    const code = Math.floor(Math.random() * 1000000).toString(); // 랜덤 인증 코드 생성
-    const templateParams = {
-      to_email: userEmail,
-      from_name: 'test',
-      message: code.padStart(6, '0'),
-    };
+    // const code = Math.floor(Math.random() * 1000000).toString(); // 랜덤 인증 코드 생성
+    // const templateParams = {
+    //   to_email: userEmail,
+    //   from_name: 'test',
+    //   message: code.padStart(6, '0'),
+    // };
 
     const onModal = () => {
-      overlay.open(({ isOpen, close }) => <EmailConfirmModal isOpen={isOpen} close={close} code={code} />);
+      overlay.open(({ isOpen, close }) => (
+        <Modal isOpen={isOpen} close={close}>
+          <EmailConfirmModal close={close} />
+        </Modal>
+      ));
     };
+    onModal();
 
-    emailjs
-      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
-      .then((response) => {
-        if (response.status === 200) {
-          onModal();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('인증 이메일 발송에 실패했습니다.');
-      });
+    // emailjs
+    //   .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       onModal();
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     alert('인증 이메일 발송에 실패했습니다.');
+    //   });
   };
 
   return (
