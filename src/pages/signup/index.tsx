@@ -1,4 +1,4 @@
-import SignupContent from '@/src/components/signupContent';
+import SignupContent from '@/src/components/SignupContent';
 import SignLayout from '@/src/components/common/layout/Signlayout';
 
 const Signup = () => {

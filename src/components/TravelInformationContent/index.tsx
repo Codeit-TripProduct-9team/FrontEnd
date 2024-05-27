@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 import Button from '../common/button';
 
-import InformationList from './informationContent';
+import InformationList from './InformationContent';
 import ProductInformation from './ProductInformation';
 import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';

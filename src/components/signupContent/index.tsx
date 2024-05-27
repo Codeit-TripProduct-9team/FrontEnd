@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './sendEmail';
+import SendEmail from './SendEamil';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -95,7 +95,7 @@ const SingupContent = () => {
           labelId="nickname"
           focusType="nickname"
         />
-        <div className="flex  w-full gap-10">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <EmailInput
               register={register('email', {
@@ -129,7 +129,7 @@ const SingupContent = () => {
             setVerificationCode={setVerificationCode}
           />
         </div>
-        <div className="flex w-full gap-10">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
@@ -151,11 +151,11 @@ const SingupContent = () => {
             />
           </div>
           {isVerified ? (
-            <Button type="button" className="w-182 h-60" disabled={true}>
+            <Button type="button" className="min-w-182 h-60" disabled={true}>
               인증되었습니다
             </Button>
           ) : (
-            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerificationCode}>
+            <Button type="button" className="min-w-182 h-60" disabled={!isEmailvalid} onClick={checkVerificationCode}>
               인증 요청
             </Button>
           )}
