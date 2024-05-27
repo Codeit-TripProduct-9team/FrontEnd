@@ -25,7 +25,7 @@ const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
         <div>By {youtubeData.youtuber}</div>
         <div className="flex gap-20">
           <SelectLike contentId={youtubeData.id} />
-          <ShareContents />
+          <ShareContents youtubeData={youtubeData} />
         </div>
         <div className="flex gap-30">
           <Button className="bg-blue" textColor={'white'}>
