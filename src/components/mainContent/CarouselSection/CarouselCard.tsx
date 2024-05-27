@@ -10,7 +10,7 @@ interface CarouselCardProps {
 const CarouselCard = ({ data }: CarouselCardProps) => {
   return (
     <Link href={`/travel-information/${data.cardId}`}>
-      <div className="flex flex-shrink-0 gap-20 p-10 border-3 rounded-10 cursor-pointer ">
+      <div className="flex flex-shrink-0 bg-white gap-20 p-10 border-3 rounded-10 cursor-pointer ">
         <div className="flex relative justify-center align-middle flex-col gap-10">
           <Image src={data.thumbnail} width={700} height={700} alt="썸네일 이미지" />
           <div className="absolute top-10 right-20 text-white w-fit border-2 rounded-15 text-15 p-5">
