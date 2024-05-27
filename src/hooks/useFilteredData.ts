@@ -1,4 +1,4 @@
-import { MockData, MockDataItem } from '../lib/types';
+import { MockDataItem } from '../lib/types';
 import { decomposedSearchValue } from '../utils/decomposedSearchValue';
 
 interface FilteredDataProps {
