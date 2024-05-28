@@ -28,10 +28,6 @@ const TravelInformation = () => {
 
   const selectContent = changeContent === 'information';
 
-  const handleChangeContent = (content: string) => {
-    setChangeContent(content);
-  };
-
   return (
     <>
       <TravelInformationMeta youtubeData={youtubeData} pageUrl={pageUrl} />
@@ -39,10 +35,10 @@ const TravelInformation = () => {
         <InformationList />
         <ProductInformation youtubeData={youtubeData} />
         <div className="flex gap-30">
-          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('information')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('information')}>
             상품설명
           </Button>
-          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('review')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('review')}>
             리뷰
           </Button>
         </div>
