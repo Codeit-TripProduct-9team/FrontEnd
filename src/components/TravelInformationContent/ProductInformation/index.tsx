@@ -1,7 +1,7 @@
 import Button from '../../common/button';
 
 import YoutubePlayer from './YoutubePlyaer';
-import SelectLike from './SelectLike';
+import SelectLike from './selectLike';
 import ShareContents from './SahreContents';
 import Link from 'next/link';
 
