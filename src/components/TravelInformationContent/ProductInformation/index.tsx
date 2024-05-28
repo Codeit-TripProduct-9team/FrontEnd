@@ -1,10 +1,20 @@
-import YoutubePlayer from './YoutubePlyaer';
 import Button from '../../common/button';
-import SelectLike from '../ProductInformation/selectLike';
-import ShareYoutube from './SahreYotube';
+
+import YoutubePlayer from './YoutubePlyaer';
+import SelectLike from './selectLike';
+import ShareContents from './SahreContents';
+import Link from 'next/link';
 
 interface YoutubedataProps {
-  youtubeData: { url: string; thumbnail: string; likes: number; title: string; description: string; youtuber: string };
+  youtubeData: {
+    id: number;
+    url: string;
+    thumbnail: string;
+    likes: number;
+    title: string;
+    description: string;
+    youtuber: string;
+  };
 }
 
 const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
@@ -16,16 +26,18 @@ const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
         <p>{youtubeData.description}</p>
         <div>By {youtubeData.youtuber}</div>
         <div className="flex gap-20">
-          <SelectLike />
-          <ShareYoutube />
+          <SelectLike contentId={youtubeData.id} />
+          <ShareContents youtubeData={youtubeData} />
         </div>
         <div className="flex gap-30">
-          <Button bgColor={'violet'} textColor={'white'}>
+          <Button className="bg-blue" textColor={'white'}>
             마이플레이스 등록
           </Button>
-          <Button bgColor={'violet'} textColor={'white'}>
-            지금 코스짜기
-          </Button>
+          <Link href="/my-route">
+            <Button className="bg-blue" textColor={'white'}>
+              지금 코스짜기
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

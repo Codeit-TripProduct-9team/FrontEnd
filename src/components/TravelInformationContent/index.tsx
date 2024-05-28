@@ -10,6 +10,7 @@ import ProductDescription from './ProductDescription';
 import ProductReview from './ProudctReview';
 
 const youtubeData = {
+  id: 0,
   url: 'https://www.youtube.com/watch?v=or2TgTRjPq8',
   thumbnail: 'https://i.ytimg.com/vi/or2TgTRjPq8/maxresdefault.jpg',
   likes: 112,
@@ -25,10 +26,6 @@ const TravelInformation = () => {
   const route = useRouter();
   const pageUrl = route.asPath;
 
-  const handleChangeContent = (content: string) => {
-    setChangeContent(content);
-  };
-
   const selectContent = changeContent === 'information';
 
   return (
@@ -38,10 +35,10 @@ const TravelInformation = () => {
         <InformationList />
         <ProductInformation youtubeData={youtubeData} />
         <div className="flex gap-30">
-          <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('information')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('information')}>
             상품설명
           </Button>
-          <Button bgColor={'green'} textColor={'white'} onClick={() => handleChangeContent('review')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('review')}>
             리뷰
           </Button>
         </div>

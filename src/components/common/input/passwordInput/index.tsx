@@ -44,7 +44,7 @@ const PasswordInput = ({
   };
 
   const divStyle = twMerge(
-    `flex flex-row  justify-between w-full h-60 py-15 px-16 border-1 rounded-s border-gray-9f focus:outline-none  focus-within:border-violet`,
+    `flex flex-row bg-white justify-between w-full h-60 py-15 px-16 rounded-s focus:outline-none  focus-within:border-blue`,
     divCheckStyle,
   );
   const divErrorStyle = twMerge(

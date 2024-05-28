@@ -4,11 +4,16 @@ import emailjs from 'emailjs-com';
 
 import Button from '../../common/button';
 
+import randomCode from '@/src/utils/randomCode';
+
+import { ERROR_MESSAGE } from '../constats';
+
 interface SendEmailProps {
   disabled: boolean;
   userEmail: string;
-  checkVerifyCode: () => void;
+  isVerified?: boolean;
   setVerificationCode: (code: string) => void;
+  error: any;
 }
 
 const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
@@ -16,22 +21,16 @@ const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 
-const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }: SendEmailProps) => {
+const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
 
-  const getVerificationCode = () => {
-    // 코드 받아오는 로직
-    const randomCode = '123456';
-    return randomCode;
-  };
-
-  const verficationCode = getVerificationCode();
-
   const sendVerificationEmail = () => {
+    const verifyCode = randomCode();
+
     const templateParams = {
       to_email: userEmail,
       from_name: 'test',
-      message: verficationCode,
+      message: verifyCode,
     };
 
     emailjs
@@ -39,32 +38,40 @@ const SendEmail = ({ userEmail, disabled, setVerificationCode, checkVerifyCode }
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
-          setVerificationCode(verficationCode);
+          setVerificationCode(templateParams.message);
         }
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((error: any) => {
+        if (error.status === 422) {
+          alert(ERROR_MESSAGE.EMAIL_NOT_FOUND); //모달
+        }
       });
   };
 
   return (
-    <div className="w-full">
+    <>
       {isSendEmail ? (
-        <Button className="w-full" textColor={'white'} bgColor={'violet'} onClick={checkVerifyCode}>
-          인증하기
+        <Button
+          type="button"
+          className={`min-w-182 h-60 bg-white border border-blue ${error ? 'mb-25' : 'm-2b-0'}`}
+          textColor="blue"
+          onClick={sendVerificationEmail}
+          disabled={isVerified}
+        >
+          {isVerified ? '인증 완료' : '다시 보내기'}
         </Button>
       ) : (
         <Button
-          className="w-full"
-          textColor={'white'}
-          bgColor={'violet'}
+          type="button"
+          className={`min-w-182 h-60 bg-white border border-blue ${error ? 'mb-25' : 'm-2b-0'}`}
+          textColor="blue"
           onClick={sendVerificationEmail}
           disabled={disabled}
         >
-          인증메일 보내기
+          코드 발송
         </Button>
       )}
-    </div>
+    </>
   );
 };
 
