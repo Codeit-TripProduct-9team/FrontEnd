@@ -11,13 +11,13 @@ const CarouselSection = () => {
   const hotCards = mock.data.slice(0, 5);
   return (
     <Swiper
-      modules={[Navigation, Pagination]}
+      modules={[Navigation, Pagination, Autoplay]}
       rewind={true}
       navigation={true}
-      // autoplay={{
-      //   delay: 3500,
-      //   disableOnInteraction: false,
-      // }}
+      autoplay={{
+        delay: 3500,
+        disableOnInteraction: false,
+      }}
       pagination={{ clickable: true }}
       spaceBetween={10}
       slidesPerView="auto"

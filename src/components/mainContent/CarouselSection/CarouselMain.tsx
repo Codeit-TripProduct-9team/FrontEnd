@@ -12,7 +12,7 @@ const CarouselMain = () => {
       </div>
       <div className="flex gap-10 items-center">
         the <Image src={carousel2} width={600} height={50} alt="carousel1" className="h-70" />
-        "YouTuber's
+        <span>"YouTuber's</span>
       </div>
       <div className="flex gap-10 items-center">
         <Image src={carousel3} width={150} height={50} alt="carousel1" className="h-70" />
