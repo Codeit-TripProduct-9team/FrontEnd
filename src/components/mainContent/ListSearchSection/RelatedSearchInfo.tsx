@@ -10,7 +10,7 @@ const RelatedSearchInfo: React.FC<RelatedSearchInfoProps> = ({ data, setSectionV
     setSearchValue(value);
   };
   return (
-    <div className="flex flex-col gap-10 bg-gray-60 bg-opacity-50 bg-transparent text-center w-800 border-2 rounded-30 p-10">
+    <div className="flex flex-col gap-10 bg-gray-40 mt-20 bg-opacity-50 bg-transparent text-center w-700 border-2 rounded-30 p-10">
       {data.map((data, idx) => (
         <div
           key={idx}

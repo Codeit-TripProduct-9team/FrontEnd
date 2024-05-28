@@ -22,7 +22,7 @@ const ListSearchSection = () => {
   };
 
   return (
-    <article className="flex flex-col items-center">
+    <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
       <div className="mt-50 mb-30">
         <h1 className="text-center text-35 mb-10 font-bold">유튜버의 검증된 코스 그대로</h1>
         <p className="text-center text-gray-50 text-15">
