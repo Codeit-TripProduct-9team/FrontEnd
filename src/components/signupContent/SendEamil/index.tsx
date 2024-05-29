@@ -3,10 +3,14 @@ import { useState } from 'react';
 import emailjs from 'emailjs-com';
 
 import Button from '../../common/button';
+import Modal from '../../common/modal';
 
 import randomCode from '@/src/utils/randomCode';
 
 import { ERROR_MESSAGE } from '../constats';
+import { useOverlay } from '@toss/use-overlay';
+// import EmailConfirmModal from '../../common/modal/emailConfirmModal';
+import ModalContent from '../../common/modal/ModalContent';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -16,13 +20,23 @@ interface SendEmailProps {
   error: any;
 }
 
-const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
-const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
+const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID as string;
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+// const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
+// const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 
 const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
+  const overlay = useOverlay();
+  const onModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent errorType={ERROR_MESSAGE.EMAIL_NOT_FOUND} emoji={'🥺'}></ModalContent>
+      </Modal>
+    ));
+  };
 
   const sendVerificationEmail = () => {
     const verifyCode = randomCode();
@@ -34,7 +48,7 @@ const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode
     };
 
     emailjs
-      .send(PULBIC_NEXT_EMAIL_SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_NEXT_EMAIL_PUBLIC_KEY)
+      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
@@ -43,7 +57,7 @@ const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode
       })
       .catch((error: any) => {
         if (error.status === 422) {
-          alert(ERROR_MESSAGE.EMAIL_NOT_FOUND); //모달
+          onModal();
         }
       });
   };

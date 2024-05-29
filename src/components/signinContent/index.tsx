@@ -6,10 +6,11 @@ import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
 import NaverSignin from './NaverSignin';
 import instance from '@/src/api/axios';
-import SignFailedModal from './SignFailedModal';
 import { useState } from 'react';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
+import ModalContent from '../common/modal/ModalContent';
+import { MODAL_MESSAGE } from '../signupContent/constats';
 // import { useRouter } from 'next/router';
 
 interface InputForm {
@@ -40,7 +41,9 @@ const SigninContent = () => {
   const OnModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
-        <SignFailedModal errorText={errorText} />
+        <ModalContent errorType={MODAL_MESSAGE.FAIL_LOGIN} errorText={errorText}>
+          🥺
+        </ModalContent>
       </Modal>
     ));
   };

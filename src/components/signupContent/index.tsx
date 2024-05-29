@@ -17,7 +17,10 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
-import { ERROR_MESSAGE } from './constats';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
+import { useOverlay } from '@toss/use-overlay';
+import ModalContent from '../common/modal/ModalContent';
+import Modal from './../common/modal/index';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -39,6 +42,24 @@ const SingupContent = () => {
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
+
+  //모달 사용
+  const certifiedOverlay = useOverlay();
+  const certifiedOnModal = () => {
+    certifiedOverlay.open(({ isOpen, close }) => (
+      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
+        <ModalContent errorType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} />
+      </Modal>
+    ));
+  };
+  const signupOverlay = useOverlay();
+  const signupOnModal = () => {
+    signupOverlay.open(({ isOpen, close }) => (
+      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
+        <ModalContent errorType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+      </Modal>
+    ));
+  };
 
   const checkDuplicate = async (emailValue: string) => {
     try {
@@ -63,7 +84,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      alert('인증이 성공되었습니다.'); //모달
+      certifiedOnModal(); //모달
     }
   };
 
@@ -73,7 +94,7 @@ const SingupContent = () => {
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
-        alert('회원가입확인 모달로 변경');
+        signupOnModal();
         route.push('/signin');
       }
     } catch (error: any) {

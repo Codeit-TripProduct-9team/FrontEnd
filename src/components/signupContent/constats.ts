@@ -10,3 +10,9 @@ export const ERROR_MESSAGE = {
   PASSWORDS_DO_NOT_MATCH: '비밀번호가 일치하지 않습니다.',
   EMAIL_NOT_FOUND: '잘못된 이메일입니다',
 };
+
+export const MODAL_MESSAGE = {
+  FAIL_LOGIN: '로그인에 실패했습니다.',
+  SUCCESS_SIGNUP: '회원가입이 완료되었습니다.',
+  CERTIFIED_EMAIL: '이메일 인증이 성공되었습니다.',
+};
