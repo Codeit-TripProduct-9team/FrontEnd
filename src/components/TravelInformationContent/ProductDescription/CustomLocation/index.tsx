@@ -4,6 +4,8 @@ import Image from 'next/image';
 
 import SearchIcon from '@/public/assets/icon/search.png';
 import convertTime from '@/src/utils/convertTime';
+import getDirectionRequest from '@/src/utils/getDirectionRequest';
+import instance from '@/src/api/axios';
 
 interface ElaspedTimeProps {
   destinationName: string;
@@ -23,19 +25,16 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
     const REST_API_KEY = 'cc81aff4a39ec9dc0f2227e92f473f24';
     const url = `https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&query=${encodedAddress}`;
 
-    const headers = {
-      Authorization: `KakaoAK ${REST_API_KEY}`,
-      'Content-Type': 'application/json',
-    };
-
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: headers,
+      const response = await instance.get(url, {
+        headers: {
+          Authorization: `KakaoAK ${REST_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
       });
 
-      const data = await response.json();
-      const customLocation = data.documents[0];
+      const responseData = await response.data;
+      const customLocation = responseData.documents[0];
       setCoordinate({ lat: customLocation.y, lng: customLocation.x });
     } catch (error) {
       console.error('Error:', error);
@@ -43,53 +42,37 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
   }, []);
 
   const getDirection = useCallback(async () => {
-    const REST_API_KEY = 'cc81aff4a39ec9dc0f2227e92f473f24';
-    const directionUrl = 'https://apis-navi.kakaomobility.com/v1/directions';
-
-    const origin = `${coordinate.lng},${coordinate.lat}`;
-    const destination = `${destinationPosition.lng},${destinationPosition.lat}`;
-
-    const headers = {
-      Authorization: `KakaoAK ${REST_API_KEY}`,
-      'Content-Type': 'application/json',
-    };
-
-    const queryParams = new URLSearchParams({
-      origin: origin,
-      destination: destination,
-    });
-
-    const requestUrl = `${directionUrl}?${queryParams}`;
-
+    const { requestUrl, headers } = getDirectionRequest(coordinate, destinationPosition);
     try {
-      const response = await fetch(requestUrl, {
-        method: 'GET',
+      const response = await instance.get(requestUrl, {
         headers: headers,
       });
 
-      const data = await response.json();
-
-      const elapsedTime = data.routes[0].summary.duration;
+      const responseData = await response.data;
+      const elapsedTime = responseData.routes[0].summary.duration;
       setDuration(elapsedTime);
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [coordinate.lat, coordinate.lng, destinationPosition.lat, destinationPosition.lng]);
+  }, [coordinate, destinationPosition]);
 
   useEffect(() => {
-    if (location.trim() !== '') {
+    const hasLocation = location.trim() !== '';
+    if (hasLocation) {
       getCoordinate(location);
     }
   }, [location, getCoordinate]);
 
   useEffect(() => {
-    if (coordinate.lng !== '' && coordinate.lat !== '') {
+    const hasCoordinate = coordinate.lng !== '' && coordinate.lat !== '';
+    if (hasCoordinate) {
       getDirection();
     }
   }, [coordinate, getDirection]);
 
   const handleMessage = () => {
-    if (location.trim() !== '') {
+    const hasLocation = location.trim() !== '';
+    if (hasLocation) {
       setShowMessage(true);
     }
   };
