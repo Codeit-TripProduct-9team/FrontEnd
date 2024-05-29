@@ -1,4 +1,5 @@
 import Image from 'next/image';
+
 import ProductMap from './ProductMap';
 
 const placeData = {
@@ -13,35 +14,16 @@ const placeData = {
 const ProductDescription = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-30">
-      <div className="flex flex-col justify-center items-center gap-30">
-        <Image className="w-full" width={800} height={600} src={placeData.imageSource} alt="place-image" />
-        <h2>{placeData.title}</h2>
-        <p>{placeData.description}</p>
-        {/* <div>
-          <div>근처 가볼만한 여행지</div>
-          <ul className="flex gap-30">
-            <li>
-              <h3>예당호출렁다리</h3>
-              <p>설명</p>
-              <div>이미지</div>
-            </li>
-            <li>
-              <h3>예당호출렁다리</h3>
-              <p>설명</p>
-              <div>이미지</div>
-            </li>
-            <li>
-              <h3>예당호출렁다리</h3>
-              <p>설명</p>
-              <div>이미지</div>
-            </li>
-            <li>
-              <h3>예당호출렁다리</h3>
-              <p>설명</p>
-              <div>이미지</div>
-            </li>
-          </ul>
-        </div> */}
+      <div className="flex flex-col justify-center items-center gap-12">
+        <Image
+          className="w-full h-455 object-cover"
+          width={1440}
+          height={455}
+          src={placeData.imageSource}
+          alt="place-image"
+        />
+        <h2 className="mt-20 text-20 font-bold">{placeData.title}</h2>
+        <p className="text-center ml-284 mr-314">{placeData.description}</p>
         <ProductMap mapPosition={placeData.position} markerList={placeData.markerPosition} />
       </div>
     </section>
