@@ -5,6 +5,7 @@ import Image from 'next/image';
 import SearchIcon from '@/public/assets/icon/search.png';
 import convertTime from '@/src/utils/convertTime';
 import getDirectionRequest from '@/src/utils/getDirectionRequest';
+
 import instance from '@/src/api/axios';
 
 interface ElaspedTimeProps {
@@ -14,6 +15,7 @@ interface ElaspedTimeProps {
 }
 
 const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimeProps) => {
+  const [invalidKeyword, setInvalidKeyword] = useState(0);
   const [location, setLocation] = useState('');
   const [duration, setDuration] = useState(0);
   const [coordinate, setCoordinate] = useState({ lng: '', lat: '' });
@@ -35,7 +37,6 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
 
       const responseData = await response.data;
       const customLocation = responseData.documents[0];
-
       setCoordinate({ lat: customLocation.y, lng: customLocation.x });
     } catch (error) {
       console.error('Error:', error);
@@ -51,6 +52,7 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
 
       const responseData = await response.data;
       const elapsedTime = responseData.routes[0].summary.duration;
+      setInvalidKeyword(responseData.totalCount);
       setDuration(elapsedTime);
     } catch (error) {
       console.error('Error:', error);
@@ -102,9 +104,13 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
       </div>
       {showMessage && (
         <div className="p-10  rounded-s bg-white">
-          <p>
-            {location}에서 {destinationName}까지 {`${durationTime.hours} 시간 ${durationTime.minutes} 분`} 걸려요💨
-          </p>
+          {invalidKeyword === 0 ? (
+            <p>잘못된 주소이거나 거리가 너무 가깝습니다</p>
+          ) : (
+            <p>
+              {location}에서 {destinationName}까지 {`${durationTime.hours} 시간 ${durationTime.minutes} 분`} 걸려요💨
+            </p>
+          )}
         </div>
       )}
     </div>
