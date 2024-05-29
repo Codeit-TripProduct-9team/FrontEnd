@@ -15,7 +15,7 @@ type PlaceItemProps = {
 
 const PlaceItem: React.FC<PlaceItemProps> = ({ place, index }) => {
   return (
-    <Draggable draggableId={place.id.toString()} index={index}>
+    <Draggable draggableId={`${place.name}-${index}`} index={index}>
       {(provided) => (
         <li
           className="flex justify-between rounded-8 bg-white p-15 items-center shadow-lg"
