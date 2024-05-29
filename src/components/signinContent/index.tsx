@@ -41,9 +41,7 @@ const SigninContent = () => {
   const OnModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
-        <ModalContent errorType={MODAL_MESSAGE.FAIL_LOGIN} errorText={errorText}>
-          🥺
-        </ModalContent>
+        <ModalContent emoji={'🥺'} errorType={MODAL_MESSAGE.FAIL_LOGIN} errorText={errorText} />
       </Modal>
     ));
   };
