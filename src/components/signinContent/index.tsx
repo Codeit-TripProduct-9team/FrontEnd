@@ -9,6 +9,7 @@ import instance from '@/src/api/axios';
 import SignFailedModal from './SignFailedModal';
 import useModal from '@/src/hooks/useModal';
 import ModalPortal from '../common/modalTemplate/ModalPortal';
+import { useState } from 'react';
 // import { useRouter } from 'next/router';
 
 interface InputForm {
@@ -24,12 +25,12 @@ interface InputForm {
 }
 
 const SigninContent = () => {
+  const [errorText, setErrorText] = useState<string>('');
   const {
     register,
     formState: { errors },
     handleSubmit,
     clearErrors,
-    setError,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
   const {
     openModal: signFailedModal,
@@ -46,10 +47,9 @@ const SigninContent = () => {
       console.log(response);
     } catch (error: any) {
       console.log(error);
-      if (error.response.status === 400) {
-        setError('password', { type: 'manual', message: error.response.data.message });
-      } else if (error.response.status === 404) {
-        setError('email', { type: 'manual', message: error.response.data.message });
+      if (error.response.status === 400 || error.response.status === 404) {
+        setErrorText(error.response.data.message);
+        signFailedModalOpen();
       }
     }
   };
@@ -57,11 +57,10 @@ const SigninContent = () => {
   return (
     <>
       <ModalPortal>
-        <SignFailedModal openModal={signFailedModal} handleModalClose={signFailedModalClose} />
+        <SignFailedModal openModal={signFailedModal} handleModalClose={signFailedModalClose} errorText={errorText} />
       </ModalPortal>
       <div className="flex flex-col gap-10 w-408">
         <label className="text-24 font-bold text-black">로그인</label>
-        <button onClick={signFailedModalOpen}>열어줘</button>
         <form onSubmit={handleSubmit(handleSignin)}>
           <Input
             register={register('email', {
