@@ -17,7 +17,7 @@ export interface MapProps {
 const ProductMap = ({ mapPosition, markerList }: MapProps) => {
   return (
     <>
-      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
+      <Script src={KAKAO_SDK_URL} strategy="lazyOnload" />
       <Map center={mapPosition} level={5} className="w-622 h-470 rounded-8 shadow-md">
         {markerList.map((marker, index) => (
           <MapMarker key={index} position={marker} />

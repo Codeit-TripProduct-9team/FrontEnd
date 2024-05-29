@@ -35,6 +35,7 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
 
       const responseData = await response.data;
       const customLocation = responseData.documents[0];
+
       setCoordinate({ lat: customLocation.y, lng: customLocation.x });
     } catch (error) {
       console.error('Error:', error);

@@ -2,11 +2,14 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
+import FailedSendMail from '../Modal/FailedSendMail';
+import SuccessSendMail from '../Modal/SuccessSendMail';
+
 import Button from '../../common/button';
+import ModalPortal from '../../common/modalTemplate/ModalPortal';
 
 import randomCode from '@/src/utils/randomCode';
-
-import { ERROR_MESSAGE } from '../constats';
+import useModal from '@/src/hooks/useModal';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -23,6 +26,16 @@ const TEMPLATE_ID = 'trip';
 
 const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
+  const {
+    openModal: failedSendMail,
+    handleModalClose: failedSendMailClose,
+    handleModalOpen: failedSendMailOpen,
+  } = useModal();
+  const {
+    openModal: successSendMail,
+    handleModalClose: successSendMailClose,
+    handleModalOpen: successSendMailOpen,
+  } = useModal();
 
   const sendVerificationEmail = () => {
     const verifyCode = randomCode();
@@ -39,17 +52,22 @@ const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode
         if (response.status === 200) {
           setIsSendEmail(true);
           setVerificationCode(templateParams.message);
+          successSendMailOpen();
         }
       })
       .catch((error: any) => {
         if (error.status === 422) {
-          alert(ERROR_MESSAGE.EMAIL_NOT_FOUND); //모달
+          failedSendMailOpen();
         }
       });
   };
 
   return (
     <>
+      <ModalPortal>
+        <FailedSendMail openModal={failedSendMail} handleModalClose={failedSendMailClose} />
+        <SuccessSendMail openModal={successSendMail} handleModalClose={successSendMailClose} />
+      </ModalPortal>
       {isSendEmail ? (
         <Button
           type="button"
