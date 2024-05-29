@@ -1,18 +1,17 @@
 import { ChangeEvent, useState } from 'react';
-import ListCard from '../../common/ListCard';
 import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 import { MockDataItem } from '@/src/lib/types';
-import NoSearchData from './NoSearchData';
+
 import search from '@/public/assets/icon/search.png';
 import Image from 'next/image';
+import CardSection from '../CardSection';
 
 const ListSearchSection = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const GRID_ROW = Math.ceil(mock.data.length / 4);
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
@@ -23,7 +22,7 @@ const ListSearchSection = () => {
   };
 
   return (
-    <article className="flex flex-col items-center">
+    <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
       <div className="mt-50 mb-30">
         <h1 className="text-center text-35 mb-10 font-bold">유튜버의 검증된 코스 그대로</h1>
         <p className="text-center text-gray-50 text-15">
@@ -50,16 +49,7 @@ const ListSearchSection = () => {
         )}
         <Image src={search} width={30} height={10} alt="검색이미지" className="absolute right-15 top-15" />
       </div>
-
-      {filteredData.length !== 0 ? (
-        <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
-          {filteredData.map((datas, index) => (
-            <ListCard key={index} data={datas} />
-          ))}
-        </div>
-      ) : (
-        <NoSearchData />
-      )}
+      <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
     </article>
   );
 };
