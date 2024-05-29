@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './sendEmail';
+import SendEmail from './SendEamil';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -42,6 +42,7 @@ const SingupContent = () => {
 
   const checkDuplicate = async (emailValue: string) => {
     try {
+      //'/auth/check-emil'
       const body = { email: emailValue };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/users/check-email', body);
       if (response.status === 200) {
@@ -68,6 +69,7 @@ const SingupContent = () => {
 
   const onSubmit = async ({ nickname, email, password, passwordcheck }: InputForm) => {
     try {
+      //'/auth/local/signup'
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
@@ -95,7 +97,7 @@ const SingupContent = () => {
           labelId="nickname"
           focusType="nickname"
         />
-        <div className="flex  w-full gap-10">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <EmailInput
               register={register('email', {
@@ -127,9 +129,10 @@ const SingupContent = () => {
             userEmail={emailValue}
             disabled={!isEmailvalid}
             setVerificationCode={setVerificationCode}
+            error={errors.email?.message}
           />
         </div>
-        <div className="flex w-full gap-10">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
@@ -151,11 +154,16 @@ const SingupContent = () => {
             />
           </div>
           {isVerified ? (
-            <Button type="button" className="w-182 h-60" disabled={true}>
+            <Button type="button" className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`} disabled={true}>
               인증되었습니다
             </Button>
           ) : (
-            <Button type="button" className="w-182 h-60" disabled={!isEmailvalid} onClick={checkVerificationCode}>
+            <Button
+              type="button"
+              className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`}
+              disabled={!isEmailvalid}
+              onClick={checkVerificationCode}
+            >
               인증 요청
             </Button>
           )}

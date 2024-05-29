@@ -26,10 +26,6 @@ const TravelInformation = () => {
   const route = useRouter();
   const pageUrl = route.asPath;
 
-  const handleChangeContent = (content: string) => {
-    setChangeContent(content);
-  };
-
   const selectContent = changeContent === 'information';
 
   return (
@@ -39,10 +35,10 @@ const TravelInformation = () => {
         <InformationList />
         <ProductInformation youtubeData={youtubeData} />
         <div className="flex gap-30">
-          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('information')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('information')}>
             상품설명
           </Button>
-          <Button className="bg-green" textColor={'white'} onClick={() => handleChangeContent('review')}>
+          <Button className="bg-green" textColor={'white'} onClick={() => setChangeContent('review')}>
             리뷰
           </Button>
         </div>

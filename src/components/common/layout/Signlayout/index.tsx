@@ -3,12 +3,15 @@ import { PropsWithChildren } from 'react';
 import Image from 'next/image';
 
 import SignStar from '@/public/assets/icon/star.svg';
-import UtripLogo from '@/public/assets/icon/utrip-logo.png';
+import UtripLogo from '@/public/assets/icon/logo-header.svg';
+import Link from 'next/link';
 
 const SignLayout = ({ children }: PropsWithChildren) => {
   return (
-    <main className="relative flex justify-center items-center max-w-1440 min-h-screen mx-auto gap-16 ">
-      <Image className="absolute top-15 left-120" src={UtripLogo} width={78} height={39} alt="logo" />
+    <main className="relative flex justify-center items-center max-w-1440 min-h-screen mx-auto gap-16 bg-gray-10">
+      <Link href="/">
+        <Image className="absolute top-23 left-120" src={UtripLogo} width={78} height={39} alt="logo" />
+      </Link>
       <div className="w-1/2 flex justify-center items-center">{children}</div>
       <div className="flex justify-center items-center w-1/2 h-screen bg-[url('/assets/icon/sign-image.png')] bg-cover">
         <div className="flex flex-col justify-center items-center text-center w-572  border-2 border-white bg-white bg-opacity-60 rounded-19">

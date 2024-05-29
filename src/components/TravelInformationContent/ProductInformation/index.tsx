@@ -3,6 +3,7 @@ import Button from '../../common/button';
 import YoutubePlayer from './YoutubePlyaer';
 import SelectLike from './selectLike';
 import ShareContents from './SahreContents';
+import Link from 'next/link';
 
 interface YoutubedataProps {
   youtubeData: {
@@ -32,9 +33,11 @@ const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
           <Button className="bg-blue" textColor={'white'}>
             마이플레이스 등록
           </Button>
-          <Button className="bg-blue" textColor={'white'}>
-            지금 코스짜기
-          </Button>
+          <Link href="/my-route">
+            <Button className="bg-blue" textColor={'white'}>
+              지금 코스짜기
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
