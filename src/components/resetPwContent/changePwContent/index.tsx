@@ -65,7 +65,7 @@ const ChangePwContent = () => {
           focusType="passwordcheck"
         />
         <Button className="w-full mt-20" disabled={isValid}>
-          회원가입
+          변경하기
         </Button>
       </form>
     </section>
