@@ -19,7 +19,16 @@ const ResetPwContent = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: 'onChange' });
-  const overlay = useOverlay(); //모달
+
+  //모달 사용
+  const overlay = useOverlay();
+  const onModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
+        <EmailConfirmModal close={close} />
+      </Modal>
+    ));
+  };
 
   // 폼 제출 핸들러
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -35,13 +44,6 @@ const ResetPwContent = () => {
     //   message: code.padStart(6, '0'),
     // };
 
-    const onModal = () => {
-      overlay.open(({ isOpen, close }) => (
-        <Modal isOpen={isOpen} close={close}>
-          <EmailConfirmModal close={close} />
-        </Modal>
-      ));
-    };
     onModal();
 
     // emailjs
