@@ -73,21 +73,22 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
     }
   }, [coordinate, getDirection]);
 
-  const handleMessage = () => {
+  const handleStartingPoint = () => {
     const hasLocation = location.trim() !== '';
     if (hasLocation) {
       setShowMessage(true);
     }
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeStartingPoint = (event: ChangeEvent<HTMLInputElement>) => {
+    const customLocation = event.target.value;
     if (showMessage) {
       setShowMessage(false);
     }
-    setLocation(event.target.value);
+    setLocation(customLocation);
   };
 
-  const durationTime = convertTime(duration);
+  const elapsedTime = convertTime(duration);
 
   return (
     <div className="absolute top-20 left-1/2 transform -translate-x-1/2 flex flex-col gap-4  w-582 p-10 z-10 text-center rounded-s">
@@ -96,9 +97,9 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
           className="placeholder:text-gray-60 font-bold"
           placeholder="지금 계신 곳을 입력해 주세요!"
           value={location}
-          onChange={handleInputChange}
+          onChange={handleChangeStartingPoint}
         />
-        <button onClick={handleMessage}>
+        <button onClick={handleStartingPoint}>
           <Image className="absolute top-10 right-20" src={SearchIcon} width={22} height={22} alt="search" />
         </button>
       </div>
@@ -108,7 +109,7 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
             <p>잘못된 주소이거나 거리가 너무 가깝습니다</p>
           ) : (
             <p>
-              {location}에서 {destinationName}까지 {`${durationTime.hours} 시간 ${durationTime.minutes} 분`} 걸려요💨
+              {location}에서 {destinationName}까지 {`${elapsedTime.hours} 시간 ${elapsedTime.minutes} 분`} 걸려요💨
             </p>
           )}
         </div>
