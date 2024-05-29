@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-import { tailwindLineClampUtility } from "./src/utils/tailwindLineClamp";
-
+import { tailwindLineClampUtility } from './src/utils/tailwindLineClamp';
 
 const rem0_10 = { ...Array.from(Array(11)).map((_, i) => `${i / 10}rem`) };
 const rem0_100 = { ...Array.from(Array(101)).map((_, i) => `${i / 10}rem`) };
@@ -21,6 +20,15 @@ module.exports = {
       full: '100px',
     },
     extend: {
+      keyframes: {
+        bounceOnce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        bounceOnce: 'bounceOnce 3s ease-in-out infinite',
+      },
       borderWidth: rem0_10,
       borderRadius: rem0_100,
       fontSize: rem0_100,
@@ -92,5 +100,5 @@ module.exports = {
       },
     },
   },
-  plugins: [tailwindLineClampUtility([1, 2, 3, 4, 5]),],
+  plugins: [tailwindLineClampUtility([1, 2, 3, 4, 5])],
 };

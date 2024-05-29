@@ -1,16 +1,21 @@
-import { ChangeEvent, useState } from 'react';
-import ListCard from '../../common/ListCard';
+import { ChangeEvent, useRef, useState } from 'react';
 import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 import { MockDataItem } from '@/src/lib/types';
-import NoSearchData from './NoSearchData';
+import { useInView } from 'react-intersection-observer';
+
+import search from '@/public/assets/icon/search.png';
+import Image from 'next/image';
+import CardSection from '../CardSection';
+import InputNavigator from './InputNavigator';
 
 const ListSearchSection = () => {
+  const [ref, inView] = useInView({ threshold: 0 });
+  const inputRef = useRef<HTMLDivElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const GRID_ROW = Math.ceil(mock.data.length / 4);
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
@@ -19,22 +24,35 @@ const ListSearchSection = () => {
       setSectionVisible(true);
     }
   };
-
-  console.log(filteredData);
+  const handleClickFloat = () => {
+    inputRef.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
 
   return (
-    <article className="flex flex-col items-center">
-      <div className="mb-20">
-        <h1 className="text-center text-40 font-bold">검색유도문구</h1>
-        <p className="text-center text-20">description</p>
+    <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
+      <div
+        className="mt-50 mb-30"
+        ref={(node) => {
+          inputRef.current = node;
+        }}
+      >
+        <h1 className="text-center text-35 mb-10 font-bold">유튜버의 검증된 코스 그대로</h1>
+        <p className="text-center text-gray-50 text-15">
+          평소 좋아했던 유튜버의 여행을 그대로 따라 갈 수 있는 기회,
+          <br /> 마이 플레이스 등록 후 간편하게 코스를 편집해 보세요!
+        </p>
       </div>
       <div className="relative">
         <input
           value={searchValue}
-          className="text-center border-2 rounded-15 w-800 py-10 px-30 mb-30 "
+          className="text-center border-1 border-gray-40 rounded-s w-700 h-60 py-10 px-30 mb-100 "
           placeholder="원하는여행지, 유튜버, 테마를 검색해보세요"
           onChange={handleSearchInputChange}
+          ref={ref}
         />
+
         {visible && (
           <div className="absolute top-50 z-10">
             <RelatedSearchInfo
@@ -42,18 +60,22 @@ const ListSearchSection = () => {
               setSectionVisible={setSectionVisible}
               setSearchValue={setSearchValue}
             />
+            {/*  리팩토링 할 때 VISIBLE 안으로 넣기 - 리렌더링 방지*/}
           </div>
         )}
+        {searchValue ? (
+          <div className="absolute cursor-pointer right-20 top-18" onClick={() => setSearchValue('')}>
+            <Image src="/assets/icon/clear.png" width={20} height={10} alt="클리어버튼" />
+          </div>
+        ) : (
+          <Image src={search} width={30} height={10} alt="검색이미지" className="absolute right-15 top-15" />
+        )}
       </div>
-      {/*  VISIBLE 안으로 넣기*/}
-      {filteredData.length !== 0 ? (
-        <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
-          {filteredData.map((datas, index) => (
-            <ListCard key={index} data={datas} />
-          ))}
+      <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+      {!inView && (
+        <div onClick={handleClickFloat} className="fixed  bottom-0 animate-bounceOnce">
+          <InputNavigator />
         </div>
-      ) : (
-        <NoSearchData />
       )}
     </article>
   );

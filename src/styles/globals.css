@@ -53,3 +53,29 @@
     src: url('../../public/fonts/Pretendard-Bold.woff') format('woff');
   }
 }
+
+@font-face {
+  font-family: 'Cormorant';
+  src: url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap') format('css2');
+}
+
+.swiper {
+  width: 1450px;
+  height: 450px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #fff;
+
+  border-radius: 50%;
+  color: #0094ff !important;
+}
+.swiper-button-next {
+  right: 10px; /* 오른쪽 위치 */
+}
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}

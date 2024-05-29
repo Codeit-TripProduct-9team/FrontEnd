@@ -7,7 +7,7 @@ const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT
 const KakaoMap = () => {
   return (
     <>
-      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
+      <Script src={KAKAO_SDK_URL} />
       {/* <Script src={KAKAO_SDK_LIB_URL} strategy="beforeInteractive" /> */}
 
       <Map center={{ lat: 33.450701, lng: 126.570667 }} className="w-500 h-300 rounded-8 shadow-md" />
