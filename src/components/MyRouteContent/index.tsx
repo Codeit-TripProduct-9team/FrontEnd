@@ -6,9 +6,7 @@ import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
 import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
-// import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
-// import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
-import NoSearchData from '../mainContent/ListSearchSection/NoSearchData';
+import NoSearchData from '../mainContent/CardSection/NoSearchData';
 import ListCard from '../common/ListCard';
 import { Draggable } from '@hello-pangea/dnd';
 
@@ -17,7 +15,6 @@ const MyRouteContent = () => {
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
   const GRID_ROW = Math.ceil(mock.data.length / 4);
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
-  // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
