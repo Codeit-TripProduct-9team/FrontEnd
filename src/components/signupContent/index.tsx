@@ -206,7 +206,7 @@ const SingupContent = () => {
         <Button className="w-full mt-20" disabled={isValid}>
           회원가입
         </Button>
-        <Link href={'/signin'} className="flex justify-center py-10 text-14">
+        <Link href={'/signin'} className="flex justify-center py-10 text-14 text-gray-50 ">
           로그인으로 돌아가기
         </Link>
       </form>
