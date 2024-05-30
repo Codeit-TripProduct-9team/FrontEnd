@@ -5,14 +5,14 @@ import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
 import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
-import NoSearchData from '../mainContent/CardSection/NoSearchData';
-import ListCard from '../common/ListCard';
-import { Draggable } from '@hello-pangea/dnd';
+// import NoSearchData from '../mainContent/CardSection/NoSearchData';
+// import { Draggable } from '@hello-pangea/dnd';
+import CardSection from '../mainContent/CardSection';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const GRID_ROW = Math.ceil(mock.data.length / 4);
+  // const GRID_ROW = Math.ceil(mock.data.length / 4);
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -50,7 +50,7 @@ const MyRouteContent = () => {
           </div>
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="flex flex-col bg-white rounded-20 px-40 py-20">
           <input
             value={searchValue}
             className="text-center border-2 rounded-15 w-700 py-10 px-30 mb-30 "
@@ -60,21 +60,8 @@ const MyRouteContent = () => {
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {filteredData.length !== 0 ? (
-                  <div className={`grid grid-cols-3 grid-rows-${GRID_ROW} gap-15`}>
-                    {filteredData.map((datas, index) => (
-                      <Draggable key={index} draggableId={`${datas.title}-${index}`} index={index}>
-                        {(provided) => (
-                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <ListCard data={datas} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                  </div>
-                ) : (
-                  <NoSearchData />
-                )}
+                <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+
                 {provided.placeholder}
               </div>
             )}
