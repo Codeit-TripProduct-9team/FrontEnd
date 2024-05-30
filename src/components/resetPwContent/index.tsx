@@ -32,14 +32,13 @@ const ResetPwContent = () => {
     return new Promise<boolean>((resolve) => {
       certifiedOverlay.open(({ isOpen, close }) => (
         <Modal
-          className="w-540 mobile:w-327"
           isOpen={isOpen}
           close={() => {
             resolve(true);
             close();
           }}
         >
-          <ModalContent errorType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} />
+          <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} />
         </Modal>
       ));
     });

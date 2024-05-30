@@ -40,8 +40,8 @@ const SigninContent = () => {
   const overlay = useOverlay();
   const OnModal = () => {
     overlay.open(({ isOpen, close }) => (
-      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
-        <ModalContent emoji={'🥺'} errorType={MODAL_MESSAGE.FAIL_LOGIN} errorText={errorText} />
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent emoji={'🥺'} modalType={MODAL_MESSAGE.FAIL_LOGIN} modalText={errorText} />
       </Modal>
     ));
   };

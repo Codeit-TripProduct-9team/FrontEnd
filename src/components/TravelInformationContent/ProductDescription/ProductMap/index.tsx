@@ -16,14 +16,14 @@ export interface MapProps {
 
 const ProductMap = ({ mapPosition, markerList }: MapProps) => {
   return (
-    <div className="m-20">
+    <>
       <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-      <Map center={mapPosition} className="w-500 h-300 rounded-8 shadow-md">
+      <Map center={mapPosition} level={5} className="w-622 h-470 rounded-8 shadow-md">
         {markerList.map((marker, index) => (
           <MapMarker key={index} position={marker} />
         ))}
       </Map>
-    </div>
+    </>
   );
 };
 

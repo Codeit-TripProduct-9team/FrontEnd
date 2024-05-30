@@ -13,7 +13,7 @@ type ModalProps = {
 
 const Modal = ({ isOpen, close, children, className }: ModalProps) => {
   const modalClass = twMerge(
-    'flex flex-col fixed top-1/2 left-1/2 bg-white shadow-main rounded-l zIndex-modal transform -translate-x-1/2 -translate-y-1/2 px-28 py-32 mobile:px-20 mobile:py-28',
+    'flex flex-col fixed top-1/2 left-1/2 bg-white shadow-main rounded-l zIndex-modal transform -translate-x-1/2 -translate-y-1/2 px-28 py-32 mobile:px-20 mobile:py-28 w-540 mobile:w-327',
     className,
   );
   const modalRef = useClickOutside(close);

@@ -21,6 +21,7 @@ import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
 import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from './../common/modal/index';
+import SuccessSignup from './Modal/SuccessSignup';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -39,24 +40,27 @@ const SingupContent = () => {
   const route = useRouter();
 
   const emailValue = watch('email');
+  const nicknameValue = watch('nickname');
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
+  const modalText = '회원가입을 계속 진행해 주세요.';
 
   //모달 사용
   const certifiedOverlay = useOverlay();
   const certifiedOnModal = () => {
     certifiedOverlay.open(({ isOpen, close }) => (
-      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
-        <ModalContent errorType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} />
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} modalText={modalText} />
       </Modal>
     ));
   };
   const signupOverlay = useOverlay();
   const signupOnModal = () => {
     signupOverlay.open(({ isOpen, close }) => (
-      <Modal className="w-540 mobile:w-327" isOpen={isOpen} close={close}>
-        <ModalContent errorType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+        <SuccessSignup nickname={nicknameValue} />
       </Modal>
     ));
   };
@@ -227,7 +231,7 @@ const SingupContent = () => {
         <Button className="w-full mt-20" disabled={isValid}>
           회원가입
         </Button>
-        <Link href={'/signin'} className="flex justify-center py-10 text-14">
+        <Link href={'/signin'} className="flex justify-center py-10 text-14 text-gray-50 ">
           로그인으로 돌아가기
         </Link>
       </form>

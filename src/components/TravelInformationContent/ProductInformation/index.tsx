@@ -1,9 +1,5 @@
-import Button from '../../common/button';
-
+import ProductCardButton from './ProductCardButton';
 import YoutubePlayer from './YoutubePlyaer';
-import SelectLike from './selectLike';
-import ShareContents from './SahreContents';
-import Link from 'next/link';
 
 interface YoutubedataProps {
   youtubeData: {
@@ -14,30 +10,37 @@ interface YoutubedataProps {
     title: string;
     description: string;
     youtuber: string;
+    viewCount: string;
+    saveCount: number;
+    updatedAt: string;
+    tag: string[];
   };
 }
 
 const TravelProduct = ({ youtubeData }: YoutubedataProps) => {
+  const numberInformation = `조회수 ${youtubeData.viewCount}회 · 저장수 ${youtubeData.saveCount}회 · ${youtubeData.updatedAt}`;
+
   return (
-    <section className="flex gap-30">
-      <YoutubePlayer youtubeLink={youtubeData.url} />
-      <div className="flex flex-col gap-20">
-        <h1 className="text-30">{youtubeData.title}</h1>
-        <p>{youtubeData.description}</p>
-        <div>By {youtubeData.youtuber}</div>
-        <div className="flex gap-20">
-          <SelectLike contentId={youtubeData.id} />
-          <ShareContents youtubeData={youtubeData} />
+    <section className="flex w-full  pt-48 pb-80 px-120  ">
+      <div className="flex  bg-white gap-32 w-full p-35 rounded-l">
+        <div className="flex items-center justify-center min-w-568 rounded-l overflow-hidden">
+          <YoutubePlayer youtubeLink={youtubeData.url} />
         </div>
-        <div className="flex gap-30">
-          <Button className="bg-blue" textColor={'white'}>
-            마이플레이스 등록
-          </Button>
-          <Link href="/my-route">
-            <Button className="bg-blue" textColor={'white'}>
-              지금 코스짜기
-            </Button>
-          </Link>
+        <div className="flex flex-col w-full h-full gap-24">
+          <h1 className="text-28 font-bold">{youtubeData.title}</h1>
+          <div className="flex flex-col gap-12 text-gray-70">
+            <p className="text-20 text-gray-50">{youtubeData.description}</p>
+            <div>{numberInformation}</div>
+            <div className="flex gap-10 ">
+              {youtubeData.tag.map((tag, index) => (
+                <div className="flex rounded-s font-bold bg-gray-10 py-8 px-30  text-16" key={index}>
+                  {tag}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex-grow" />
+          <ProductCardButton />
         </div>
       </div>
     </section>
