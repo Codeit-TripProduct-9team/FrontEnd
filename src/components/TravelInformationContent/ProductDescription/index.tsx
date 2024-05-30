@@ -11,6 +11,7 @@ import { placeData } from './mock';
 const ProductDescription = () => {
   const [startPoint, setStartPoint] = useState({ lat: 0, lng: 0 });
   const [hasCurrnetLocation, setHasCurrentLocation] = useState(true);
+  const [polylinePath, setPolylinePath] = useState<{ lat: number; lng: number }[]>([]);
 
   const currentLocation = useGeolocation();
 
@@ -43,12 +44,18 @@ const ProductDescription = () => {
               startPoint={startPoint}
               destinationName={placeData.title}
               destinationPosition={placeData.position}
+              setPolylinePath={setPolylinePath}
             />
           ) : (
             <CustomLocation destinationName={placeData.title} destinationPosition={placeData.position} />
           )}
 
-          <ProductMap mapPosition={placeData.position} markerList={placeData.markerPosition} />
+          <ProductMap
+            startPoint={startPoint}
+            mapPosition={placeData.position}
+            markerList={placeData.markerPosition}
+            polylinePath={polylinePath}
+          />
         </div>
       </div>
     </section>
