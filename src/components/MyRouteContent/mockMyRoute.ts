@@ -1,7 +1,19 @@
-import React from 'react';
-import PlaceItem from './PlaceItem';
-import { Droppable } from '@hello-pangea/dnd';
-import { MockMyRouteData } from './mockMyRoute';
+// import { MockData } from '@/src/lib/types';
+
+interface MockMyRouteItem {
+  cardId: number;
+  thumbnail: string;
+  likes: number;
+  title: string;
+  description: string;
+  tag: string[];
+  place: string;
+  latlng: { lat: number; lng: number };
+}
+
+export interface MockMyRouteData {
+  data: MockMyRouteItem[];
+}
 
 export const mockMyRoute: MockMyRouteData = {
   data: [
@@ -60,61 +72,3 @@ export const mockMyRoute: MockMyRouteData = {
     },
   ],
 };
-
-//맵에 표시할 때 좌표값 필요
-const DATA = [
-  {
-    day: 1,
-    places: [
-      { id: 1, name: '예산시장' },
-      { id: 2, name: '광주' },
-    ],
-  },
-  {
-    day: 2,
-    places: [
-      { id: 3, name: '서울' },
-      { id: 4, name: '경포해수욕장' },
-      { id: 5, name: '김해' },
-    ],
-  },
-];
-
-export type PlaceList = {
-  day: number;
-  places: Place[];
-};
-
-export type Place = {
-  place: {
-    id: number;
-    name: string;
-  };
-};
-
-const PlaceList = () => {
-  return (
-    <div className="relative">
-      <span className="absolute text-12 text-gray-50 right-0 top-4">
-        드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
-      </span>
-      {DATA.map((data) => (
-        <div key={data.day} className="my-20">
-          <h2 className="font-bold mb-12">{data.day}일차</h2>
-          <Droppable droppableId={`day-${data.day}`}>
-            {(provided) => (
-              <ul className="flex flex-col gap-12" ref={provided.innerRef} {...provided.droppableProps}>
-                {data.places.map((place, index) => (
-                  <PlaceItem key={place.id} place={place} index={index} />
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default PlaceList;
