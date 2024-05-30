@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './SendEamil';
+import SendEmail from '../common/Sendemail';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -17,7 +17,11 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
-import { ERROR_MESSAGE } from './constats';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
+import { useOverlay } from '@toss/use-overlay';
+import ModalContent from '../common/modal/ModalContent';
+import Modal from '../common/modal/index';
+import SuccessSignup from './Modal/SuccessSignup';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -36,9 +40,30 @@ const SingupContent = () => {
   const route = useRouter();
 
   const emailValue = watch('email');
+  const nicknameValue = watch('nickname');
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
+  const modalText = '회원가입을 계속 진행해 주세요.';
+
+  //모달 사용
+  const certifiedOverlay = useOverlay();
+  const certifiedOnModal = () => {
+    certifiedOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} modalText={modalText} />
+      </Modal>
+    ));
+  };
+  const signupOverlay = useOverlay();
+  const signupOnModal = () => {
+    signupOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+        <SuccessSignup nickname={nicknameValue} />
+      </Modal>
+    ));
+  };
 
   const checkDuplicate = async (emailValue: string) => {
     try {
@@ -63,7 +88,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      alert('인증이 성공되었습니다.'); //모달
+      certifiedOnModal(); //모달
     }
   };
 
@@ -73,7 +98,7 @@ const SingupContent = () => {
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
-        alert('회원가입확인 모달로 변경');
+        signupOnModal();
         route.push('/signin');
       }
     } catch (error: any) {
@@ -206,7 +231,7 @@ const SingupContent = () => {
         <Button className="w-full mt-20" disabled={isValid}>
           회원가입
         </Button>
-        <Link href={'/signin'} className="flex justify-center py-10 text-14">
+        <Link href={'/signin'} className="flex justify-center py-10 text-14 text-gray-50 ">
           로그인으로 돌아가기
         </Link>
       </form>

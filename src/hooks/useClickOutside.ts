@@ -9,10 +9,18 @@ const useClickOutside = (callback: () => void) => {
         callback();
       }
     };
+    // ESC keydown => Modal Close
+    const handleKeyDownEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        callback();
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDownEsc);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDownEsc);
     };
   }, [callback]);
 

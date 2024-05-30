@@ -2,11 +2,14 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
-import Button from '../../common/button';
+import Button from '../button';
+import Modal from '../modal';
 
 import randomCode from '@/src/utils/randomCode';
 
-import { ERROR_MESSAGE } from '../constats';
+import { MODAL_MESSAGE } from '../../../constants/constants';
+import { useOverlay } from '@toss/use-overlay';
+import ModalContent from '../modal/ModalContent';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -16,13 +19,33 @@ interface SendEmailProps {
   error: any;
 }
 
-const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
-const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
+const SERVICE_ID = process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string;
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
 
 const TEMPLATE_ID = 'trip';
+const modalText = {
+  fail: '올바른 이메일을 입력해 주세요.',
+  success: '메일을 확인해 주세요.',
+};
 
 const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
+  const failOverlay = useOverlay();
+  const failModal = () => {
+    failOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.EMAIL_NOT_FOUND} emoji={'🥺'} modalText={modalText.fail}></ModalContent>
+      </Modal>
+    ));
+  };
+  const successOverlay = useOverlay();
+  const successModal = () => {
+    successOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.SEND_CODE} emoji={'🎉'} modalText={modalText.success}></ModalContent>
+      </Modal>
+    ));
+  };
 
   const sendVerificationEmail = () => {
     const verifyCode = randomCode();
@@ -34,16 +57,17 @@ const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode
     };
 
     emailjs
-      .send(PULBIC_NEXT_EMAIL_SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_NEXT_EMAIL_PUBLIC_KEY)
+      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
           setVerificationCode(templateParams.message);
+          successModal();
         }
       })
       .catch((error: any) => {
         if (error.status === 422) {
-          alert(ERROR_MESSAGE.EMAIL_NOT_FOUND); //모달
+          failModal();
         }
       });
   };

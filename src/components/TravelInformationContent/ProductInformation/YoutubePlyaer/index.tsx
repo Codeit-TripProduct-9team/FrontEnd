@@ -11,8 +11,8 @@ const YoutubePlayer = ({ youtubeLink }: YoutubePlayerProps) => {
     <YouTube
       videoId={videoId}
       opts={{
-        width: '400',
-        height: '200',
+        width: '589',
+        height: '378',
         plyaerVars: {
           autoplay: 1,
           rel: 0,
