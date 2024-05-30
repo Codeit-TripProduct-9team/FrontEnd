@@ -37,7 +37,7 @@ const MyRouteContent = () => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-gray-20 pt-20 pb-50 px-30 flex flex-col gap-10 rounded-8 shadow-main h-760">
+        <div className="bg-white pt-30 pb-50 px-30 flex flex-col gap-10 rounded-8 shadow-main h-760">
           <KakaoMap />
           <PlaceList />
 
@@ -51,15 +51,15 @@ const MyRouteContent = () => {
         <div className="relative flex flex-col">
           <input
             value={searchValue}
-            className="text-center border-2 rounded-15 w-570 py-10 px-30 mb-30 "
-            placeholder="검색하기"
+            className="text-center border-2 rounded-15 w-700 py-10 px-30 mb-30 "
+            placeholder="어느 곳으로 여행 가고싶으신가요?"
             onChange={handleSearchInputChange}
           />
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {filteredData.length !== 0 ? (
-                  <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
+                  <div className={`grid grid-cols-3 grid-rows-${GRID_ROW} gap-15`}>
                     {filteredData.map((datas, index) => (
                       <Draggable key={index} draggableId={`${datas.title}-${index}`} index={index}>
                         {(provided) => (
