@@ -35,7 +35,7 @@ export type Place = {
 const PlaceList = () => {
   return (
     <div className="relative">
-      <span className="absolute text-12 text-gray-50 right-0 top-20">
+      <span className="absolute text-12 text-gray-50 right-0 top-4">
         드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
       </span>
       {DATA.map((data) => (

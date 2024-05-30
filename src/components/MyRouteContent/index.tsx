@@ -1,6 +1,5 @@
 import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
@@ -45,8 +44,7 @@ const MyRouteContent = () => {
 
               {/* 버튼에 모달 핸들러 등록 */}
               <button className="w-441 h-60 bg-blue text-white rounded-s flex justify-center items-center">
-                <PlusIcon className="w-20" />
-                일정 추가하기
+                + 일정 추가하기
               </button>
             </div>
           </div>
