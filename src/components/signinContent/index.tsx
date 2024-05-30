@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import ModalContent from '../common/modal/ModalContent';
-import { MODAL_MESSAGE } from '../signupContent/constats';
+import { MODAL_MESSAGE } from '../signupcontent/constats';
 // import { useRouter } from 'next/router';
 
 interface InputForm {

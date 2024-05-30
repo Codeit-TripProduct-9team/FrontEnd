@@ -20,7 +20,7 @@ import { InputForm } from '@/src/types/InputType';
 import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
 import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
-import Modal from './../common/modal/index';
+import Modal from '../common/modal/index';
 import SuccessSignup from './Modal/SuccessSignup';
 
 const SingupContent = () => {
