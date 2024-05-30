@@ -6,10 +6,11 @@ import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
 import NaverSignin from './NaverSignin';
 import instance from '@/src/api/axios';
-import SignFailedModal from './SignFailedModal';
-import useModal from '@/src/hooks/useModal';
-import ModalPortal from '../common/modalTemplate/ModalPortal';
 import { useState } from 'react';
+import { useOverlay } from '@toss/use-overlay';
+import Modal from '../common/modal';
+import ModalContent from '../common/modal/ModalContent';
+import { MODAL_MESSAGE } from '../signupContent/constats';
 // import { useRouter } from 'next/router';
 
 interface InputForm {
@@ -32,13 +33,18 @@ const SigninContent = () => {
     handleSubmit,
     clearErrors,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
-  const {
-    openModal: signFailedModal,
-    handleModalClose: signFailedModalClose,
-    handleModalOpen: signFailedModalOpen,
-  } = useModal();
 
   // const router = useRouter();
+
+  //모달 사용
+  const overlay = useOverlay();
+  const OnModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent emoji={'🥺'} modalType={MODAL_MESSAGE.FAIL_LOGIN} modalText={errorText} />
+      </Modal>
+    ));
+  };
 
   const handleSignin = async (data: InputForm) => {
     try {
@@ -49,16 +55,13 @@ const SigninContent = () => {
       console.log(error);
       if (error.response.status === 400 || error.response.status === 404) {
         setErrorText(error.response.data.message);
-        signFailedModalOpen();
+        OnModal();
       }
     }
   };
 
   return (
     <>
-      <ModalPortal>
-        <SignFailedModal openModal={signFailedModal} handleModalClose={signFailedModalClose} errorText={errorText} />
-      </ModalPortal>
       <div className="flex flex-col gap-10 w-408">
         <label className="text-24 font-bold text-black">로그인</label>
         <form onSubmit={handleSubmit(handleSignin)}>

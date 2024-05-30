@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
-import FailedSendMail from '../Modal/FailedSendMail';
-import SuccessSendMail from '../Modal/SuccessSendMail';
-
 import Button from '../../common/button';
-import ModalPortal from '../../common/modalTemplate/ModalPortal';
+import Modal from '../../common/modal';
 
 import randomCode from '@/src/utils/randomCode';
-import useModal from '@/src/hooks/useModal';
+
+import { MODAL_MESSAGE } from '../constats';
+import { useOverlay } from '@toss/use-overlay';
+import ModalContent from '../../common/modal/ModalContent';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -19,23 +19,33 @@ interface SendEmailProps {
   error: any;
 }
 
-const PULBIC_NEXT_EMAIL_SERVICE_ID = 'service_4wlh35v';
-const PUBLIC_NEXT_EMAIL_PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
+const SERVICE_ID = process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string;
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
 
 const TEMPLATE_ID = 'trip';
+const modalText = {
+  fail: '올바른 이메일을 입력해 주세요.',
+  success: '메일을 확인해 주세요.',
+};
 
 const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode }: SendEmailProps) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
-  const {
-    openModal: failedSendMail,
-    handleModalClose: failedSendMailClose,
-    handleModalOpen: failedSendMailOpen,
-  } = useModal();
-  const {
-    openModal: successSendMail,
-    handleModalClose: successSendMailClose,
-    handleModalOpen: successSendMailOpen,
-  } = useModal();
+  const failOverlay = useOverlay();
+  const failModal = () => {
+    failOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.EMAIL_NOT_FOUND} emoji={'🥺'} modalText={modalText.fail}></ModalContent>
+      </Modal>
+    ));
+  };
+  const successOverlay = useOverlay();
+  const successModal = () => {
+    successOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.SEND_CODE} emoji={'🎉'} modalText={modalText.success}></ModalContent>
+      </Modal>
+    ));
+  };
 
   const sendVerificationEmail = () => {
     const verifyCode = randomCode();
@@ -47,27 +57,23 @@ const SendEmail = ({ userEmail, disabled, isVerified, error, setVerificationCode
     };
 
     emailjs
-      .send(PULBIC_NEXT_EMAIL_SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_NEXT_EMAIL_PUBLIC_KEY)
+      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then((response) => {
         if (response.status === 200) {
           setIsSendEmail(true);
           setVerificationCode(templateParams.message);
-          successSendMailOpen();
+          successModal();
         }
       })
       .catch((error: any) => {
         if (error.status === 422) {
-          failedSendMailOpen();
+          failModal();
         }
       });
   };
 
   return (
     <>
-      <ModalPortal>
-        <FailedSendMail openModal={failedSendMail} handleModalClose={failedSendMailClose} />
-        <SuccessSendMail openModal={successSendMail} handleModalClose={successSendMailClose} />
-      </ModalPortal>
       {isSendEmail ? (
         <Button
           type="button"
