@@ -37,15 +37,19 @@ const MyRouteContent = () => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-white pt-30 pb-50 px-30 flex flex-col gap-10 rounded-8 shadow-main h-760">
+        <div className="bg-white pt-32 pl-37 pr-55 pb-107 flex flex-col gap-10 rounded-20 shadow-main">
           <KakaoMap />
-          <PlaceList />
+          <div className="flex justify-end">
+            <div>
+              <PlaceList />
 
-          {/* 버튼에 모달 핸들러 등록 */}
-          <button className="w-full bg-blue text-white rounded-8 p-15 flex justify-center items-center">
-            <PlusIcon className="w-20" />
-            일정 추가하기
-          </button>
+              {/* 버튼에 모달 핸들러 등록 */}
+              <button className="w-441 h-60 bg-blue text-white rounded-s flex justify-center items-center">
+                <PlusIcon className="w-20" />
+                일정 추가하기
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="relative flex flex-col">

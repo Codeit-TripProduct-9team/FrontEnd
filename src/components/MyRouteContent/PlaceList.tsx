@@ -33,21 +33,28 @@ export type Place = {
 };
 
 const PlaceList = () => {
-  return DATA.map((data) => (
-    <React.Fragment key={data.day}>
-      <h2 className="font-bold">{data.day}일차</h2>
-      <Droppable droppableId={`day-${data.day}`}>
-        {(provided) => (
-          <ul className="flex flex-col gap-8" ref={provided.innerRef} {...provided.droppableProps}>
-            {data.places.map((place, index) => (
-              <PlaceItem key={place.id} place={place} index={index} />
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-    </React.Fragment>
-  ));
+  return (
+    <div className="relative">
+      <span className="absolute text-12 text-gray-50 right-0 top-20">
+        드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
+      </span>
+      {DATA.map((data) => (
+        <div key={data.day} className="my-20">
+          <h2 className="font-bold mb-12">{data.day}일차</h2>
+          <Droppable droppableId={`day-${data.day}`}>
+            {(provided) => (
+              <ul className="flex flex-col gap-12" ref={provided.innerRef} {...provided.droppableProps}>
+                {data.places.map((place, index) => (
+                  <PlaceItem key={place.id} place={place} index={index} />
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default PlaceList;

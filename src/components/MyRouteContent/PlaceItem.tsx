@@ -19,12 +19,12 @@ const PlaceItem: React.FC<PlaceItemProps> = ({ place, index }) => {
     <Draggable draggableId={`${place.name}-${index}`} index={index}>
       {(provided) => (
         <li
-          className="flex justify-between rounded-8 bg-gray-10 p-15 items-center shadow-lg"
+          className="w-441 h-60 flex justify-between rounded-s bg-gray-10 py-18 pl-20 pr-24 items-center shadow-main"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="flex gap-30">
+          <div className="flex gap-51">
             <span className="text-gray-50 font-bold">{place.id}</span>
             <span className="font-bold">{place.name}</span>
           </div>
