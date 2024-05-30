@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './sendEamil';
+import SendEmail from './SendEamil';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -17,27 +17,16 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
-import useModal from '@/src/hooks/useModal';
-
-import { ERROR_MESSAGE } from './constats';
-import ModalPortal from '../common/modalTemplate/ModalPortal';
-import SuccessVerify from './Modal/SuccessVerify';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
+import { useOverlay } from '@toss/use-overlay';
+import ModalContent from '../common/modal/ModalContent';
+import Modal from './../common/modal/index';
 import SuccessSignup from './Modal/SuccessSignup';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState<string | null>(null);
-  const {
-    openModal: successVerify,
-    handleModalClose: successVerifyClose,
-    handleModalOpen: successVerifyOpen,
-  } = useModal();
-  const {
-    openModal: successSignup,
-    handleModalClose: successSignupClose,
-    handleModalOpen: successSignupOpen,
-  } = useModal();
 
   const {
     register,
@@ -55,6 +44,26 @@ const SingupContent = () => {
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
+  const modalText = '회원가입을 계속 진행해 주세요.';
+
+  //모달 사용
+  const certifiedOverlay = useOverlay();
+  const certifiedOnModal = () => {
+    certifiedOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} modalText={modalText} />
+      </Modal>
+    ));
+  };
+  const signupOverlay = useOverlay();
+  const signupOnModal = () => {
+    signupOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ModalContent modalType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+        <SuccessSignup nickname={nicknameValue} />
+      </Modal>
+    ));
+  };
 
   const checkDuplicate = async (emailValue: string) => {
     try {
@@ -79,7 +88,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      successVerifyOpen();
+      certifiedOnModal(); //모달
     }
   };
 
@@ -89,7 +98,7 @@ const SingupContent = () => {
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
-        successSignupOpen();
+        signupOnModal();
         route.push('/signin');
       }
     } catch (error: any) {
@@ -226,10 +235,6 @@ const SingupContent = () => {
           로그인으로 돌아가기
         </Link>
       </form>
-      <ModalPortal>
-        <SuccessVerify openModal={successVerify} handleModalClose={successVerifyClose} />
-        <SuccessSignup openModal={successSignup} handleModalClose={successSignupClose} nickname={nicknameValue} />
-      </ModalPortal>
     </div>
   );
 };
