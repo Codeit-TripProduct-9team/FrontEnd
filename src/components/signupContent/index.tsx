@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './SendEamil';
+import SendEmail from '../common/SendEmail';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -17,7 +17,7 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from './../common/modal/index';
