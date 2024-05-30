@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
 
-import SendEmail from './SendEamil';
+import SendEmail from './sendEamil';
 import Button from '../common/button';
 
 import NickNameInput from '../common/input';
@@ -17,12 +17,27 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
+import useModal from '@/src/hooks/useModal';
+
 import { ERROR_MESSAGE } from './constats';
+import ModalPortal from '../common/modalTemplate/ModalPortal';
+import SuccessVerify from './Modal/SuccessVerify';
+import SuccessSignup from './Modal/SuccessSignup';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState<string | null>(null);
+  const {
+    openModal: successVerify,
+    handleModalClose: successVerifyClose,
+    handleModalOpen: successVerifyOpen,
+  } = useModal();
+  const {
+    openModal: successSignup,
+    handleModalClose: successSignupClose,
+    handleModalOpen: successSignupOpen,
+  } = useModal();
 
   const {
     register,
@@ -36,6 +51,7 @@ const SingupContent = () => {
   const route = useRouter();
 
   const emailValue = watch('email');
+  const nicknameValue = watch('nickname');
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
@@ -63,7 +79,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      alert('인증이 성공되었습니다.'); //모달
+      successVerifyOpen();
     }
   };
 
@@ -73,7 +89,7 @@ const SingupContent = () => {
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
-        alert('회원가입확인 모달로 변경');
+        successSignupOpen();
         route.push('/signin');
       }
     } catch (error: any) {
@@ -206,10 +222,14 @@ const SingupContent = () => {
         <Button className="w-full mt-20" disabled={isValid}>
           회원가입
         </Button>
-        <Link href={'/signin'} className="flex justify-center py-10 text-14">
+        <Link href={'/signin'} className="flex justify-center py-10 text-14 text-gray-50 ">
           로그인으로 돌아가기
         </Link>
       </form>
+      <ModalPortal>
+        <SuccessVerify openModal={successVerify} handleModalClose={successVerifyClose} />
+        <SuccessSignup openModal={successSignup} handleModalClose={successSignupClose} nickname={nicknameValue} />
+      </ModalPortal>
     </div>
   );
 };
