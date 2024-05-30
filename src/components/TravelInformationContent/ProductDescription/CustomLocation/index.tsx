@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { SetStateAction, ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import Image from 'next/image';
 
@@ -12,36 +12,47 @@ interface ElaspedTimeProps {
   destinationName: string;
   destinationPosition: { lat: number; lng: number };
   startPoint?: { lat: number; lng: number };
+  setPolylinePath: React.Dispatch<SetStateAction<{ lat: number; lng: number }[]>>;
+  setCustomStartPoint: React.Dispatch<SetStateAction<{ lat: number; lng: number }>>;
 }
 
-const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimeProps) => {
+const CustomLocation = ({
+  destinationName,
+  destinationPosition,
+  setPolylinePath,
+  setCustomStartPoint,
+}: ElaspedTimeProps) => {
   const [invalidKeyword, setInvalidKeyword] = useState(0);
   const [location, setLocation] = useState('');
   const [duration, setDuration] = useState(0);
   const [coordinate, setCoordinate] = useState({ lng: '', lat: '' });
   const [showMessage, setShowMessage] = useState(false);
 
-  const getCoordinate = useCallback(async (address: string) => {
-    const encodedAddress = encodeURIComponent(address);
+  const getCoordinate = useCallback(
+    async (address: string) => {
+      const encodedAddress = encodeURIComponent(address);
 
-    const REST_API_KEY = 'cc81aff4a39ec9dc0f2227e92f473f24';
-    const url = `https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&query=${encodedAddress}`;
+      const REST_API_KEY = 'cc81aff4a39ec9dc0f2227e92f473f24';
+      const url = `https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&query=${encodedAddress}`;
 
-    try {
-      const response = await instance.get(url, {
-        headers: {
-          Authorization: `KakaoAK ${REST_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        const response = await instance.get(url, {
+          headers: {
+            Authorization: `KakaoAK ${REST_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const responseData = await response.data;
-      const customLocation = responseData.documents[0];
-      setCoordinate({ lat: customLocation.y, lng: customLocation.x });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }, []);
+        const responseData = await response.data;
+        const customLocation = responseData.documents[0];
+        setCoordinate({ lat: customLocation.y, lng: customLocation.x });
+        setCustomStartPoint({ lat: customLocation.y, lng: customLocation.x });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
+    [setCustomStartPoint],
+  );
 
   const getDirection = useCallback(async () => {
     const { requestUrl, headers } = getDirectionRequest(coordinate, destinationPosition);
@@ -52,12 +63,24 @@ const CustomLocation = ({ destinationName, destinationPosition }: ElaspedTimePro
 
       const responseData = await response.data;
       const elapsedTime = responseData.routes[0].summary.duration;
+      const linePath: { lat: number; lng: number }[] = [];
+      responseData.routes[0].sections[0].roads.forEach((route: any) => {
+        route.vertexes.forEach((vertex: any, index: number) => {
+          if (index % 2 === 0) {
+            linePath.push({
+              lat: route.vertexes[index + 1],
+              lng: route.vertexes[index],
+            });
+          }
+        });
+      });
+      setPolylinePath(linePath);
       setInvalidKeyword(responseData.totalCount);
       setDuration(elapsedTime);
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [coordinate, destinationPosition]);
+  }, [coordinate, destinationPosition, setPolylinePath]);
 
   useEffect(() => {
     const hasLocation = location.trim() !== '';

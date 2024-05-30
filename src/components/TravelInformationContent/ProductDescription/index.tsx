@@ -47,7 +47,12 @@ const ProductDescription = () => {
               setPolylinePath={setPolylinePath}
             />
           ) : (
-            <CustomLocation destinationName={placeData.title} destinationPosition={placeData.position} />
+            <CustomLocation
+              destinationName={placeData.title}
+              destinationPosition={placeData.position}
+              setPolylinePath={setPolylinePath}
+              setCustomStartPoint={setStartPoint}
+            />
           )}
 
           <ProductMap
