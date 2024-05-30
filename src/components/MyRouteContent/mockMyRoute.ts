@@ -11,7 +11,7 @@ interface MockMyRouteItem {
   latlng: { lat: number; lng: number };
 }
 
-interface MockMyRouteData {
+export interface MockMyRouteData {
   data: MockMyRouteItem[];
 }
 

@@ -54,7 +54,7 @@ const KakaoMap = () => {
         <Polyline
           path={positions.map((position) => position.latlng)}
           strokeWeight={3}
-          strokeColor={'#0094FF'}
+          strokeColor={'#34C231'}
           strokeOpacity={1}
         />
       </Map>
