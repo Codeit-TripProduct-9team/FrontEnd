@@ -3,7 +3,7 @@ import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
-import { mock } from '@/src/components/mainContent/mock';
+import { mockMyRoute } from './mockMyRoute';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 // import NoSearchData from '../mainContent/CardSection/NoSearchData';
 // import { Draggable } from '@hello-pangea/dnd';
@@ -13,7 +13,7 @@ const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: mockMyRoute.data }, searchValue);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
