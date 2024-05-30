@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
-import Button from '../../common/button';
-import Modal from '../../common/modal';
+import Button from '../button';
+import Modal from '../modal';
 
 import randomCode from '@/src/utils/randomCode';
 
-import { MODAL_MESSAGE } from '../constats';
+import { MODAL_MESSAGE } from '../../../constants/constants';
 import { useOverlay } from '@toss/use-overlay';
-import ModalContent from '../../common/modal/ModalContent';
+import ModalContent from '../modal/ModalContent';
 
 interface SendEmailProps {
   disabled: boolean;

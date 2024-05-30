@@ -1,7 +1,7 @@
 import { FieldError, useForm } from 'react-hook-form';
 import PasswordInput from '../../common/input/passwordInput';
 import PasswordCheckInput from '../../common/input/passwordInput';
-import { ERROR_MESSAGE } from '../../signupcontent/constats';
+import { ERROR_MESSAGE } from '../../../constants/constants';
 import { REGEX } from '@/src/utils/regex';
 import Button from '../../common/button';
 
