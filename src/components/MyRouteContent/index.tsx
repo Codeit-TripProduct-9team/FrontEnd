@@ -3,17 +3,26 @@ import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
-import { mockMyRoute } from './mockMyRoute';
+// import { MockMyRouteItem } from './mockMyRoute';
+// import { mockMyRoute } from './mockMyRoute';
+import { mock } from '../mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 // import NoSearchData from '../mainContent/CardSection/NoSearchData';
 // import { Draggable } from '@hello-pangea/dnd';
-import CardSection from '../mainContent/CardSection';
+// import CardSection from '../mainContent/CardSection';
+import MyRouteCardSection from './MyRouteCardSection';
+import search from '@/public/assets/icon/search.svg';
+import Image from 'next/image';
+import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
+import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
+  const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mockMyRoute.data }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
@@ -51,16 +60,43 @@ const MyRouteContent = () => {
         </div>
 
         <div className="flex flex-col bg-white rounded-20 px-40 py-20">
-          <input
-            value={searchValue}
-            className="text-center border-2 rounded-15 w-700 py-10 px-30 mb-30 "
-            placeholder="어느 곳으로 여행 가고싶으신가요?"
-            onChange={handleSearchInputChange}
-          />
+          <div className="relative">
+            <input
+              value={searchValue}
+              className="text-center border-2 rounded-15 w-700 h-40 mb-30 "
+              placeholder="어느 곳으로 여행 가고싶으신가요?"
+              onChange={handleSearchInputChange}
+            />
+
+            {visible && (
+              <div className="absolute top-50 z-10 bg-white">
+                <RelatedSearchInfo
+                  data={relatedData}
+                  setSectionVisible={setSectionVisible}
+                  setSearchValue={setSearchValue}
+                />
+                {/*  리팩토링 할 때 VISIBLE 안으로 넣기 - 리렌더링 방지*/}
+              </div>
+            )}
+            <div className="absolute cursor-pointer right-23 top-13">
+              {searchValue ? (
+                <Image
+                  src="/assets/icon/clear.png"
+                  width={17}
+                  height={17}
+                  alt="검색어 초기화"
+                  onClick={() => setSearchValue('')}
+                />
+              ) : (
+                <Image src={search} width={17} height={17} alt="검색" />
+              )}
+            </div>
+          </div>
+
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+                <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} />
 
                 {provided.placeholder}
               </div>

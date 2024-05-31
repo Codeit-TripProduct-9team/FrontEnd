@@ -1,6 +1,6 @@
 // import { MockData } from '@/src/lib/types';
 
-interface MockMyRouteItem {
+export interface MockMyRouteItem {
   cardId: number;
   thumbnail: string;
   likes: number;
