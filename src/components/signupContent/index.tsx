@@ -46,7 +46,6 @@ const SingupContent = () => {
   const isEmailvalid = !errors.email && isValidateEmail;
   const modalText = '회원가입을 계속 진행해 주세요.';
 
-  //모달 사용
   const certifiedOverlay = useOverlay();
   const certifiedOnModal = () => {
     certifiedOverlay.open(({ isOpen, close }) => (
@@ -58,8 +57,13 @@ const SingupContent = () => {
   const signupOverlay = useOverlay();
   const signupOnModal = () => {
     signupOverlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close}>
-        <ModalContent modalType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+      <Modal
+        isOpen={isOpen}
+        close={() => {
+          close();
+          route.push('/signin');
+        }}
+      >
         <SuccessSignup nickname={nicknameValue} />
       </Modal>
     ));
@@ -88,7 +92,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      certifiedOnModal(); //모달
+      certifiedOnModal();
     }
   };
 
@@ -99,7 +103,6 @@ const SingupContent = () => {
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
         signupOnModal();
-        route.push('/signin');
       }
     } catch (error: any) {
       console.error(error);
