@@ -22,7 +22,8 @@ const MyRouteContent = () => {
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  const mockSliced = mock.data.slice(0, 9);
+  const filteredData: MockDataItem[] = useFilteredData({ data: mockSliced }, searchValue);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
