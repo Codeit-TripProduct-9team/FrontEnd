@@ -1,19 +1,18 @@
-import { SetStateAction, ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-import Image from 'next/image';
-
-import SearchIcon from '@/public/assets/icon/search.png';
 import convertTime from '@/src/utils/convertTime';
 import getDirectionRequest from '@/src/utils/getDirectionRequest';
-
+import { KAKAO_ROAD_BASED_URL } from '@/src/constants/url';
+import extractPath from '@/src/utils/extractPath';
 import instance from '@/src/api/axios';
+import LocationInput from './LocationInput';
 
 interface ElaspedTimeProps {
   destinationName: string;
   destinationPosition: { lat: number; lng: number };
   startPoint?: { lat: number; lng: number };
-  setPolylinePath: React.Dispatch<SetStateAction<{ lat: number; lng: number }[]>>;
-  setCustomStartPoint: React.Dispatch<SetStateAction<{ lat: number; lng: number }>>;
+  setPolylinePath: React.Dispatch<React.SetStateAction<{ lat: number; lng: number }[]>>;
+  setCustomStartPoint: React.Dispatch<React.SetStateAction<{ lat: number; lng: number }>>;
 }
 
 const CustomLocation = ({
@@ -22,31 +21,26 @@ const CustomLocation = ({
   setPolylinePath,
   setCustomStartPoint,
 }: ElaspedTimeProps) => {
-  const [invalidKeyword, setInvalidKeyword] = useState(0);
-  const [location, setLocation] = useState('');
   const [duration, setDuration] = useState(0);
+  const [invalidKeyword, setInvalidKeyword] = useState(0);
+  const [customStartingPoint, setCustomStartingPoint] = useState('');
   const [coordinate, setCoordinate] = useState({ lng: '', lat: '' });
   const [showMessage, setShowMessage] = useState(false);
 
   const getCoordinate = useCallback(
     async (address: string) => {
       const encodedAddress = encodeURIComponent(address);
-
-      const REST_API_KEY = 'cc81aff4a39ec9dc0f2227e92f473f24';
-      const url = `https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&query=${encodedAddress}`;
-
       try {
-        const response = await instance.get(url, {
+        const response = await instance.get(`${KAKAO_ROAD_BASED_URL}${encodedAddress}`, {
           headers: {
-            Authorization: `KakaoAK ${REST_API_KEY}`,
-            'Content-Type': 'application/json',
+            Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
           },
         });
-
-        const responseData = await response.data;
-        const customLocation = responseData.documents[0];
-        setCoordinate({ lat: customLocation.y, lng: customLocation.x });
-        setCustomStartPoint({ lat: customLocation.y, lng: customLocation.x });
+        const result = await response.data;
+        const customLocation = result.documents[0];
+        const coordinate = { lat: customLocation.y, lng: customLocation.x };
+        setCoordinate(coordinate);
+        setCustomStartPoint(coordinate);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -61,33 +55,24 @@ const CustomLocation = ({
         headers: headers,
       });
 
-      const responseData = await response.data;
-      const elapsedTime = responseData.routes[0].summary.duration;
-      const linePath: { lat: number; lng: number }[] = [];
-      responseData.routes[0].sections[0].roads.forEach((route: any) => {
-        route.vertexes.forEach((vertex: any, index: number) => {
-          if (index % 2 === 0) {
-            linePath.push({
-              lat: route.vertexes[index + 1],
-              lng: route.vertexes[index],
-            });
-          }
-        });
-      });
-      setPolylinePath(linePath);
-      setInvalidKeyword(responseData.totalCount);
+      const result = await response.data;
+      const elapsedTime = result.routes[0].summary.duration;
+
+      const path = extractPath(result);
+      setPolylinePath(path);
       setDuration(elapsedTime);
+      setInvalidKeyword(result.totalCount);
     } catch (error) {
       console.error('Error:', error);
     }
   }, [coordinate, destinationPosition, setPolylinePath]);
 
   useEffect(() => {
-    const hasLocation = location.trim() !== '';
+    const hasLocation = customStartingPoint.trim() !== '';
     if (hasLocation) {
-      getCoordinate(location);
+      getCoordinate(customStartingPoint);
     }
-  }, [location, getCoordinate]);
+  }, [customStartingPoint, getCoordinate]);
 
   useEffect(() => {
     const hasCoordinate = coordinate.lng !== '' && coordinate.lat !== '';
@@ -97,42 +82,37 @@ const CustomLocation = ({
   }, [coordinate, getDirection]);
 
   const handleStartingPoint = () => {
-    const hasLocation = location.trim() !== '';
+    const hasLocation = customStartingPoint.trim() !== '';
     if (hasLocation) {
       setShowMessage(true);
     }
   };
 
-  const handleChangeStartingPoint = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeStartingPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
     const customLocation = event.target.value;
     if (showMessage) {
       setShowMessage(false);
     }
-    setLocation(customLocation);
+    setCustomStartingPoint(customLocation);
   };
 
   const elapsedTime = convertTime(duration);
 
   return (
     <div className="absolute top-20 left-1/2 transform -translate-x-1/2 flex flex-col gap-4  w-582 p-10 z-10 text-center rounded-s">
-      <div className="relative p-10  rounded-s bg-white">
-        <input
-          className="placeholder:text-gray-60 font-bold"
-          placeholder="지금 계신 곳을 입력해 주세요!"
-          value={location}
-          onChange={handleChangeStartingPoint}
-        />
-        <button onClick={handleStartingPoint}>
-          <Image className="absolute top-10 right-20" src={SearchIcon} width={22} height={22} alt="search" />
-        </button>
-      </div>
+      <LocationInput
+        location={customStartingPoint}
+        onChange={handleChangeStartingPoint}
+        onClick={handleStartingPoint}
+      />
       {showMessage && (
         <div className="p-10  rounded-s bg-white">
           {invalidKeyword === 0 ? (
             <p>잘못된 주소이거나 거리가 너무 가깝습니다</p>
           ) : (
             <p>
-              {location}에서 {destinationName}까지 {`${elapsedTime.hours} 시간 ${elapsedTime.minutes} 분`} 걸려요💨
+              {customStartingPoint}에서 {destinationName}까지 {`${elapsedTime.hours} 시간 ${elapsedTime.minutes} 분`}
+              걸려요💨
             </p>
           )}
         </div>
