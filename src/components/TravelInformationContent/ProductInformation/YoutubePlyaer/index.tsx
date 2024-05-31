@@ -1,12 +1,10 @@
 import YouTube from 'react-youtube';
 
 interface YoutubePlayerProps {
-  youtubeLink: string;
+  videoId: string;
 }
 
-const YoutubePlayer = ({ youtubeLink }: YoutubePlayerProps) => {
-  const videoId = youtubeLink.split('v=')[1];
-
+const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
   return (
     <YouTube
       videoId={videoId}

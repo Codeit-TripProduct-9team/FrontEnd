@@ -55,12 +55,7 @@ const ProductDescription = () => {
             />
           )}
 
-          <ProductMap
-            startPoint={startPoint}
-            mapPosition={placeData.position}
-            markerList={placeData.markerPosition}
-            polylinePath={polylinePath}
-          />
+          <ProductMap startPoint={startPoint} position={placeData.position} polylinePath={polylinePath} />
         </div>
       </div>
     </section>
