@@ -22,10 +22,11 @@ const CustomLocation = ({
   setCustomStartPoint,
 }: ElaspedTimeProps) => {
   const [duration, setDuration] = useState(0);
+  const [showMessage, setShowMessage] = useState(false);
   const [invalidKeyword, setInvalidKeyword] = useState(0);
   const [customStartingPoint, setCustomStartingPoint] = useState('');
   const [coordinate, setCoordinate] = useState({ lng: '', lat: '' });
-  const [showMessage, setShowMessage] = useState(false);
+  const [customRoute, setCustomRoute] = useState<{ lat: number; lng: number }[]>([]);
 
   const getCoordinate = useCallback(
     async (address: string) => {
@@ -59,13 +60,13 @@ const CustomLocation = ({
       const elapsedTime = result.routes[0].summary.duration;
 
       const path = extractPath(result);
-      setPolylinePath(path);
+      setCustomRoute(path);
       setDuration(elapsedTime);
       setInvalidKeyword(result.totalCount);
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [coordinate, destinationPosition, setPolylinePath]);
+  }, [coordinate, destinationPosition]);
 
   useEffect(() => {
     const hasLocation = customStartingPoint.trim() !== '';
@@ -81,19 +82,20 @@ const CustomLocation = ({
     }
   }, [coordinate, getDirection]);
 
-  const handleStartingPoint = () => {
-    const hasLocation = customStartingPoint.trim() !== '';
-    if (hasLocation) {
-      setShowMessage(true);
-    }
-  };
-
   const handleChangeStartingPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
     const customLocation = event.target.value;
     if (showMessage) {
       setShowMessage(false);
     }
     setCustomStartingPoint(customLocation);
+  };
+
+  const handleStartingPoint = () => {
+    const hasLocation = customStartingPoint.trim() !== '';
+    if (hasLocation) {
+      setShowMessage(true);
+      setPolylinePath(customRoute);
+    }
   };
 
   const elapsedTime = convertTime(duration);
