@@ -38,7 +38,7 @@ const ProductReview = () => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-40 pt-65 px-110 bg-white">
+    <div className="flex flex-col w-full  pt-65 px-110 bg-white">
       <SortToolbar sortByNewest={handleSortByNewest} sortByLikes={handleSortByLikes} sortByScore={handleSrotByScore} />
       <CreateReview />
       <ReviewList sortedReview={sortedReview} />
