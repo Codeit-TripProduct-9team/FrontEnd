@@ -4,24 +4,23 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
+import { useOverlay } from '@toss/use-overlay';
 
+import SuccessSignup from './SuccessSingupModal';
 import SendEmail from '../common/Sendemail';
 import Button from '../common/button';
-
 import NickNameInput from '../common/input';
 import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
+import ModalContent from '../common/modal/ModalContent';
+import Modal from '../common/modal/index';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/types/InputType';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
-import { useOverlay } from '@toss/use-overlay';
-import ModalContent from '../common/modal/ModalContent';
-import Modal from '../common/modal/index';
-import SuccessSignup from './SuccessSignupModal';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);

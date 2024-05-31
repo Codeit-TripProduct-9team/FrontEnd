@@ -16,6 +16,12 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "next.config.mjs", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "next.config.mjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/signupContent/SuccessSingupModal"
+  ],
   "exclude": ["node_modules"]
 }

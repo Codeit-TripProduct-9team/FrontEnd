@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import ProductCardButton from '../ProductCardButton';
+import ProductCardButton from './ProductCardButton';
 
 import instance from '@/src/api/axios';
 import convertDate from '@/src/utils/convertDate';
@@ -58,7 +58,11 @@ const YoutubeData = ({ youtubeData, videoId }: VideoInformationProps) => {
         </ul>
       </div>
       <div className="flex-grow" />
-      <ProductCardButton />
+      <ProductCardButton
+        title={youtubeData.title}
+        description={youtubeData.description}
+        thumbnail={youtubeData.thumbnail}
+      />
     </div>
   );
 };
