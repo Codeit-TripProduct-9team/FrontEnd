@@ -6,7 +6,7 @@ import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
 import NaverSignin from './NaverSignin';
 import instance from '@/src/api/axios';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import ModalContent from '../common/modal/ModalContent';
@@ -26,7 +26,7 @@ interface InputForm {
 }
 
 const SigninContent = () => {
-  const [errorText, setErrorText] = useState<string>('');
+  // const [errorText, setErrorText] = useState<string>('');
   const {
     register,
     formState: { errors },
@@ -38,10 +38,10 @@ const SigninContent = () => {
 
   //모달 사용
   const overlay = useOverlay();
-  const OnModal = () => {
+  const OnModal = (text: string) => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
-        <ModalContent emoji={'🥺'} modalType={MODAL_MESSAGE.FAIL_LOGIN} modalText={errorText} />
+        <ModalContent emoji={'🥺'} modalType={MODAL_MESSAGE.FAIL_LOGIN} modalText={text} />
       </Modal>
     ));
   };
@@ -54,8 +54,8 @@ const SigninContent = () => {
     } catch (error: any) {
       console.log(error);
       if (error.response.status === 400 || error.response.status === 404) {
-        setErrorText(error.response.data.message);
-        OnModal();
+        // setErrorText(error.response.data.message);
+        OnModal(error.response.data.message);
       }
     }
   };
