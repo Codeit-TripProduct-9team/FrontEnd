@@ -11,9 +11,6 @@ interface YoutubedataProps {
     title: string;
     description: string;
     youtuber: string;
-    viewCount: string;
-    saveCount: number;
-    updatedAt: string;
     tag: string[];
   };
 }

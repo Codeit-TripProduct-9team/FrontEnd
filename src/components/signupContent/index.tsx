@@ -21,7 +21,7 @@ import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal/index';
-import SuccessSignup from './Modal/SuccessSignup';
+import SuccessSignup from './SuccessSignupModal';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);

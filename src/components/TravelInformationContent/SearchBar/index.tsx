@@ -18,34 +18,34 @@ interface MockDataItem {
 
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [filteringResult, setFilteringResult] = useState<MockDataItem[]>([]);
+  const [searchResult, setSearchResult] = useState<MockDataItem[]>([]);
 
   const router = useRouter();
 
   useEffect(() => {
     if (searchKeyword) {
-      const filteringData = mock.data.filter(
-        (item) =>
-          item.title.includes(searchKeyword) ||
-          item.description.includes(searchKeyword) ||
-          item.tag.some((tag) => tag.includes(searchKeyword)),
+      const hasKeyword = mock.data.filter(
+        ({ title, description, tag }) =>
+          title.includes(searchKeyword) ||
+          description.includes(searchKeyword) ||
+          tag.some((tag) => tag.includes(searchKeyword)),
       );
 
-      const deleteDuplicate = Array.from(new Map(filteringData.map((item) => [item.cardId, item])).values());
+      const deleteDuplicate = Array.from(new Map(hasKeyword.map((item) => [item.cardId, item])).values());
 
-      setFilteringResult(deleteDuplicate);
+      setSearchResult(deleteDuplicate);
     }
     if (!searchKeyword) {
-      setFilteringResult([]);
+      setSearchResult([]);
     }
   }, [searchKeyword]);
 
-  const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeKeyword = (event: ChangeEvent<HTMLInputElement>) => {
     const keyword = event.target.value;
     setSearchKeyword(keyword);
   };
 
-  const handleResultClick = (cardId: number) => {
+  const handleRouteContents = (cardId: number) => {
     router.push(`/travel-information/${cardId}`);
   };
 
@@ -58,21 +58,21 @@ const SearchBar = () => {
           type="text"
           placeholder="Search"
           value={searchKeyword}
-          onChange={handleKeywordChange}
+          onChange={handleChangeKeyword}
         />
       </div>
-      {filteringResult.length > 0 && (
-        <div className="absolute flex flex-col gap-16  left-150 top-50 rounded-m  text-center w-693 bg-white overflow-hidden ">
-          {filteringResult.map((result) => (
-            <div
-              key={result.cardId}
+      {searchResult.length > 0 && (
+        <ul className="absolute flex flex-col gap-16  left-150 top-50 rounded-m  text-center w-693 bg-white overflow-hidden ">
+          {searchResult.map(({ cardId, title }) => (
+            <li
+              key={cardId}
               className="p-4 text-18 text-gray-50 cursor-pointer hover:bg-gray-200"
-              onClick={() => handleResultClick(result.cardId)}
+              onClick={() => handleRouteContents(cardId)}
             >
-              {result.title}
-            </div>
+              {title}
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
