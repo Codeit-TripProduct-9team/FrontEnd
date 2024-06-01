@@ -20,7 +20,7 @@ import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
-import { InputForm } from '@/src/types/InputType';
+import { InputForm } from '@/src/lib/types';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
