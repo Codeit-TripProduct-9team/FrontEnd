@@ -4,7 +4,7 @@ import LocationInput from './LocationInput';
 
 import convertTime from '@/src/utils/convertTime';
 import getDirectionRequest from '@/src/utils/getDirectionRequest';
-import { KAKAO_ROAD_BASED_URL } from '@/src/constants/url';
+import { BASED_URL } from '@/src/constants/constants';
 import extractPath from '@/src/utils/extractPath';
 import instance from '@/src/api/axios';
 
@@ -30,11 +30,14 @@ const CustomLocation = ({
   const getCoordinate = async (address: string) => {
     const encodedAddress = encodeURIComponent(address);
     try {
-      const response = await instance.get(`${KAKAO_ROAD_BASED_URL}${encodedAddress}`, {
-        headers: {
-          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+      const response = await instance.get(
+        `${BASED_URL.KAKAO_ROAD}/local/search/address.json?analyze_type=similar&query=${encodedAddress}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+          },
         },
-      });
+      );
       const result = await response.data;
       const customLocation = result.documents[0];
       const coordinate = { lat: parseFloat(customLocation.y), lng: parseFloat(customLocation.x) };
