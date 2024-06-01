@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 
-import TravelInformationMeta from '../common/meta/TravelInformationMeta';
-
 import SearchBar from './SearchBar';
 import ProductInformation from './ProductInformation';
+import ChangeContent from './ChangeContent';
+
+import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 
 import { youtubeMockData } from './mock';
-import ChangeContent from './ChangeContent';
 
 const TravelInformation = () => {
   const route = useRouter();

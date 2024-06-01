@@ -19,8 +19,8 @@ interface SendEmailProps {
   error: any;
 }
 
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string;
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
+const SERVICE_ID = 'service_4wlh35v';
+const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 const modalText = {

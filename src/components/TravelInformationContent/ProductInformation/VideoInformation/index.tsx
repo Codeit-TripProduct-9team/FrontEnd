@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import ProductCardButton from '../ProductCardButton';
+import ProductCardButton from './ProductCardButton';
 
 import instance from '@/src/api/axios';
 import convertDate from '@/src/utils/convertDate';
 import convertViewCount from '@/src/utils/convertViewCount';
-import { YOUTUBE_API_BASED_URL } from '@/src/constants/url';
+import { BASED_URL } from '@/src/constants/constants';
 
 interface VideoInformationProps {
   youtubeData: {
@@ -29,7 +29,7 @@ const YoutubeData = ({ youtubeData, videoId }: VideoInformationProps) => {
     try {
       const part = 'snippet,statistics';
       const response = await instance.get(
-        `${YOUTUBE_API_BASED_URL}/videos?id=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}&part=${part}`,
+        `${BASED_URL.YOUTUBE_API}/videos?id=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}&part=${part}`,
       );
       const result = await response.data.items[0];
       setViewCount(result.statistics.viewCount);
@@ -58,7 +58,11 @@ const YoutubeData = ({ youtubeData, videoId }: VideoInformationProps) => {
         </ul>
       </div>
       <div className="flex-grow" />
-      <ProductCardButton />
+      <ProductCardButton
+        title={youtubeData.title}
+        description={youtubeData.description}
+        thumbnail={youtubeData.thumbnail}
+      />
     </div>
   );
 };
