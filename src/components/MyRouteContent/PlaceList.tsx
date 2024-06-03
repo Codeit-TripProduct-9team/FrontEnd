@@ -94,9 +94,11 @@ export type Place = {
 
 const PlaceList = () => {
   return (
-    <div>
+    <div className="relative">
+      <div className="border-l-2 absolute top-10 -left-20 border-gray-60 border-dashed h-[92%]" />
       {DATA.map((data) => (
-        <div key={data.day} className="my-20">
+        <div key={data.day} className="my-20 relative">
+          <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-24 top-5" />
           <h2 className="font-bold mb-12">{data.day}일차</h2>
           <Droppable droppableId={`day-${data.day}`}>
             {(provided) => (
@@ -110,7 +112,8 @@ const PlaceList = () => {
           </Droppable>
         </div>
       ))}
-      <div className="flex justify-center items-center mb-12 text-12 text-gray-40 w-441 h-60 border-1 rounded-s border-dashed border-gray-50">
+      <div className="flex justify-center items-center relative mb-12 text-12 text-gray-40 w-441 h-60 border-1 rounded-s border-dashed border-gray-50">
+        <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-25 top-20" />
         드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
       </div>
     </div>
