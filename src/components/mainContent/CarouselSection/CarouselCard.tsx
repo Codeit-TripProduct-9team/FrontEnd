@@ -1,25 +1,32 @@
-import Image from 'next/image';
 import { MockDataItem } from '@/src/lib/types';
 import React from 'react';
 import Link from 'next/link';
+import YoutubePlayer from '../../TravelInformationContent/ProductInformation/YoutubePlyaer';
+import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface CarouselCardProps {
   data: MockDataItem;
 }
 
 const CarouselCard = ({ data }: CarouselCardProps) => {
+  const videoId = data.url.split('v=')[1];
+  const { viewCount, updatedAt } = useYouTubeData(videoId);
+
   return (
-    <>
+    <div>
       <Link href={`/travel-information/${data.cardId}`}>
         <div className="flex flex-shrink-0 bg-white gap-20 p-20 border-3 rounded-l cursor-pointer ">
-          <div className="flex relative justify-center align-middle flex-col gap-10">
-            <Image src={data.thumbnail} width={700} height={700} className="rounded-l " alt="썸네일 이미지" />
+          <div className="flex  align-middle flex-col z-10">
+            <YoutubePlayer videoId={videoId} />
           </div>
           <div className="flex flex-col justify-between max-w-670">
             <div className="flex flex-col gap-30">
               <h2 className="text-36 font-bold">{data.title}</h2>
               <p className="text-25 text-gray-60">{data.description}</p>
-              <p className="text-20 text-gray-70">조회수 영상생성일</p>
+              <div className="text-20 flex gap-20 text-gray-70">
+                <p className="text-20 text-gray-70">조회수 : {viewCount}</p>{' '}
+                <p className="text-20 text-gray-70">영상생성일 : {updatedAt}</p>
+              </div>
             </div>
             <div className="flex gap-10 ">
               {data.tag.map((tag, index) => (
@@ -31,7 +38,7 @@ const CarouselCard = ({ data }: CarouselCardProps) => {
           </div>
         </div>
       </Link>
-    </>
+    </div>
   );
 };
 

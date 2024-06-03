@@ -33,7 +33,7 @@ const ListSearchSection = () => {
   return (
     <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
       <div
-        className="mt-50 mb-30"
+        className=" mb-20"
         ref={(node) => {
           inputRef.current = node;
         }}
@@ -47,7 +47,7 @@ const ListSearchSection = () => {
       <div className="relative">
         <input
           value={searchValue}
-          className="text-center border-1 border-gray-40 rounded-s w-700 h-60 py-10 px-30 mb-100 "
+          className="text-center border-1 border-gray-40 rounded-s w-630 h-50 py-10 px-30 mb-70 "
           placeholder="원하는여행지, 유튜버, 테마를 검색해보세요"
           onChange={handleSearchInputChange}
           ref={ref}

@@ -1,3 +1,4 @@
+import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
 import YouTube from 'react-youtube';
 
 interface YoutubePlayerProps {
@@ -5,12 +6,18 @@ interface YoutubePlayerProps {
 }
 
 const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
+  const { videoSize, onReady, onMouseEnter, onMouseLeave } = useYouTubePlayer();
+
   return (
-    <div className="flex items-center justify-center min-w-568 rounded-l overflow-hidden">
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="flex items-center justify-center min-w-568 rounded-l overflow-hidden"
+    >
       <YouTube
         videoId={videoId}
         opts={{
-          width: '589',
+          width: `${videoSize}`,
           height: '378',
           plyaerVars: {
             autoplay: 1,
@@ -18,6 +25,7 @@ const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
             modestbranding: 1,
           },
         }}
+        onReady={onReady}
         onEnd={(event) => {
           event.target.stopVideo(0);
         }}
