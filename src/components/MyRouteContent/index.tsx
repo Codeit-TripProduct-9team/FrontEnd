@@ -47,6 +47,11 @@ const MyRouteContent = () => {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
         <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
+          <input
+            // value={titleValue}
+            className="rounded-s h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
+            placeholder="여행지의 제목을 입력해주세요"
+          />
           <KakaoMap />
           <div className="flex justify-end">
             <div>
@@ -69,7 +74,7 @@ const MyRouteContent = () => {
           <div className="relative">
             <input
               value={searchValue}
-              className="text-center border-2 rounded-15 w-700 h-40 mb-30 "
+              className="text-center border-1 border-gray-40 rounded-s w-700 h-40 mb-30 "
               placeholder="어느 곳으로 여행 가고싶으신가요?"
               onChange={handleSearchInputChange}
             />
