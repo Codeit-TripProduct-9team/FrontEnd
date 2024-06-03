@@ -13,13 +13,13 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import MyRouteCardSection from './MyRouteCardSection';
 import search from '@/public/assets/icon/search.svg';
 import Image from 'next/image';
-import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
-import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
+// import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
+// import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+  // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   const mockSliced = mock.data.slice(0, 9);
@@ -74,16 +74,15 @@ const MyRouteContent = () => {
               onChange={handleSearchInputChange}
             />
 
-            {visible && (
+            {/* {visible && (
               <div className="absolute top-50 z-10 bg-white">
                 <RelatedSearchInfo
                   data={relatedData}
                   setSectionVisible={setSectionVisible}
                   setSearchValue={setSearchValue}
                 />
-                {/*  리팩토링 할 때 VISIBLE 안으로 넣기 - 리렌더링 방지*/}
               </div>
-            )}
+            )} */}
             <div className="absolute cursor-pointer right-23 top-13">
               {searchValue ? (
                 <Image
