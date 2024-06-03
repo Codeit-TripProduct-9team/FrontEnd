@@ -4,7 +4,7 @@ import Modal from '../common/modal';
 import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 import Button from '../common/button';
 import { FieldError, useForm } from 'react-hook-form';
-import { InputForm } from '@/src/types/InputType';
+import { InputForm } from '@/src/lib/types';
 import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import { useState } from 'react';

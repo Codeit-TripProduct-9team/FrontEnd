@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ReviewList from './ReviewList';
 import SortToolbar from './SortToolbar';
 import { reviewData } from './mock';
+import CreateReview from './CreateReview';
 
 const ProductReview = () => {
   const [sortedReview, setSortedReview] = useState(reviewData);
@@ -37,8 +38,9 @@ const ProductReview = () => {
   };
 
   return (
-    <div className="flex flex-col gap-40">
+    <div className="flex flex-col w-full  pt-65 px-110 bg-white">
       <SortToolbar sortByNewest={handleSortByNewest} sortByLikes={handleSortByLikes} sortByScore={handleSrotByScore} />
+      <CreateReview />
       <ReviewList sortedReview={sortedReview} />
     </div>
   );

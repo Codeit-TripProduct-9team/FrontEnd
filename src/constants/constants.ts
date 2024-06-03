@@ -17,3 +17,8 @@ export const MODAL_MESSAGE = {
   CERTIFIED_EMAIL: '인증되었습니다.',
   SEND_CODE: '인증 코드가 발송되었습니다.',
 };
+
+export const BASED_URL = {
+  YOUTUBE_API: 'https://www.googleapis.com/youtube/v3',
+  KAKAO_ROAD: `https://dapi.kakao.com/v2`,
+};

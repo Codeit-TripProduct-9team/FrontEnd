@@ -17,7 +17,7 @@ const Dropdown = ({ setDropDown }: { setDropDown: React.Dispatch<React.SetStateA
   });
 
   return (
-    <nav ref={ref} className="absolute top-44 right-0 w-100 bg-white rounded-s shadow-main">
+    <nav ref={ref} className="absolute top-44 right-0 w-100 bg-white rounded-s shadow-main z-10">
       <ul className=" text-black">
         <DropdownItem href="/my-page">마이페이지</DropdownItem>
         <DropdownItem href="/my-route">나의 코스</DropdownItem>

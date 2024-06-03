@@ -1,4 +1,4 @@
-import { MODAL_MESSAGE } from '../../../constants/constants';
+import { MODAL_MESSAGE } from '@/src/constants/constants';
 
 interface SignupModalProps {
   nickname: string;
