@@ -27,11 +27,6 @@ const ProductReview = () => {
     setSortedReview(sorted);
   };
 
-  const handleSortByLikes = () => {
-    const sorted = [...sortedReview].sort((a, b) => b.likes - a.likes);
-    setSortedReview(sorted);
-  };
-
   const handleSrotByScore = () => {
     const sorted = [...sortedReview].sort((a, b) => b.score - a.score);
     setSortedReview(sorted);
@@ -39,7 +34,7 @@ const ProductReview = () => {
 
   return (
     <div className="flex flex-col w-full  pt-65 px-110 bg-white">
-      <SortToolbar sortByNewest={handleSortByNewest} sortByLikes={handleSortByLikes} sortByScore={handleSrotByScore} />
+      <SortToolbar sortByNewest={handleSortByNewest} sortByScore={handleSrotByScore} />
       <CreateReview />
       <ReviewList sortedReview={sortedReview} />
     </div>

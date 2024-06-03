@@ -18,6 +18,7 @@ const ReviewTextArea = () => {
         value={content}
         onChange={handleCountText}
       />
+      <button className="absolute bottom-20 right-100 text-red text-28">작성</button>
       <div className="absolute bottom-20 right-28 text-18 text-gray-50">
         {content.length}/{maxTextLength}
       </div>

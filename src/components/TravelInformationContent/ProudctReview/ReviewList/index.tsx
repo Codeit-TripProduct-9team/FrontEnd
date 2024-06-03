@@ -21,7 +21,7 @@ interface ReviewDataItem {
 const ReviewList = ({ sortedReview }: ReviewDataProps) => {
   return (
     <div className="flex flex-col py-32">
-      <ul className="flex flex-col gap-32 ">
+      <ul className="relative flex flex-col gap-32 ">
         {sortedReview &&
           sortedReview.map(({ id, nickname, descrpition, createdAt, score }) => (
             <li key={id} className="pb-32 border-b-1 border-gray-50">
@@ -35,6 +35,10 @@ const ReviewList = ({ sortedReview }: ReviewDataProps) => {
                 ))}
               </div>
               <p>{descrpition}</p>
+              <div className="absolute flex right-20">
+                <button className="p-5 text-red ">수정</button>
+                <button className="p-5 text-red ">삭제</button>
+              </div>
             </li>
           ))}
       </ul>
