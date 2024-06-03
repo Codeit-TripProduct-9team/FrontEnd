@@ -5,6 +5,7 @@ export interface MockDataItem {
   title: string;
   description: string;
   tag: string[];
+  url: string;
 }
 
 export interface MockData {
