@@ -94,10 +94,7 @@ export type Place = {
 
 const PlaceList = () => {
   return (
-    <div className="relative">
-      <span className="absolute text-12 text-gray-50 right-0 top-4">
-        드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
-      </span>
+    <div>
       {DATA.map((data) => (
         <div key={data.day} className="my-20">
           <h2 className="font-bold mb-12">{data.day}일차</h2>
@@ -113,6 +110,9 @@ const PlaceList = () => {
           </Droppable>
         </div>
       ))}
+      <div className="flex justify-center items-center mb-12 text-12 text-gray-40 w-441 h-60 border-1 rounded-s border-dashed border-gray-50">
+        드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
+      </div>
     </div>
   );
 };

@@ -53,9 +53,14 @@ const MyRouteContent = () => {
               <PlaceList />
 
               {/* 버튼에 모달 핸들러 등록 */}
-              <button className="w-441 h-60 bg-blue text-white rounded-s flex justify-center items-center">
-                + 일정 추가하기
-              </button>
+              <div className="flex gap-9">
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center">
+                  직접 일정 추가하기
+                </button>
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center">
+                  근처 장소 추가하기
+                </button>
+              </div>
             </div>
           </div>
         </div>
