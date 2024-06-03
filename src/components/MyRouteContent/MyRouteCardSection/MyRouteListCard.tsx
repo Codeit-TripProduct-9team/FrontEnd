@@ -25,6 +25,12 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               </div>
             ))}
           </div>
+          <div
+            className="transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-8"
+            // onClick={handleDeleteMyPlace}
+          >
+            마이플레이스 삭제
+          </div>
         </div>
       </div>
     </div>

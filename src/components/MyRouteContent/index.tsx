@@ -13,13 +13,13 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import MyRouteCardSection from './MyRouteCardSection';
 import search from '@/public/assets/icon/search.svg';
 import Image from 'next/image';
-import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
-import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
+// import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
+// import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+  // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   const mockSliced = mock.data.slice(0, 9);
@@ -46,16 +46,26 @@ const MyRouteContent = () => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-white pt-32 pl-37 pr-55 pb-107 flex flex-col gap-10 rounded-20 shadow-main">
+        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
+          <input
+            // value={titleValue}
+            className="rounded-s h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
+            placeholder="여행지의 제목을 입력해주세요"
+          />
           <KakaoMap />
           <div className="flex justify-end">
             <div>
               <PlaceList />
 
               {/* 버튼에 모달 핸들러 등록 */}
-              <button className="w-441 h-60 bg-blue text-white rounded-s flex justify-center items-center">
-                + 일정 추가하기
-              </button>
+              <div className="flex gap-9">
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
+                  직접 일정 추가하기
+                </button>
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
+                  근처 장소 추가하기
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -64,21 +74,20 @@ const MyRouteContent = () => {
           <div className="relative">
             <input
               value={searchValue}
-              className="text-center border-2 rounded-15 w-700 h-40 mb-30 "
+              className="text-center border-1 border-gray-40 rounded-s w-700 h-40 mb-30 "
               placeholder="어느 곳으로 여행 가고싶으신가요?"
               onChange={handleSearchInputChange}
             />
 
-            {visible && (
+            {/* {visible && (
               <div className="absolute top-50 z-10 bg-white">
                 <RelatedSearchInfo
                   data={relatedData}
                   setSectionVisible={setSectionVisible}
                   setSearchValue={setSearchValue}
                 />
-                {/*  리팩토링 할 때 VISIBLE 안으로 넣기 - 리렌더링 방지*/}
               </div>
-            )}
+            )} */}
             <div className="absolute cursor-pointer right-23 top-13">
               {searchValue ? (
                 <Image
