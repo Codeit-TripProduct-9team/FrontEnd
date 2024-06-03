@@ -112,7 +112,7 @@ const PlaceList = () => {
           </Droppable>
         </div>
       ))}
-      <div className="flex justify-center items-center relative mb-12 text-12 text-gray-40 w-441 h-60 border-1 rounded-s border-dashed border-gray-50">
+      <div className="flex justify-center items-center relative mb-12 text-12 text-gray-50 w-441 h-60 border-1 rounded-s border-dashed border-gray-40">
         <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-25 top-20" />
         드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
       </div>

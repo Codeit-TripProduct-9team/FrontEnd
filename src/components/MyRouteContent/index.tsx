@@ -54,10 +54,10 @@ const MyRouteContent = () => {
 
               {/* 버튼에 모달 핸들러 등록 */}
               <div className="flex gap-9">
-                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center">
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
                   직접 일정 추가하기
                 </button>
-                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center">
+                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
                   근처 장소 추가하기
                 </button>
               </div>
