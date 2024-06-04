@@ -1,17 +1,20 @@
 import Image from 'next/image';
+import { twMerge } from 'tailwind-merge';
 
 type SearchBarProps = {
   searchValue: string;
   setSearchValue: (value: string) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
 };
 
-const SearchBar = ({ searchValue, onChange, setSearchValue }: SearchBarProps) => {
+const SearchBar = ({ searchValue, onChange, setSearchValue, className }: SearchBarProps) => {
+  const customStyle = twMerge('text-center border-1 border-gray-40 rounded-s w-700 h-40 mb-30', className);
   return (
     <div className="relative">
       <input
         value={searchValue}
-        className="text-center border-1 border-gray-40 rounded-s w-700 h-40 mb-30 "
+        className={customStyle}
         placeholder="어느 곳으로 여행 가고싶으신가요?"
         onChange={onChange}
       />
