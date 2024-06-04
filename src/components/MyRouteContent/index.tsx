@@ -15,6 +15,7 @@ import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import AddPlaceModal from '../common/modal/MyRoute/AddPlaceModal.tsx';
 import SearchBar from './SearchBar';
+import AddNearbyPlaceModal from '../common/modal/MyRoute/AddNearbyPlaceModal.tsx';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -46,10 +47,18 @@ const MyRouteContent = () => {
   };
 
   const overlay = useOverlay();
-  const OnModal = () => {
+  const handleAddPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-345">
         <AddPlaceModal />
+      </Modal>
+    ));
+  };
+
+  const handleAddNearbyPlaceModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-491">
+        <AddNearbyPlaceModal />
       </Modal>
     ));
   };
@@ -72,11 +81,14 @@ const MyRouteContent = () => {
               <div className="flex gap-9">
                 <button
                   className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
-                  onClick={() => OnModal()}
+                  onClick={() => handleAddPlaceModal()}
                 >
                   직접 일정 추가하기
                 </button>
-                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
+                <button
+                  className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
+                  onClick={() => handleAddNearbyPlaceModal()}
+                >
                   근처 장소 추가하기
                 </button>
               </div>
