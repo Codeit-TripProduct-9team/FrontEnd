@@ -11,8 +11,11 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 // import { Draggable } from '@hello-pangea/dnd';
 // import CardSection from '../mainContent/CardSection';
 import MyRouteCardSection from './MyRouteCardSection';
-import search from '@/public/assets/icon/search.svg';
-import Image from 'next/image';
+import { useOverlay } from '@toss/use-overlay';
+import Modal from '../common/modal';
+import AddPlaceModal from '../common/modal/MyRoute/AddPlaceModal.tsx';
+import SearchBar from './SearchBar';
+import AddNearbyPlaceModal from '../common/modal/MyRoute/AddNearbyPlaceModal.tsx';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -43,6 +46,23 @@ const MyRouteContent = () => {
     }
   };
 
+  const overlay = useOverlay();
+  const handleAddPlaceModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-345">
+        <AddPlaceModal />
+      </Modal>
+    ));
+  };
+
+  const handleAddNearbyPlaceModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-491">
+        <AddNearbyPlaceModal />
+      </Modal>
+    ));
+  };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
@@ -59,10 +79,16 @@ const MyRouteContent = () => {
 
               {/* 버튼에 모달 핸들러 등록 */}
               <div className="flex gap-9">
-                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
+                <button
+                  className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
+                  onClick={() => handleAddPlaceModal()}
+                >
                   직접 일정 추가하기
                 </button>
-                <button className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold">
+                <button
+                  className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
+                  onClick={() => handleAddNearbyPlaceModal()}
+                >
                   근처 장소 추가하기
                 </button>
               </div>
@@ -71,37 +97,7 @@ const MyRouteContent = () => {
         </div>
 
         <div className="flex flex-col bg-white rounded-20 px-40 py-20">
-          <div className="relative">
-            <input
-              value={searchValue}
-              className="text-center border-1 border-gray-40 rounded-s w-700 h-40 mb-30 "
-              placeholder="어느 곳으로 여행 가고싶으신가요?"
-              onChange={handleSearchInputChange}
-            />
-
-            {/* {visible && (
-              <div className="absolute top-50 z-10 bg-white">
-                <RelatedSearchInfo
-                  data={relatedData}
-                  setSectionVisible={setSectionVisible}
-                  setSearchValue={setSearchValue}
-                />
-              </div>
-            )} */}
-            <div className="absolute cursor-pointer right-23 top-13">
-              {searchValue ? (
-                <Image
-                  src="/assets/icon/clear.png"
-                  width={17}
-                  height={17}
-                  alt="검색어 초기화"
-                  onClick={() => setSearchValue('')}
-                />
-              ) : (
-                <Image src={search} width={17} height={17} alt="검색" />
-              )}
-            </div>
-          </div>
+          <SearchBar searchValue={searchValue} onChange={handleSearchInputChange} setSearchValue={setSearchValue} />
 
           <Droppable droppableId="myPlace">
             {(provided) => (
