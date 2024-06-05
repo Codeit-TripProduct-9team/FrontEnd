@@ -27,7 +27,7 @@ const KakaoMap = () => {
   return (
     <>
       {/* <Script src={KAKAO_SDK_URL} /> */}
-      <Map center={positions[0].latlng} className="w-460 h-288 rounded-8 shadow-md">
+      <Map center={positions[0].latlng} className="w-460 h-288 rounded-8 shadow-md z-0">
         {positions.map((position, index) => (
           <>
             <MapMarker
