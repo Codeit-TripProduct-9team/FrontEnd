@@ -9,11 +9,11 @@ interface SearchContentProps {
 
 const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
   return (
-    <ul className="absolute flex flex-col gap-16 left-150 top-67 py-20 px-24 w-625 bg-white overflow-y-scroll">
+    <ul className="absolute flex flex-col  left-150 top-67 py-20  w-625 h-290 bg-gray-20  overflow-y-scroll">
       {searchResult.map(({ cardId, title, thumbnail, tag }) => (
         <li
           key={cardId}
-          className="flex w-full gap-24 p-4 text-18 text-gray-50 cursor-pointer hover:bg-gray-200 "
+          className="flex w-full gap-24 px-24 py-12 text-18 text-gray-50 cursor-pointer  hover:bg-gray-30"
           onClick={() => onClick(cardId)}
         >
           <div className="flex items-center h-87 w-87 overflow-hidden rounded-10">
