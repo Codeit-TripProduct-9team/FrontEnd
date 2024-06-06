@@ -58,7 +58,7 @@ const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) =
   };
 
   const sharedOverlay = useOverlay();
-  const shareddOnModal = () => {
+  const sharedOnModal = () => {
     sharedOverlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
         <SharedModal shareOnFacebook={shareFacebook} shareOnKakao={shareKakao} shareOnTwitter={shareTwitter} />
@@ -76,8 +76,8 @@ const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) =
       <Button className="bg-blue w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleRegistMyPlace}>
         마이플레이스 등록
       </Button>
-      <button className="flex items-center py-6 px-16 rounded-s bg-gray-10">
-        <Image src={shareIcon} alt="share" width={27} height={27} onClick={shareddOnModal} />
+      <button className="flex items-center py-6 px-16 rounded-s bg-gray-10" onClick={sharedOnModal}>
+        <Image src={shareIcon} alt="share" width={27} height={27} />
       </button>
     </div>
   );

@@ -33,6 +33,8 @@ const SearchBar = () => {
 
       const deleteDuplicate = Array.from(new Map(hasKeyword.map((item) => [item.cardId, item])).values());
 
+      console.log(deleteDuplicate);
+
       setSearchResult(deleteDuplicate);
     }
     if (!searchKeyword) {
