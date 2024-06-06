@@ -1,11 +1,10 @@
 import Image from 'next/image';
 
 import SearchIcon from '@/public/assets/icon/search.png';
-import { ChangeEvent } from 'react';
 
 interface LocationInputProps {
   location: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClick: () => void;
 }
 

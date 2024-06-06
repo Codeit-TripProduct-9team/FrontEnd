@@ -17,7 +17,7 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal/index';
 import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
-import checkDuplicate from '@/src/api/signupApi/checkDuplicate';
+import checkDuplicate from '@/src/utils/checkDuplicate';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';

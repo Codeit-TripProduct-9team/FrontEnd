@@ -1,47 +1,30 @@
-import { useState, useEffect } from 'react';
-
-import { useRouter } from 'next/router';
-
 import ProductDescription from '../ProductDescription';
 import ProductReview from '../ProudctReview';
 
+import useSelectContent from '@/src/hooks/useSelectContent';
+
 const ChangeContent = () => {
-  const [changeContent, setChangeContent] = useState('information');
+  const { content, handleChangeContent } = useSelectContent('product');
 
-  const route = useRouter();
+  const selectContent = content === 'product';
 
-  useEffect(() => {
-    const { content } = route.query;
-    const contentType = typeof content === 'string';
-    if (contentType) {
-      setChangeContent(content);
-    }
-  }, [route.query]);
-
-  const handleChangeContent = (content: string) => {
-    setChangeContent(content);
-    route.push({ pathname: route.pathname, query: { ...route.query, content } });
+  const contentButtonStyle = {
+    base: 'w-334 pt-25 pb-28 h-full text-22',
+    selected: 'border-b-black border-b-4 font-bold',
+    notSelected: 'border-b-gray-200',
   };
 
-  const selectContent = changeContent === 'information';
+  const selectButtonStyle = (isSelected: boolean) => {
+    return `${contentButtonStyle.base} ${isSelected ? contentButtonStyle.selected : contentButtonStyle.notSelected}`;
+  };
 
   return (
     <>
       <div className="flex justify-center items-center bg-white w-full">
-        <button
-          className={`w-334 pt-25 pb-28 h-full text-22  ${
-            selectContent ? 'border-b-black border-b-4 font-bold' : 'border-b-gray-200 '
-          }`}
-          onClick={() => handleChangeContent('information')}
-        >
+        <button className={selectButtonStyle(content === 'product')} onClick={() => handleChangeContent('product')}>
           상품설명
         </button>
-        <button
-          className={`w-334 pt-25 pb-28 h-full text-22 ${
-            !selectContent ? 'border-b-black border-b-4 font-bold' : 'border-b-gray-200 '
-          }`}
-          onClick={() => handleChangeContent('review')}
-        >
+        <button className={selectButtonStyle(content === 'review')} onClick={() => handleChangeContent('review')}>
           리뷰
         </button>
       </div>
