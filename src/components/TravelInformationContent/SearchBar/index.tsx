@@ -1,11 +1,10 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-
-import SearchIcon from '@/public/assets/icon/search-header.svg';
 
 import { mock } from '../../mainContent/mock';
+import SearchInput from './SearchInput';
+import SearchContent from './SearchContent/indext';
 
 interface MockDataItem {
   cardId: number;
@@ -14,6 +13,7 @@ interface MockDataItem {
   title: string;
   description: string;
   tag: string[];
+  url: string;
 }
 
 const SearchBar = () => {
@@ -33,8 +33,6 @@ const SearchBar = () => {
 
       const deleteDuplicate = Array.from(new Map(hasKeyword.map((item) => [item.cardId, item])).values());
 
-      console.log(deleteDuplicate);
-
       setSearchResult(deleteDuplicate);
     }
     if (!searchKeyword) {
@@ -49,33 +47,13 @@ const SearchBar = () => {
 
   const handleRouteContents = (cardId: number) => {
     router.push(`/travel-information/${cardId}`);
+    setSearchKeyword('');
   };
 
   return (
-    <div className="relative  w-full ">
-      <div className="flex w-full pl-124 pt-18 pb-21 gap-10 border-b-1 border-black">
-        <Image src={SearchIcon} width={16} height={16} alt="search" />
-        <input
-          className="w-full text-17 bg-transparent placeholder:text-17"
-          type="text"
-          placeholder="Search"
-          value={searchKeyword}
-          onChange={handleChangeKeyword}
-        />
-      </div>
-      {searchResult.length > 0 && (
-        <ul className="absolute flex flex-col gap-16  left-150 top-50 rounded-m  text-center w-693 bg-white overflow-hidden ">
-          {searchResult.map(({ cardId, title }) => (
-            <li
-              key={cardId}
-              className="p-4 text-18 text-gray-50 cursor-pointer hover:bg-gray-200"
-              onClick={() => handleRouteContents(cardId)}
-            >
-              {title}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="relative w-full ">
+      <SearchInput searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
+      {searchResult.length > 0 && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
     </div>
   );
 };
