@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -17,6 +17,7 @@ import PasswordCheckInput from '../common/input/passwordInput';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal/index';
 import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
+import checkDuplicate from '@/src/api/signupApi/checkDuplicate';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
@@ -34,6 +35,7 @@ const SingupContent = () => {
     getValues,
     watch,
     clearErrors,
+    setFocus,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
   const route = useRouter();
@@ -68,22 +70,18 @@ const SingupContent = () => {
     ));
   };
 
-  const checkDuplicate = async (emailValue: string) => {
-    try {
-      //'/auth/check-emil'
-      const body = { email: emailValue };
-      const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/users/check-email', body);
-      if (response.status === 200) {
-        setIsValidateEmail(true);
-      }
+  useEffect(() => {
+    setFocus('nickname');
+  }, [setFocus]);
 
-      return response.status !== 409;
-    } catch (error: any) {
-      console.error(error);
-      if (error.response.status === 409) {
-        console.log(ERROR_MESSAGE.DUPLICATE_EMAIL);
-      }
+  const checkEmailDuplicate = async (emailValue: string) => {
+    const isDuplicate = await checkDuplicate('/auth/check-email', {
+      email: emailValue,
+    });
+    if (isDuplicate) {
+      setIsValidateEmail(true);
     }
+    return isDuplicate;
   };
 
   const checkVerificationCode = () => {
@@ -108,10 +106,16 @@ const SingupContent = () => {
     }
   };
 
+  const handleSubmitOnEnter = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'enter') {
+      handleSubmit(onSubmit);
+    }
+  };
+
   return (
     <div className=" flex flex-col w-408">
       <h1 className="text-24 font-bold ">회원가입</h1>
-      <form className=" flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <form className=" flex flex-col" onSubmit={handleSubmit(onSubmit)} onKeyDown={handleSubmitOnEnter}>
         <NickNameInput
           register={register('nickname', {
             required: { value: true, message: ERROR_MESSAGE.EMPTY_NICKNAME },
@@ -137,7 +141,7 @@ const SingupContent = () => {
                   message: ERROR_MESSAGE.INVALID_EMAIL_FORMAT,
                 },
                 validate: async (emailValue) => {
-                  const isDuplicate = await checkDuplicate(emailValue);
+                  const isDuplicate = await checkEmailDuplicate(emailValue);
                   return isDuplicate || ERROR_MESSAGE.DUPLICATE_EMAIL;
                 },
               })}
