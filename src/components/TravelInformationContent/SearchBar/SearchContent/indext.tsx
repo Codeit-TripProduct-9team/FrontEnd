@@ -9,7 +9,7 @@ interface SearchContentProps {
 
 const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
   return (
-    <ul className="absolute flex flex-col  left-150 top-67 py-20  w-625 h-290 bg-gray-20  overflow-y-scroll">
+    <ul className="absolute flex flex-col left-120 top-65 py-20  w-625 h-290 bg-gray-20 border-2 border-gray-50  overflow-y-scroll">
       {searchResult.map(({ cardId, title, thumbnail, tag }) => (
         <li
           key={cardId}
