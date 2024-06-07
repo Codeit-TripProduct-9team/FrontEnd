@@ -1,23 +1,18 @@
-import Button from '../common/button';
 import CardSection from '../mainContent/CardSection';
 import { MockDataItem } from '@/src/lib/types';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import { mock } from '../mainContent/mock';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import Link from 'next/link';
+import Button from '../common/button';
 
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
 
-  const router = useRouter();
-  const handleNavigateToMyRoute = () => {
-    router.push('/my-route');
+  const handleInputChange = (event: ChangeEvent) => {
+    setSearchValue((event.target as HTMLInputElement).value); // 입력값을 상태에 설정
   };
-  const handleMavigateToMyList = () => {
-    router.push('/my-course');
-  };
-
   return (
     <>
       <section className="py-20 flex items-center justify-center">
@@ -29,17 +24,22 @@ const MypageContent = () => {
             당신의 여행에 반영해 보세요
           </p>
           <div className="flex flex-row gap-20">
-            <Button onClick={handleNavigateToMyRoute} className="w-150 h-40 font-bold">
-              지금 코스짜기
+            <Button className="w-150 h-40 font-bold">
+              <Link href="/my-route">지금 코스짜기</Link>
             </Button>
-            <Button onClick={handleMavigateToMyList} className="w-150 h-40 font-bold">
-              저장된 코스 보기
+            <Button className="w-150 h-40 font-bold">
+              <Link href="/my-course">저장된 코스 보기</Link>
             </Button>
           </div>
         </div>
       </section>
-      <section className="py-20 flex flex-col items-center">
-        <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+      <hr className="mx-110" />
+      <section className="py-20 flex flex-col relative">
+        <p>저장된 리뷰 목록</p>
+        <input className="absolute right-110" value={searchValue} onChange={handleInputChange} placeholder="검색하기" />
+        <div className="flex flex-col items-center">
+          <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+        </div>
       </section>
     </>
   );
