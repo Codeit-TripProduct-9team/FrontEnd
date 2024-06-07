@@ -22,7 +22,7 @@ const getDirection = async (
 
     try {
       const response = await instance.get(requestUrl, { headers: headers });
-      const result = await response.data;
+      const result = response.data;
       const elapsedTime = result.routes[0].summary.duration;
       const path = extractPath(result);
       return { path, elapsedTime };

@@ -3,17 +3,14 @@ import Image from 'next/image';
 
 import { useOverlay } from '@toss/use-overlay';
 
+import SharedModal from './SharedModal';
+
 import shareIcon from '@/public/assets/icon/share.svg';
 
 import Modal from '@/src/components/common/modal';
 import Button from '@/src/components/common/button';
-import SharedModal from './SharedModal';
-
-interface kakaoShareProps {
-  title: string;
-  description: string;
-  thumbnail: string;
-}
+import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/utils/socialShare';
+import { kakaoShareProps } from '@/src/lib/types';
 
 const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) => {
   const handleRegistMyPlace = () => {
@@ -21,47 +18,16 @@ const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) =
     //모달 등록되었습니다.
   };
 
-  const shareKakao = () => {
-    const { Kakao }: any = window;
-    Kakao.cleanup();
-    Kakao.init(process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO);
-    Kakao.Share.createDefaultButton({
-      container: '#kakaotalk-sharing-btn',
-      objectType: 'feed',
-      content: {
-        title: title,
-        description: description,
-        imageUrl: thumbnail,
-        link: {
-          webUrl: window.location.href,
-        },
-      },
-      buttons: [
-        {
-          title: '웹으로 이동',
-          link: {
-            webUrl: window.location.href,
-          },
-        },
-      ],
-    });
-  };
-
-  const shareFacebook = () => {
-    const link = window.location.href;
-    window.open(`http://www.facebook.com/sharer/sharer.php?u=${link}`);
-  };
-
-  const shareTwitter = () => {
-    const link = window.location.href;
-    window.open(`https://twitter.com/intent/tweet?text=custom%20text&url=${link}`);
-  };
-
   const sharedOverlay = useOverlay();
   const sharedOnModal = () => {
     sharedOverlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
-        <SharedModal shareOnFacebook={shareFacebook} shareOnKakao={shareKakao} shareOnTwitter={shareTwitter} />
+        <SharedModal
+          shareOnFacebook={shareFacebook}
+          shareOnKakao={shareKakao({ title, description, thumbnail })}
+          shareOnTwitter={shareTwitter}
+          currentPageUrl={currentPageUrl}
+        />
       </Modal>
     ));
   };

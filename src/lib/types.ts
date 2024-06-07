@@ -29,3 +29,9 @@ export interface InputForm {
   file?: string;
   verify?: string;
 }
+
+export interface kakaoShareProps {
+  title: string;
+  description: string;
+  thumbnail: string;
+}

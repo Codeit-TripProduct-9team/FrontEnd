@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
+
 import useGeolocation from 'react-hook-geolocation';
+
 import ProductMap from './ProductMap';
 import CurrentLocation from './CurrentLocation';
 import CustomLocation from './CustomLocation';
 import LocationDescription from './LoactionDescription';
-import { placeData } from './mock';
 
 import convertTime from '@/src/utils/convertTime';
 import getDirection from '@/src/utils/getDireciton';
+
+import { placeData } from './mock';
 
 const ProductDescription = () => {
   const [duration, setDuration] = useState(0);
@@ -17,20 +20,22 @@ const ProductDescription = () => {
 
   const currentLocation = useGeolocation();
 
+  const accessLocation = currentLocation.error === null;
+  const isValidCoordinate = startPoint && startPoint.lat !== 0 && startPoint.lng !== 0;
+
   useEffect(() => {
-    const accessLocation = currentLocation.error === null;
     if (accessLocation) {
       setHasCurrentLocation(true);
       setStartPoint({ lat: currentLocation.latitude, lng: currentLocation.longitude });
-    } else {
+    }
+    if (!accessLocation) {
       setHasCurrentLocation(false);
     }
-  }, [currentLocation]);
+  }, [accessLocation, currentLocation.latitude, currentLocation.longitude]);
 
   useEffect(() => {
-    const isValidCoordinate = startPoint && startPoint.lat !== 0 && startPoint.lng !== 0;
     if (isValidCoordinate) {
-      const fetchRoute = async () => {
+      const getRoute = async () => {
         const directionData = await getDirection(startPoint, placeData.position);
         if (directionData) {
           const { path, elapsedTime } = directionData;
@@ -38,9 +43,9 @@ const ProductDescription = () => {
           setDuration(elapsedTime);
         }
       };
-      fetchRoute();
+      getRoute();
     }
-  }, [startPoint]);
+  }, [isValidCoordinate, startPoint]);
 
   const elapsedTime = convertTime(duration);
   return (

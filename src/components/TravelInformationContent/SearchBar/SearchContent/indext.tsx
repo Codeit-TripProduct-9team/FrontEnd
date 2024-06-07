@@ -1,7 +1,8 @@
 import Image from 'next/image';
 
-import { MockDataItem } from '@/src/lib/types';
 import SearchInformation from './SearchInformation';
+
+import { MockDataItem } from '@/src/lib/types';
 
 interface SearchContentProps {
   searchResult: MockDataItem[];

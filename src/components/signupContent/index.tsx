@@ -75,7 +75,7 @@ const SingupContent = () => {
   }, [setFocus]);
 
   const checkEmailDuplicate = async (emailValue: string) => {
-    const isDuplicate = await checkDuplicate('/auth/check-email', {
+    const isDuplicate = await checkDuplicate('/auth/duplicate/email', {
       email: emailValue,
     });
     if (isDuplicate) {
@@ -95,9 +95,8 @@ const SingupContent = () => {
 
   const onSubmit = async ({ nickname, email, password, passwordcheck }: InputForm) => {
     try {
-      //'/auth/local/signup'
       const body = { nickname: nickname, email: email, password: password, passwordcheck: passwordcheck };
-      const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
+      const response = await instance.post('/auth/register', body);
       if (response.status === 200) {
         signupOnModal();
       }

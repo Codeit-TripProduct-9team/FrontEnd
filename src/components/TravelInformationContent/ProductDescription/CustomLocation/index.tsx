@@ -26,10 +26,16 @@ const CustomLocation = ({
   const [validKeyword, setValidKeyword] = useState(true);
   const [customLocation, setCustomLocation] = useState('');
 
+  const hasLocation = customLocation.trim() !== '';
+
   const handleStartingPoint = async () => {
-    const hasLocation = customLocation.trim() !== '';
     if (hasLocation) {
       const coordinate = await getCoordinate(customLocation);
+
+      if (coordinate === null) {
+        setValidKeyword(false);
+      }
+
       if (coordinate) {
         const directionData = await getDirection(coordinate, destinationPosition);
         if (directionData) {
@@ -40,9 +46,7 @@ const CustomLocation = ({
           setValidKeyword(true);
         }
       }
-      if (coordinate === null) {
-        setValidKeyword(false);
-      }
+
       setShowMessage(true);
     }
   };

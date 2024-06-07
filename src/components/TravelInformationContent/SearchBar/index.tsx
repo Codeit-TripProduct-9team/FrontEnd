@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router';
-import useSearch from '@/src/hooks/useSearch';
-import { mock } from '../../mainContent/mock';
+
 import SearchInput from './SearchInput';
 import SearchContent from './SearchContent/indext';
+
+import useSearch from '@/src/hooks/useSearch';
+
+import { mock } from '../../mainContent/mock';
 
 const SearchBar = () => {
   const { searchKeyword, searchResult, handleChangeKeyword, setSearchKeyword } = useSearch(mock);

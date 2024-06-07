@@ -1,6 +1,8 @@
 import Image from 'next/image';
+
 import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
+
 import useReviewRating from '@/src/hooks/useRating';
 
 const ReviewScore = () => {
