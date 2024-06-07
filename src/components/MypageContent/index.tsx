@@ -15,7 +15,7 @@ const MypageContent = () => {
     router.push('/my-route');
   };
   const handleMavigateToMyList = () => {
-    router.push('/my-list');
+    router.push('/my-course');
   };
 
   return (
