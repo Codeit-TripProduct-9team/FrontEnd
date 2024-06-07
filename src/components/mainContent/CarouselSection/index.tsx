@@ -17,6 +17,7 @@ const CarouselSection = () => {
       autoplay={{
         delay: 3500,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       }}
       pagination={{ clickable: true }}
       spaceBetween={10}

@@ -1,20 +1,32 @@
 import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
-import { mock } from '@/src/components/mainContent/mock';
+// import { MockMyRouteItem } from './mockMyRoute';
+// import { mockMyRoute } from './mockMyRoute';
+import { mock } from '../mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
-import NoSearchData from '../mainContent/CardSection/NoSearchData';
-import ListCard from '../common/ListCard';
-import { Draggable } from '@hello-pangea/dnd';
+// import NoSearchData from '../mainContent/CardSection/NoSearchData';
+// import { Draggable } from '@hello-pangea/dnd';
+// import CardSection from '../mainContent/CardSection';
+import MyRouteCardSection from './MyRouteCardSection';
+import { useOverlay } from '@toss/use-overlay';
+import Modal from '../common/modal';
+import AddPlaceModal from '../common/modal/MyRoute/AddPlaceModal.tsx';
+import SearchBar from './SearchBar';
+import AddNearbyPlaceModal from '../common/modal/MyRoute/AddNearbyPlaceModal.tsx';
+// import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
+// import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const GRID_ROW = Math.ceil(mock.data.length / 4);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+
+  // const GRID_ROW = Math.ceil(mock.data.length / 4);
+  const mockSliced = mock.data.slice(0, 9);
+  const filteredData: MockDataItem[] = useFilteredData({ data: mockSliced }, searchValue);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
@@ -34,45 +46,64 @@ const MyRouteContent = () => {
     }
   };
 
+  const overlay = useOverlay();
+  const handleAddPlaceModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-345">
+        <AddPlaceModal />
+      </Modal>
+    ));
+  };
+
+  const handleAddNearbyPlaceModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-491">
+        <AddNearbyPlaceModal />
+      </Modal>
+    ));
+  };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-gray-20 pt-20 pb-50 px-30 flex flex-col gap-10 rounded-8 shadow-main h-760">
+        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
+          <input
+            // value={titleValue}
+            className="rounded-s h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
+            placeholder="여행지의 제목을 입력해주세요"
+          />
           <KakaoMap />
-          <PlaceList />
+          <div className="flex justify-end">
+            <div>
+              <PlaceList />
 
-          {/* 버튼에 모달 핸들러 등록 */}
-          <button className="w-full bg-blue text-white rounded-8 p-15 flex justify-center items-center">
-            <PlusIcon className="w-20" />
-            일정 추가하기
-          </button>
+              {/* 버튼에 모달 핸들러 등록 */}
+              <div className="flex gap-9">
+                <button
+                  className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
+                  onClick={() => handleAddPlaceModal()}
+                >
+                  직접 일정 추가하기
+                </button>
+                <button
+                  className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
+                  onClick={() => handleAddNearbyPlaceModal()}
+                >
+                  근처 장소 추가하기
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="relative flex flex-col">
-          <input
-            value={searchValue}
-            className="text-center border-2 rounded-15 w-570 py-10 px-30 mb-30 "
-            placeholder="검색하기"
-            onChange={handleSearchInputChange}
-          />
+        <div className="flex flex-col bg-white rounded-20 px-40 py-20">
+          <SearchBar searchValue={searchValue} onChange={handleSearchInputChange} setSearchValue={setSearchValue} />
+
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {filteredData.length !== 0 ? (
-                  <div className={`grid grid-cols-4 grid-rows-${GRID_ROW} gap-40`}>
-                    {filteredData.map((datas, index) => (
-                      <Draggable key={index} draggableId={`${datas.title}-${index}`} index={index}>
-                        {(provided) => (
-                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <ListCard data={datas} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                  </div>
-                ) : (
-                  <NoSearchData />
-                )}
+                <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+
                 {provided.placeholder}
               </div>
             )}

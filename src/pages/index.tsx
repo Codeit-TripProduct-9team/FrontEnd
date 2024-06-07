@@ -5,8 +5,8 @@ import ListSearchSection from '@/src/components/mainContent/ListSearchSection';
 const main = () => {
   return (
     <Layout>
-      <div className="flex flex-col items-center py-50">
-        <header>
+      <div className="flex flex-col items-center py-50 ">
+        <header className="scale-85">
           <CarouselSection />
         </header>
         <main>

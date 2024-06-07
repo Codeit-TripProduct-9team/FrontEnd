@@ -26,6 +26,9 @@ module.exports = {
           '50%': { transform: 'translateY(-10px)' },
         },
       },
+      transform: {
+        '85': 'scale(0.85)',
+      },
       animation: {
         bounceOnce: 'bounceOnce 3s ease-in-out infinite',
       },

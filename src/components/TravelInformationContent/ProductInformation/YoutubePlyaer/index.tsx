@@ -1,28 +1,36 @@
+import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
 import YouTube from 'react-youtube';
 
 interface YoutubePlayerProps {
-  youtubeLink: string;
+  videoId: string;
 }
 
-const YoutubePlayer = ({ youtubeLink }: YoutubePlayerProps) => {
-  const videoId = youtubeLink.split('v=')[1];
+const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
+  const { videoSize, onReady, onMouseEnter, onMouseLeave } = useYouTubePlayer();
 
   return (
-    <YouTube
-      videoId={videoId}
-      opts={{
-        width: '589',
-        height: '378',
-        plyaerVars: {
-          autoplay: 1,
-          rel: 0,
-          modestbranding: 1,
-        },
-      }}
-      onEnd={(event) => {
-        event.target.stopVideo(0);
-      }}
-    />
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="flex items-center justify-center min-w-568 rounded-l overflow-hidden"
+    >
+      <YouTube
+        videoId={videoId}
+        opts={{
+          width: `${videoSize}`,
+          height: '378',
+          plyaerVars: {
+            autoplay: 1,
+            rel: 0,
+            modestbranding: 1,
+          },
+        }}
+        onReady={onReady}
+        onEnd={(event) => {
+          event.target.stopVideo(0);
+        }}
+      />
+    </div>
   );
 };
 

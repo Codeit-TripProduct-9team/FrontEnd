@@ -5,6 +5,7 @@ export interface MockDataItem {
   title: string;
   description: string;
   tag: string[];
+  url: string;
 }
 
 export interface MockData {
@@ -15,4 +16,16 @@ export interface relatedListItem {
   place: string[];
   youtuber: string[];
   tag: string[];
+}
+
+export interface InputForm {
+  text?: string;
+  email: string;
+  password: string;
+  newpassword?: string;
+  passwordcheck: string;
+  nickname: string;
+  checkbox?: boolean;
+  file?: string;
+  verify?: string;
 }

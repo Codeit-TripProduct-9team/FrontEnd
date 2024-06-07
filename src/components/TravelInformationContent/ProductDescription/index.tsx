@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import Image from 'next/image';
+import useGeolocation from 'react-hook-geolocation';
 
 import ProductMap from './ProductMap';
 import CurrentLocation from './CurrentLocation';
-import useGeolocation from 'react-hook-geolocation';
 import CustomLocation from './CustomLocation';
+import LocationDescription from './LoactionDescription';
+
 import { placeData } from './mock';
 
 const ProductDescription = () => {
@@ -29,15 +30,7 @@ const ProductDescription = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-12">
-        <Image
-          className="w-full h-455 object-cover"
-          width={1440}
-          height={455}
-          src={placeData.imageSource}
-          alt="place-image"
-        />
-        <h2 className="mt-20 text-20 font-bold">{placeData.title}</h2>
-        <p className="text-center ml-284 mr-314">{placeData.description}</p>
+        <LocationDescription placeData={placeData} />
         <div className="relative w-622 h-470 my-66 mx-108 rounded-l overflow-hidden">
           {hasCurrnetLocation ? (
             <CurrentLocation
@@ -54,13 +47,7 @@ const ProductDescription = () => {
               setCustomStartPoint={setStartPoint}
             />
           )}
-
-          <ProductMap
-            startPoint={startPoint}
-            mapPosition={placeData.position}
-            markerList={placeData.markerPosition}
-            polylinePath={polylinePath}
-          />
+          <ProductMap startPoint={startPoint} position={placeData.position} polylinePath={polylinePath} />
         </div>
       </div>
     </section>

@@ -1,17 +1,17 @@
 import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from '../signupContent/constats';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 import Button from '../common/button';
 import { FieldError, useForm } from 'react-hook-form';
-import { InputForm } from '@/src/types/InputType';
+import { InputForm } from '@/src/lib/types';
 import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import { useState } from 'react';
 
 import instance from '@/src/api/axios';
 import { REGEX } from '@/src/utils/regex';
-import SendEmail from '../signupContent/SendEamil';
+import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';
 
 const ResetPwContent = () => {

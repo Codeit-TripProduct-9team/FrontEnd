@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import emailjs from 'emailjs-com';
 
-import Button from '../../common/button';
-import Modal from '../../common/modal';
+import Button from '../button';
+import Modal from '../modal';
 
 import randomCode from '@/src/utils/randomCode';
 
-import { MODAL_MESSAGE } from '../constats';
+import { MODAL_MESSAGE } from '../../../constants/constants';
 import { useOverlay } from '@toss/use-overlay';
-import ModalContent from '../../common/modal/ModalContent';
+import ModalContent from '../modal/ModalContent';
 
 interface SendEmailProps {
   disabled: boolean;
@@ -19,8 +19,8 @@ interface SendEmailProps {
   error: any;
 }
 
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string;
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
+const SERVICE_ID = 'service_4wlh35v';
+const PUBLIC_KEY = 'OAyI8cjbBVuBT_jYk';
 
 const TEMPLATE_ID = 'trip';
 const modalText = {

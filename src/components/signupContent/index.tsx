@@ -4,24 +4,23 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { FieldError, useForm } from 'react-hook-form';
+import { useOverlay } from '@toss/use-overlay';
 
-import SendEmail from './SendEamil';
+import SuccessSignup from './SuccessSingupModal';
+import SendEmail from '../common/Sendemail';
 import Button from '../common/button';
-
 import NickNameInput from '../common/input';
 import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
+import ModalContent from '../common/modal/ModalContent';
+import Modal from '../common/modal/index';
+import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
 
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
-import { InputForm } from '@/src/types/InputType';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from './constats';
-import { useOverlay } from '@toss/use-overlay';
-import ModalContent from '../common/modal/ModalContent';
-import Modal from './../common/modal/index';
-import SuccessSignup from './Modal/SuccessSignup';
+import { InputForm } from '@/src/lib/types';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -46,7 +45,6 @@ const SingupContent = () => {
   const isEmailvalid = !errors.email && isValidateEmail;
   const modalText = '회원가입을 계속 진행해 주세요.';
 
-  //모달 사용
   const certifiedOverlay = useOverlay();
   const certifiedOnModal = () => {
     certifiedOverlay.open(({ isOpen, close }) => (
@@ -58,8 +56,13 @@ const SingupContent = () => {
   const signupOverlay = useOverlay();
   const signupOnModal = () => {
     signupOverlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close}>
-        <ModalContent modalType={MODAL_MESSAGE.SUCCESS_SIGNUP} emoji={'🎉'} />
+      <Modal
+        isOpen={isOpen}
+        close={() => {
+          close();
+          route.push('/signin');
+        }}
+      >
         <SuccessSignup nickname={nicknameValue} />
       </Modal>
     ));
@@ -88,7 +91,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      certifiedOnModal(); //모달
+      certifiedOnModal();
     }
   };
 
@@ -99,7 +102,6 @@ const SingupContent = () => {
       const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/auth/sign-up', body);
       if (response.status === 200) {
         signupOnModal();
-        route.push('/signin');
       }
     } catch (error: any) {
       console.error(error);
