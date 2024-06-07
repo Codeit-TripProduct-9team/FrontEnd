@@ -2,8 +2,8 @@ import Button from '@/src/components/common/button';
 import useTextCounter from '@/src/hooks/useTextCounter';
 
 interface textAreaProps {
-  description: string;
-  onClick: () => void;
+  description?: string;
+  onClick?: () => void;
 }
 
 const ReviewTextArea = ({ description, onClick }: textAreaProps) => {
