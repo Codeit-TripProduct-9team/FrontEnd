@@ -8,20 +8,6 @@ import CreateReview from './CreateReview';
 const ProductReview = () => {
   const [sortedReview, setSortedReview] = useState(reviewData);
 
-  // 리뷰받오기
-  // const getReview = async () => {
-  //   try {
-  //     const response = await instance.get('/review');
-  //     return response;
-  //   } catch (error: any) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(()=>{
-  //   getReview()
-  // },[])
-
   const handleSortByNewest = () => {
     const sorted = [...sortedReview].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     setSortedReview(sorted);
@@ -34,8 +20,8 @@ const ProductReview = () => {
 
   return (
     <div className="flex flex-col w-full  pt-65 px-110 bg-white">
-      <SortToolbar sortByNewest={handleSortByNewest} sortByScore={handleSrotByScore} />
       <CreateReview />
+      <SortToolbar sortByNewest={handleSortByNewest} sortByScore={handleSrotByScore} />
       <ReviewList sortedReview={sortedReview} />
     </div>
   );

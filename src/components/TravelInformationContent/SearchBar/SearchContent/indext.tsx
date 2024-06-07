@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { MockDataItem } from '@/src/lib/types';
+import SearchInformation from './SearchInformation';
 
 interface SearchContentProps {
   searchResult: MockDataItem[];
@@ -19,17 +20,7 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
           <div className="flex items-center h-87 w-87 overflow-hidden rounded-10">
             <Image className="object-cover h-87" src={thumbnail} alt="img" width={87} height={87} />
           </div>
-          <div className="flex flex-col justify-between">
-            <div className="font-bold text-gray-80">{title}</div>
-            <div className="text-12 txet-gray-60">충남 예산 시장</div>
-            <div className="flex gap-8 pt-8">
-              {tag.map((item, index) => (
-                <div className="py-4 px-10 text-black text-12 font-semibold bg-gray-20 rounded-5" key={index}>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
+          <SearchInformation title={title} tag={tag} />
         </li>
       ))}
     </ul>
