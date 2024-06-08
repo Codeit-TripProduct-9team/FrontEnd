@@ -10,11 +10,11 @@ const RelatedSearchInfo: React.FC<RelatedSearchInfoProps> = ({ data, setSectionV
     setSearchValue(value);
   };
   return (
-    <div className="flex flex-col gap-10 bg-gray-60 mt-20 bg-opacity-50 bg-transparent text-center w-700 border-2 rounded-30 p-10">
+    <div className="flex flex-col gap-10 bg-white mt-20 bg-opacity-90  bg-transparent text-center w-630 border-2 rounded-30 p-10">
       {data.map((data, idx) => (
         <div
           key={idx}
-          className="hover:bg-white hover:text-gray-60 bg-opacity-50 text-20 text-white rounded-30 cursor-pointer"
+          className="hover:bg-gray-60 hover:text-white bg-opacity-50 text-20 text-gray-60 rounded-30 cursor-pointer"
           onClick={() => handleListClick(data)}
         >
           {data}

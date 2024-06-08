@@ -5,6 +5,7 @@ export interface MockDataItem {
   title: string;
   description: string;
   tag: string[];
+  url: string;
 }
 
 export interface MockData {
@@ -27,4 +28,10 @@ export interface InputForm {
   checkbox?: boolean;
   file?: string;
   verify?: string;
+}
+
+export interface kakaoShareProps {
+  title: string;
+  description: string;
+  thumbnail: string;
 }

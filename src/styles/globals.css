@@ -25,6 +25,13 @@
     outline: none;
   }
 
+  @layer utilities {
+    .scale-85 {
+      transform: scale(0.85);
+      transform-origin: top;
+    }
+  }
+
   @font-face {
     font-family: Pretendard;
     font-weight: 400;

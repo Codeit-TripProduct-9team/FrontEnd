@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import Button from '@/src/components/common/button';
+import useTextCounter from '@/src/hooks/useTextCounter';
 
-const ReviewTextArea = () => {
-  const [content, setContent] = useState('');
+interface textAreaProps {
+  description?: string;
+  onClick?: () => void;
+}
+
+const ReviewTextArea = ({ description, onClick }: textAreaProps) => {
   const maxTextLength = 300;
+  const { content, handleCountText, currentCount } = useTextCounter(maxTextLength, description);
 
-  const handleCountText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = event.target.value;
-    if (text.length <= maxTextLength) {
-      setContent(text);
-    }
-  };
   return (
     <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
       <textarea
@@ -18,8 +18,11 @@ const ReviewTextArea = () => {
         value={content}
         onChange={handleCountText}
       />
+      <Button onClick={onClick} className="absolute bottom-15 right-105 w-60 h-35 text-red text-18">
+        작성
+      </Button>
       <div className="absolute bottom-20 right-28 text-18 text-gray-50">
-        {content.length}/{maxTextLength}
+        {currentCount}/{maxTextLength}
       </div>
     </div>
   );
