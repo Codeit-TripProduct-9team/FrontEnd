@@ -1,7 +1,7 @@
 import instance from '@/src/api/axios';
 import { BASED_URL } from '@/src/constants/constants';
 
-export async function getCoordinate(address: string): Promise<{ lat: number; lng: number } | null> {
+const getCoordinate = async (address: string): Promise<{ lat: number; lng: number } | null> => {
   const encodedAddress = encodeURIComponent(address);
   try {
     const response = await instance.get(
@@ -15,4 +15,6 @@ export async function getCoordinate(address: string): Promise<{ lat: number; lng
     console.error('Error:', error);
     return null;
   }
-}
+};
+
+export default getCoordinate;
