@@ -8,14 +8,12 @@ import useReviewRating from '@/src/hooks/useRating';
 const ReviewScore = () => {
   const { hoverIndex, changeScore, handleStarHover, handleStarLeave, handleStarClick } = useReviewRating();
 
-  const selectedScore = (index: number) => (changeScore >= index || hoverIndex >= index ? star : emptyStar);
-
   return (
     <div className="flex pb-16 gap-5 cursor-pointer">
       {[...Array(5)].map((_, index) => (
         <Image
           key={index}
-          src={selectedScore(index)}
+          src={changeScore >= index || hoverIndex >= index ? star : emptyStar}
           width={25}
           height={25}
           alt="star"

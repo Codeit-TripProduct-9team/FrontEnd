@@ -11,36 +11,36 @@ const contentButtonStyle = {
 };
 
 const ChangeContent = () => {
-  const { content, handleChangeContent } = useSelectContent('product');
-  const selectTab = content === 'product';
+  const { content, handleSelectContent } = useSelectContent('product');
 
   return (
     <>
-      <div className="flex justify-center items-center bg-white w-full">
+      <div className="flex justify-center w-full items-center bg-white">
         <button
           className={combineStyle({
-            isSelected: selectTab,
+            isSelected: content === 'product',
             base: contentButtonStyle.base,
             selected: contentButtonStyle.selected,
             notSelected: contentButtonStyle.notSelected,
           })}
-          onClick={() => handleChangeContent('product')}
+          onClick={() => handleSelectContent('product')}
         >
           상품설명
         </button>
         <button
           className={combineStyle({
-            isSelected: !selectTab,
+            isSelected: content === 'review',
             base: contentButtonStyle.base,
             selected: contentButtonStyle.selected,
             notSelected: contentButtonStyle.notSelected,
           })}
-          onClick={() => handleChangeContent('review')}
+          onClick={() => handleSelectContent('review')}
         >
           리뷰
         </button>
       </div>
-      {selectTab ? <ProductDescription /> : <ProductReview />}
+      {content === 'product' && <ProductDescription />}
+      {content === 'review' && <ProductReview />}
     </>
   );
 };

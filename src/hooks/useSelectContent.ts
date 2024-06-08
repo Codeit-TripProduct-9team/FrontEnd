@@ -3,11 +3,11 @@ import { useState } from 'react';
 const useSelectContent = (initialContent: string) => {
   const [content, setContent] = useState(initialContent);
 
-  const handleChangeContent = (newContent: string) => {
+  const handleSelectContent = (newContent: string) => {
     setContent(newContent);
   };
 
-  return { content, handleChangeContent };
+  return { content, handleSelectContent };
 };
 
 export default useSelectContent;

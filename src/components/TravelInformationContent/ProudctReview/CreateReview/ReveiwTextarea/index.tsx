@@ -18,7 +18,11 @@ const ReviewTextArea = ({ description, onClick }: textAreaProps) => {
         value={content}
         onChange={handleCountText}
       />
-      <Button onClick={onClick} className="absolute bottom-15 right-105 w-60 h-35 text-red text-18">
+      <Button
+        onClick={onClick}
+        className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
+        disabled={content.trim() === ''}
+      >
         작성
       </Button>
       <div className="absolute bottom-20 right-28 text-18 text-gray-50">

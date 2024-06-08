@@ -26,28 +26,28 @@ interface ReviewDataItem {
 }
 
 const ReviewList = ({ sortedReview }: ReviewDataProps) => {
-  const [editReview, setEditReview] = useState(false);
+  const [editReview, setEditReview] = useState<number | null>(null);
 
-  const handleReviewEdit = () => {
-    setEditReview(true);
+  const handleReviewEdit = (id: number) => {
+    setEditReview(id);
   };
 
   const handleEdit = () => {
-    setEditReview(false);
+    setEditReview(null);
   };
 
   return (
     <div className="flex flex-col py-32">
-      <ul className=" flex flex-col gap-32 ">
-        {sortedReview &&
-          sortedReview.map(({ id, nickname, descrpition, createdAt, score }) => (
+      <ul className="flex flex-col gap-32">
+        {sortedReview.map(({ id, nickname, descrpition, createdAt, score }) => {
+          return (
             <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
                 <h2 className="text-18 font-bold">{nickname}</h2>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
               <div className="flex gap-5 pb-16">
-                {editReview ? (
+                {editReview === id ? (
                   <ReviewScore />
                 ) : (
                   [...Array(5)].map((_, index) => (
@@ -55,10 +55,15 @@ const ReviewList = ({ sortedReview }: ReviewDataProps) => {
                   ))
                 )}
               </div>
-              {editReview ? <ReviewTextArea description={descrpition} onClick={handleEdit} /> : <p>{descrpition}</p>}
-              <ReviewEditButton onClickEdit={handleReviewEdit} />
+              {editReview === id ? (
+                <ReviewTextArea description={descrpition} onClick={handleEdit} />
+              ) : (
+                <p>{descrpition}</p>
+              )}
+              <ReviewEditButton onClickEdit={() => handleReviewEdit(id)} />
             </li>
-          ))}
+          );
+        })}
       </ul>
     </div>
   );
