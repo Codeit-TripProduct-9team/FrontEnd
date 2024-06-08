@@ -4,19 +4,38 @@ import { mockMyCourse } from '@/src/components/MyRouteContent/mockMyRoute';
 import Button from '../../../button';
 import { useEffect, useState } from 'react';
 import instance from '@/src/api/axios';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+
+type Marker = {
+  position: { lat: number; lng: number };
+  name: string;
+  address: string;
+  roadAddress: string;
+  url: string;
+  phone: string;
+  distance: string;
+};
+
+type SearchedPlace = {
+  y: number;
+  x: string;
+  place_name: string;
+  address_name: string;
+  road_address_name: string;
+  place_url: string;
+  phone: string;
+  distance: string;
+};
 
 const AddNearbyPlaceModal = () => {
   const positions = mockMyCourse.coursePlan;
   const [selectedPlace, setSelectedPlace] = useState({ name: '', position: { lat: 0, lng: 0 } });
   const [mapCenter, setMapCenter] = useState(positions[0].places[0].position);
-  const [info, setInfo] = useState();
-  const [markers, setMarkers] = useState([]);
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [markers, setMarkers] = useState<Marker[]>([]);
+  const [selectedMarker, setSelectedMarker] = useState<Marker>();
   const [selectedDistance, setSelectedDistance] = useState(1000);
   const [selectedQuery, setSelectedQuery] = useState('음식점');
-  // const [map, setMap] = useState();
-  console.log(markers);
-  console.log(selectedMarker);
+
   const decomposedData = mockMyCourse.coursePlan
     .map((plan) => {
       return plan.places.map((place) => {
@@ -36,7 +55,6 @@ const AddNearbyPlaceModal = () => {
 
   useEffect(() => {
     const fetchPlaces = async () => {
-      // Call the Kakao Places API
       const { data } = await instance.get(
         `https://dapi.kakao.com/v2/local/search/keyword.json?y=${selectedPlace.position.lat}&x=${selectedPlace.position.lng}&radius=${selectedDistance}&query=${selectedQuery}`,
         {
@@ -48,7 +66,7 @@ const AddNearbyPlaceModal = () => {
       console.log(data);
 
       // Create a marker for each place
-      const newMarkers = data.documents.map((place) => ({
+      const newMarkers = data.documents.map((place: SearchedPlace) => ({
         position: { lat: place.y, lng: place.x },
         name: place.place_name,
         address: place.address_name,
@@ -64,36 +82,6 @@ const AddNearbyPlaceModal = () => {
     fetchPlaces();
   }, [selectedDistance, selectedPlace, selectedQuery]);
 
-  // useEffect(() => {
-  //   if (!map) return;
-  //   window.kakao.maps.load(() => {
-  //     const ps = new kakao.maps.services.Places();
-  //     ps.keywordSearch('이태원 맛집', (data, status, _pagination) => {
-  //       if (status === kakao.maps.services.Status.OK) {
-  //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-  //         // LatLngBounds 객체에 좌표를 추가합니다
-  //         const bounds = new kakao.maps.LatLngBounds();
-  //         const markers = [];
-
-  //         for (let i = 0; i < data.length; i++) {
-  //           markers.push({
-  //             position: {
-  //               lat: data[i].y,
-  //               lng: data[i].x,
-  //             },
-  //             content: data[i].place_name,
-  //           });
-  //           bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-  //         }
-  //         setMarkers(markers);
-
-  //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-  //         map.setBounds(bounds);
-  //       }
-  //     });
-  //   });
-  // }, [map]);
-
   return (
     <div className="flex flex-col gap-12">
       <Map center={mapCenter} level={5} className="w-558 h-204 rounded-m shadow-md z-0">
@@ -102,18 +90,7 @@ const AddNearbyPlaceModal = () => {
             key={`${marker.name}-${index}`}
             position={marker.position}
             onClick={() => setSelectedMarker(marker)}
-          >
-            {/* {selectedMarker === marker && (
-              <div className="rounded-s flex flex-col gap-4 bg-white w-300">
-                <h1 className="bg-blue text-white font-bold p-4 ">{marker.name}</h1>
-                <div className="px-4 pb-4 flex flex-col gap-4">
-                  <span className="text-14">{marker.roadAddress}</span>
-                  <span className="text-12 text-gray-50">(지번: {marker.address})</span>
-                  <span className="text-green text-12">{marker.phone}</span>
-                </div>
-              </div>
-            )} */}
-          </MapMarker>
+          />
         ))}
         <CustomOverlayMap position={selectedPlace.position} yAnchor={2}>
           <div className="relative px-6 py-3 text-white bg-blue rounded-l shadow-sub">
@@ -123,22 +100,31 @@ const AddNearbyPlaceModal = () => {
         </CustomOverlayMap>
 
         {selectedMarker && (
-          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.5} zIndex={1}>
+          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.5} zIndex={2} clickable={true}>
             <div className="relative rounded-s flex flex-col gap-4 bg-white w-300">
-              <h1 className="bg-blue text-white font-bold p-6 rounded-t-s">{selectedMarker.name}</h1>
+              <div className="bg-blue text-white font-bold p-6 rounded-t-s flex justify-between items-center">
+                <h1>{selectedMarker.name}</h1>
+
+                <a href={`${selectedMarker.url}`} target="_blank" rel="noopener noreferrer">
+                  <ChevronRightIcon className="w-20" />
+                </a>
+              </div>
               <div className="flex flex-col px-6 pb-6">
                 <span className="text-14">{selectedMarker.roadAddress}</span>
                 <span className="text-12 text-gray-50">(지번: {selectedMarker.address})</span>
-                <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
+                <div className="flex justify-between">
+                  <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
+                  <span className="bg-blue rounded-s text-white text-12 px-6 py-2">일정에 추가</span>
+                </div>
               </div>
               <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-t-8 border-t-white border-white border-l-8 border-l-transparent border-r-8 border-r-transparent" />
             </div>
           </CustomOverlayMap>
         )}
 
-        <ul className="absolute bg-white rounded-s border-1 flex gap-4 px-4">
+        <ul className="absolute bg-white rounded-s border-1 flex flex-col gap-4 p-4 text-center">
           <li onClick={() => setSelectedQuery('음식점')}>음식점</li>
-          <li className="border-l-1 border-r-1 px-4" onClick={() => setSelectedQuery('숙박')}>
+          <li className="border-t-1 border-b-1 px-4" onClick={() => setSelectedQuery('숙박')}>
             숙박
           </li>
           <li onClick={() => setSelectedQuery('관광명소')}>관광명소</li>
