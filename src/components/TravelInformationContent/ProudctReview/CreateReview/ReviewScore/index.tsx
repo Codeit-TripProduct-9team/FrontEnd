@@ -1,23 +1,12 @@
-import { useState } from 'react';
 import Image from 'next/image';
+
 import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
 
+import useReviewRating from '@/src/hooks/useRating';
+
 const ReviewScore = () => {
-  const [hoverIndex, setHoverIndex] = useState(-1);
-  const [changeScore, setChangeScore] = useState(-1);
-
-  const handleStarHover = (index: number) => {
-    setHoverIndex(index);
-  };
-
-  const handleStarLeave = () => {
-    setHoverIndex(-1);
-  };
-
-  const handleStarClick = (index: number) => {
-    setChangeScore(index);
-  };
+  const { hoverIndex, changeScore, handleStarHover, handleStarLeave, handleStarClick } = useReviewRating();
 
   const selectedScore = (index: number) => (changeScore >= index || hoverIndex >= index ? star : emptyStar);
 

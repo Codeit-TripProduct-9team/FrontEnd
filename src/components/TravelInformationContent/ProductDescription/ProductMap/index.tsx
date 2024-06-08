@@ -12,7 +12,7 @@ interface MapProps {
 const ProductMap = ({ position, polylinePath, startPoint }: MapProps) => {
   return (
     <>
-      <Map center={position} level={8} className="w-622 h-470 rounded-8 shadow-md">
+      <Map center={position} level={8} className="w-622 h-470 rounded-8 shadow-md z-0">
         <Polyline path={polylinePath} />
         <MapMarker position={position} />
         <MapMarker position={startPoint} />
