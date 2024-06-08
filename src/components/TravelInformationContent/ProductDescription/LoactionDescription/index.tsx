@@ -21,7 +21,7 @@ const LocationDescription = ({ placeData }: PlaceDataProps) => {
         height={455}
         src={placeData.imageSource}
         alt="defalut"
-        priority
+        fetchPriority="high"
       />
       <h2 className="mt-20 text-20 font-bold">{placeData.title}</h2>
       <p className="text-center ml-284 mr-314">{placeData.description}</p>

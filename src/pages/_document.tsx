@@ -4,9 +4,7 @@ import Script from 'next/script';
 export default function Document() {
   return (
     <Html lang="ko">
-      <Head>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
+      <Head />
       <body>
         <Main />
         <div id="modal" />
