@@ -1,10 +1,11 @@
 import ModalPlaceList from '../AddPlaceModal.tsx/ModalPlaceList';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { mockMyCourse } from '@/src/components/MyRouteContent/mockMyRoute';
-import Button from '../../../button';
 import { useEffect, useState } from 'react';
 import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import CategoryList from './CategoryList';
+import DistanceButton from './DistanceButton';
 
 type Marker = {
   position: { lat: number; lng: number };
@@ -122,27 +123,11 @@ const AddNearbyPlaceModal = () => {
           </CustomOverlayMap>
         )}
 
-        <ul className="absolute bg-white rounded-s border-1 flex flex-col gap-4 p-4 text-center">
-          <li onClick={() => setSelectedQuery('음식점')}>음식점</li>
-          <li className="border-t-1 border-b-1 px-4" onClick={() => setSelectedQuery('숙박')}>
-            숙박
-          </li>
-          <li onClick={() => setSelectedQuery('관광명소')}>관광명소</li>
-        </ul>
+        <CategoryList setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
       </Map>
       <div className="flex flex-col gap-12">
         <span className="text-center text-14 text-gray-60">위치하신 곳 근방의 장소를 추천해 드려요!</span>
-        <div className="flex gap-9 justify-center">
-          <Button className="w-109 h-40" onClick={() => setSelectedDistance(1000)}>
-            1km
-          </Button>
-          <Button className="w-109 h-40" onClick={() => setSelectedDistance(5000)}>
-            5km
-          </Button>
-          <Button className="w-109 h-40" onClick={() => setSelectedDistance(10000)}>
-            10km
-          </Button>
-        </div>
+        <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </div>
       <ModalPlaceList data={decomposedData} className="h-150" onClick={handlePlaceClick} />
     </div>
