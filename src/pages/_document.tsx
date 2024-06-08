@@ -12,7 +12,7 @@ export default function Document() {
         <div id="modal" />
         <NextScript />
         <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO}&autoload=false`}
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO}&libraries=services&autoload=false`}
           strategy="beforeInteractive"
         />
         <Script src="https://developers.kakao.com/sdk/js/kakao.js" strategy="afterInteractive" />
