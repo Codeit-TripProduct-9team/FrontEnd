@@ -6,6 +6,7 @@ interface ModalPlaceListData {
     id: number;
     mainImg: string;
     name: string;
+    description?: string;
   }[];
   onClick?: (id: number) => void;
   className?: string;
@@ -16,20 +17,22 @@ const ModalPlaceList = ({ data, onClick, className }: ModalPlaceListData) => {
   return (
     <div className="flex flex-col gap-30 ">
       <div className={customStyle}>
-        {data.map((item) => (
-          <div key={item.id} className="flex items-center gap-10" onClick={() => onClick && onClick(item.id)}>
-            <div className="w-87 h-87 relative">
+        {data.map((item, index) => (
+          <div key={`${item.id}-${index}`} className="flex gap-20" onClick={() => onClick && onClick(item.id)}>
+            <div className="w-87 h-87 relative flex-shrink-0 overflow-hidden">
               <Image
                 src={item.mainImg}
                 alt={item.name}
                 layout="fill"
                 objectFit="cover"
                 objectPosition="center"
-                className="rounded-m"
+                className="rounded-m "
               />
             </div>
-
-            <p className="font-bold">{item.name}</p>
+            <div>
+              <h1 className="font-bold">{item.name}</h1>
+              {item.description && <p className="text-gray-60 text-12">{item.description}</p>}
+            </div>
           </div>
         ))}
       </div>
