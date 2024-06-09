@@ -10,12 +10,12 @@ const TravelInformationMeta = ({ youtubeData, pageUrl }: TravelInformationMeatPr
     <Head>
       <title>uTrip</title>
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      <meta name="description" content={'상세페이지'} />
+      <meta name="description" content={youtubeData.title} />
 
       <meta property="og:image" content={youtubeData.thumbnail} />
       <meta property="og:image:alt" content="alt" />
       <meta property="og:url" content={pageUrl} />
-      <meta property="og:title" content="utrip: 상세페이지" />
+      <meta property="og:title" content={youtubeData.title} />
       <meta property="og:type" content="website" />
 
       <meta name="twitter:card" content="summary" />

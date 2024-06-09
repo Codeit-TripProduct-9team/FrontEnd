@@ -1,4 +1,11 @@
+import { useState } from 'react';
+
 import Image from 'next/image';
+
+import ReviewEditButton from './ReviewEditButton';
+
+import ReviewTextArea from '../CreateReview/ReveiwTextarea';
+import ReviewScore from '../CreateReview/ReviewScore';
 
 import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
@@ -19,22 +26,37 @@ interface ReviewDataItem {
 }
 
 const ReviewList = ({ sortedReview }: ReviewDataProps) => {
+  const [editReview, setEditReview] = useState(false);
+
+  const handleReviewEdit = () => {
+    setEditReview(true);
+  };
+
+  const handleEdit = () => {
+    setEditReview(false);
+  };
+
   return (
     <div className="flex flex-col py-32">
-      <ul className="flex flex-col gap-32 ">
+      <ul className=" flex flex-col gap-32 ">
         {sortedReview &&
           sortedReview.map(({ id, nickname, descrpition, createdAt, score }) => (
-            <li key={id} className="pb-32 border-b-1 border-gray-50">
+            <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
                 <h2 className="text-18 font-bold">{nickname}</h2>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
               <div className="flex gap-5 pb-16">
-                {[...Array(5)].map((_, index) => (
-                  <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
-                ))}
+                {editReview ? (
+                  <ReviewScore />
+                ) : (
+                  [...Array(5)].map((_, index) => (
+                    <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
+                  ))
+                )}
               </div>
-              <p>{descrpition}</p>
+              {editReview ? <ReviewTextArea description={descrpition} onClick={handleEdit} /> : <p>{descrpition}</p>}
+              <ReviewEditButton onClickEdit={handleReviewEdit} />
             </li>
           ))}
       </ul>

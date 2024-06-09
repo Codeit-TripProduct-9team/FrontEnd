@@ -1,6 +1,7 @@
 // import Script from 'next/script';
 import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { mockMyRoute } from './mockMyRoute';
+import React from 'react';
 // const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO}&autoload=false`;
 
 // const positions = [
@@ -29,9 +30,9 @@ const KakaoMap = () => {
       {/* <Script src={KAKAO_SDK_URL} /> */}
       <Map center={positions[0].latlng} className="w-460 h-288 rounded-8 shadow-md z-0">
         {positions.map((position, index) => (
-          <>
+          <React.Fragment key={`${index}-${position.title}`}>
             <MapMarker
-              key={index}
+              // key={`${index}-${position.title}`}
               position={position.latlng}
               title={position.title}
               image={{
@@ -48,7 +49,7 @@ const KakaoMap = () => {
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-t-8 border-t-blue border-l-8 border-l-transparent border-r-8 border-r-transparent" />
               </div>
             </CustomOverlayMap>
-          </>
+          </React.Fragment>
         ))}
 
         <Polyline
