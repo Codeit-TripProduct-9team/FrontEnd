@@ -3,32 +3,36 @@ import { twMerge } from 'tailwind-merge';
 
 interface ModalPlaceListData {
   data: {
-    cardId: number;
-    thumbnail: string;
-    title: string;
+    id: number;
+    mainImg: string;
+    name: string;
+    description?: string;
   }[];
+  onClick?: (id: number) => void;
   className?: string;
 }
 
-const ModalPlaceList = ({ data, className }: ModalPlaceListData) => {
+const ModalPlaceList = ({ data, onClick, className }: ModalPlaceListData) => {
   const customStyle = twMerge('flex flex-col gap-10 overflow-y-auto h-230', className);
   return (
     <div className="flex flex-col gap-30 ">
       <div className={customStyle}>
-        {data.map((item) => (
-          <div key={item.cardId} className="flex items-center gap-10">
-            <div className="w-87 h-87 relative">
+        {data.map((item, index) => (
+          <div key={`${item.id}-${index}`} className="flex gap-20" onClick={() => onClick && onClick(item.id)}>
+            <div className="w-87 h-87 relative flex-shrink-0 overflow-hidden">
               <Image
-                src={item.thumbnail}
-                alt={item.title}
+                src={item.mainImg}
+                alt={item.name}
                 layout="fill"
                 objectFit="cover"
                 objectPosition="center"
-                className="rounded-m"
+                className="rounded-m "
               />
             </div>
-
-            <p className="font-bold">{item.title}</p>
+            <div>
+              <h1 className="font-bold">{item.name}</h1>
+              {item.description && <p className="text-gray-60 text-12">{item.description}</p>}
+            </div>
           </div>
         ))}
       </div>

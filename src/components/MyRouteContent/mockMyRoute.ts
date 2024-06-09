@@ -72,3 +72,62 @@ export const mockMyRoute: MockMyRouteData = {
     },
   ],
 };
+
+export interface mockMyCourseData {
+  courseName: string;
+  courseId: number;
+  coursePlan: {
+    day: number;
+    places: {
+      id: number;
+      name: string;
+      mainImg: string;
+      position: { lat: number; lng: number };
+    }[];
+  }[];
+}
+
+export const mockMyCourse: mockMyCourseData = {
+  courseName: 'My Course',
+  courseId: 1,
+  coursePlan: [
+    {
+      day: 1,
+      places: [
+        {
+          id: 1,
+          name: '상주 경천섬',
+          mainImg:
+            'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMTlfNDkg%2FMDAxNzAwMzUzMDAwODU0.qZXyFsUAP1LdDevbe554FBmc_zoZQ3DpTuyRQEA5No0g.FpTLOCcGgZj-0EY7I6Rw1VGyCHkGLdUK03dsSLSJR5sg.JPEG.zzjworld%2F20231118%25A3%25DF152136.jpg%23900x675',
+          position: { lat: 36.44708919803324, lng: 128.25738736414664 },
+        },
+        {
+          id: 2,
+          name: '대구 서문시장',
+          mainImg:
+            'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNzExMjlfMjc5%2FMDAxNTExOTM0Mjc5MTg4.r3xrpbihNF9IEpgeuFwXqru8KHSqwH84SBlH8uktmDEg.wiW7ZvP7Y2KluqV050ojktnCYbZ4P5IEi7YesqlWLtEg.JPEG.zipoer%2F1%2529DSC06383.JPG%231600x1067',
+          position: { lat: 35.86957266231153, lng: 128.58221925092312 },
+        },
+      ],
+    },
+    {
+      day: 2,
+      places: [
+        {
+          id: 3,
+          name: '부산 상해 거리',
+          mainImg:
+            'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20121231_299%2Fgamrae007_13569485388977VEM4_JPEG%2Fsam_8666.jpg&type=sc960_832',
+          position: { lat: 35.1136875, lng: 129.0379375 },
+        },
+        {
+          id: 4,
+          name: '경기 아토믹워터파크',
+          mainImg:
+            'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODA2MjFfMjU5%2FMDAxNTI5NTMzMTg2MzA1.sPKX4S0yt4chIoSYPfsaogMeCxBl-5c3e68mMKBgAJwg.ivWFogTfB3fgNmrA3K8icsXjTjmOQjK8q11y1_3Gxtwg.JPEG.hong19782001%2F1529321936851.jpg&type=sc960_832',
+          position: { lat: 37.791082, lng: 127.51864 },
+        },
+      ],
+    },
+  ],
+};
