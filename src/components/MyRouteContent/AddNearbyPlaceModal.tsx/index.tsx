@@ -85,7 +85,7 @@ const AddNearbyPlaceModal = () => {
 
   return (
     <div className="flex flex-col gap-12">
-      <Map center={mapCenter} level={5} className="w-558 h-204 rounded-m shadow-md z-0">
+      <Map center={mapCenter} level={5} className="w-558 h-304 rounded-m shadow-md z-0">
         {markers.map((marker, index) => (
           <MapMarker
             key={`${marker.name}-${index}`}
