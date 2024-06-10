@@ -95,7 +95,7 @@ const MyRouteContent = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white rounded-20 px-40 py-20">
+        <div className="flex flex-col bg-white rounded-20 px-40 py-32">
           <SearchBar searchValue={searchValue} onChange={handleSearchInputChange} setSearchValue={setSearchValue} />
 
           <Droppable droppableId="myPlace">
