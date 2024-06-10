@@ -5,7 +5,7 @@ const Layout = ({ children, hasFooter = true }: { children: React.ReactNode; has
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex-grow bg-gray-10">{children}</div>
+      <main className="flex-grow bg-gray-10">{children}</main>
       {hasFooter && <Footer />}
     </div>
   );
