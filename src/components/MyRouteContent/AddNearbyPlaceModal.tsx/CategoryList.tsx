@@ -7,14 +7,12 @@ type CategoryListProps = {
 
 const CategoryList = ({ selectedQuery, setSelectedQuery }: CategoryListProps) => {
   return (
-    <ul className="absolute bg-white rounded-s border-1 flex flex-col text-center shadow-main overflow-hidden">
+    <ul className="absolute bg-gray-30 text-white  rounded-s border-1 flex flex-col text-center shadow-main overflow-hidden">
       {CATEGORY.map((category) => (
         <li
           key={category}
           onClick={() => setSelectedQuery(category)}
-          className={`border-b-1 last:border-none cursor-pointer p-4 ${
-            selectedQuery === category && 'bg-blue text-white'
-          }`}
+          className={`border-b-1 last:border-none cursor-pointer p-4 ${selectedQuery === category && 'bg-blue'}`}
         >
           {category}
         </li>

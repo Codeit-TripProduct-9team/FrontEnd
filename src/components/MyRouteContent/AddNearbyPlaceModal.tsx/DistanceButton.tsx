@@ -9,11 +9,13 @@ type DistanceButtonProps = {
 
 const DistanceButton = ({ selectedDistance, setSelectedDistance }: DistanceButtonProps) => {
   return (
-    <div className="flex gap-9 justify-center">
+    <div className="flex flex-col justify-center absolute right-20 rounded-s overflow-hidden">
       {DISTANCE.map((distance) => (
         <Button
           key={distance}
-          className={`w-109 h-40 bg-gray-30 ${selectedDistance === distance && 'bg-blue text-white'}`}
+          className={`w-63 h-33 border-b-1 last:border-none bg-gray-30 rounded-0 ${
+            selectedDistance === distance && 'bg-blue '
+          }`}
           onClick={() => setSelectedDistance(distance)}
         >
           {distance / 1000}km

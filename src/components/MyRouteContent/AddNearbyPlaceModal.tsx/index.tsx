@@ -85,7 +85,7 @@ const AddNearbyPlaceModal = () => {
 
   return (
     <div className="flex flex-col gap-12">
-      <Map center={mapCenter} level={5} className="w-558 h-304 rounded-m shadow-md z-0">
+      <Map center={mapCenter} level={5} className="w-558 h-304 rounded-m shadow-md z-0 relative">
         {markers.map((marker, index) => (
           <MapMarker
             key={`${marker.name}-${index}`}
@@ -113,7 +113,7 @@ const AddNearbyPlaceModal = () => {
               <div className="flex flex-col px-6 pb-6">
                 <span className="text-14">{selectedMarker.roadAddress}</span>
                 <span className="text-12 text-gray-50">(지번: {selectedMarker.address})</span>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
                   <span className="bg-blue rounded-s text-white text-12 px-6 py-2">일정에 추가</span>
                 </div>
@@ -124,14 +124,14 @@ const AddNearbyPlaceModal = () => {
         )}
 
         <CategoryList setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
+        <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </Map>
       <div className="flex flex-col gap-12">
         <span className="text-center text-14 text-gray-60">위치하신 곳 근방의 장소를 추천해 드려요!</span>
-        <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </div>
       <ModalPlaceList
         data={decomposedData}
-        className="h-150"
+        className="h-190"
         onClick={handlePlaceClick}
         selectedPlace={selectedPlace.name}
       />
