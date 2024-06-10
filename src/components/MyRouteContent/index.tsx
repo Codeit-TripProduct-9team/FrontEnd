@@ -16,6 +16,7 @@ import Modal from '../common/modal';
 import AddPlaceModal from './AddPlaceModal.tsx';
 import SearchBar from './SearchBar';
 import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
+import Button from '../common/button';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -67,11 +68,15 @@ const MyRouteContent = () => {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
         <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
-          <input
-            // value={titleValue}
-            className="rounded-s h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
-            placeholder="여행지의 제목을 입력해주세요"
-          />
+          <div className="flex gap-12">
+            <input
+              // value={titleValue}
+              className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
+              placeholder="여행지의 제목을 입력해주세요"
+            />
+            <Button className="w-100 h-42 font-bold text-14">저장하기</Button>
+          </div>
+
           <KakaoMap />
           <div className="flex justify-end">
             <div>
