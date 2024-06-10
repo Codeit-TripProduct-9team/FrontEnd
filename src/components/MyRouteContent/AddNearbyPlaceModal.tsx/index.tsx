@@ -129,7 +129,12 @@ const AddNearbyPlaceModal = () => {
         <span className="text-center text-14 text-gray-60">위치하신 곳 근방의 장소를 추천해 드려요!</span>
         <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </div>
-      <ModalPlaceList data={decomposedData} className="h-150" onClick={handlePlaceClick} />
+      <ModalPlaceList
+        data={decomposedData}
+        className="h-150"
+        onClick={handlePlaceClick}
+        selectedPlace={selectedPlace.name}
+      />
     </div>
   );
 };

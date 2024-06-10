@@ -13,9 +13,9 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import MyRouteCardSection from './MyRouteCardSection';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
-import AddPlaceModal from '../common/modal/MyRoute/AddPlaceModal.tsx';
+import AddPlaceModal from './AddPlaceModal.tsx';
 import SearchBar from './SearchBar';
-import AddNearbyPlaceModal from '../common/modal/MyRoute/AddNearbyPlaceModal.tsx';
+import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -77,7 +77,6 @@ const MyRouteContent = () => {
             <div>
               <PlaceList />
 
-              {/* 버튼에 모달 핸들러 등록 */}
               <div className="flex gap-9">
                 <button
                   className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"

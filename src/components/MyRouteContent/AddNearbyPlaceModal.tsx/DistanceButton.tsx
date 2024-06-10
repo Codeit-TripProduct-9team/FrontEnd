@@ -1,4 +1,4 @@
-import Button from '../../../button';
+import Button from '../../common/button';
 
 const DISTANCE = [1000, 5000, 10000];
 

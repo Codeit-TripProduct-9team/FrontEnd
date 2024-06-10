@@ -9,10 +9,11 @@ interface ModalPlaceListData {
     description?: string;
   }[];
   onClick?: (id: number) => void;
+  selectedPlace?: string;
   className?: string;
 }
 
-const ModalPlaceList = ({ data, onClick, className }: ModalPlaceListData) => {
+const ModalPlaceList = ({ data, onClick, selectedPlace, className }: ModalPlaceListData) => {
   const customStyle = twMerge('flex flex-col gap-10 overflow-y-auto h-230', className);
   return (
     <div className="flex flex-col gap-30 ">
@@ -29,7 +30,7 @@ const ModalPlaceList = ({ data, onClick, className }: ModalPlaceListData) => {
                 className="rounded-m "
               />
             </div>
-            <div>
+            <div className={`${selectedPlace === item.name && 'text-blue'}`}>
               <h1 className="font-bold">{item.name}</h1>
               {item.description && <p className="text-gray-60 text-12">{item.description}</p>}
             </div>
