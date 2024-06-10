@@ -1,12 +1,31 @@
 import { MockDataItem } from '@/src/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+// import instance from '@/src/api/axios';
 
 interface ListCardProps {
   data: MockDataItem;
 }
 
 const ListCard = ({ data }: ListCardProps) => {
+  const router = useRouter();
+
+  const handleClickMyPlace = () => {
+    // instance.post(
+    //   '/my-place',
+    //   {
+    //     cardId: data.cardId,
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   },
+    // );
+    router.push('/my-route');
+  };
+
   return (
     <div>
       <Link href={`/travel-information/${data.cardId}`}>
@@ -26,8 +45,11 @@ const ListCard = ({ data }: ListCardProps) => {
                   </div>
                 ))}
               </div>
-              <div className=" z-10 transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-12">
-                <Link href="/my-route">마이플레이스 등록</Link>
+              <div
+                className=" z-10 transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-12"
+                onClick={handleClickMyPlace}
+              >
+                마이플레이스 등록
               </div>
             </div>
           </div>
