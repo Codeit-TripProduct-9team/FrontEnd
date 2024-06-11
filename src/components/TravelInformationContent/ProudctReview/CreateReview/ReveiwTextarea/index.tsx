@@ -1,22 +1,26 @@
 import Button from '@/src/components/common/button';
 import useTextCounter from '@/src/hooks/useTextCounter';
 
-interface textAreaProps {
-  description?: string;
+interface ReviewTextAreaProps {
+  content: string;
+  setContent: (content: string) => void;
   onClick?: () => void;
 }
 
-const ReviewTextArea = ({ description, onClick }: textAreaProps) => {
+const ReviewTextArea = ({ content, setContent, onClick }: ReviewTextAreaProps) => {
   const maxTextLength = 300;
-  const { content, handleCountText, currentCount } = useTextCounter(maxTextLength, description);
+  const { currentCount, handleCountText } = useTextCounter(maxTextLength, content);
 
   return (
     <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
       <textarea
-        className="w-full h-200 py-20 px-28 bg-transparent resize-none focus:outline-none"
+        className="w-full h-200 py-5 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
-        onChange={handleCountText}
+        onChange={(e) => {
+          setContent(e.target.value);
+          handleCountText(e);
+        }}
       />
       <Button
         onClick={onClick}

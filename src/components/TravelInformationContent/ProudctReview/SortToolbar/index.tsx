@@ -1,26 +1,30 @@
 import useSelectContent from '@/src/hooks/useSelectContent';
 import combineStyle from '@/src/utils/combineStyle';
 
-interface SortToolbarProps {
-  sortByNewest: () => void;
-  sortByScore: () => void;
-}
+import { useEffect } from 'react';
 
 const sortButtonStyle = {
   base: '',
   selected: 'border-b-black border-b-2 font-bold',
   notSelected: 'border-b-gray-200',
 };
+interface SortToolbarProps {
+  sortType: string;
+  setSortType: (type: string) => void;
+}
 
-const SortToolbar = ({ sortByNewest, sortByScore }: SortToolbarProps) => {
-  const { content, handleSelectContent } = useSelectContent('new');
+const SortToolbar = ({ sortType, setSortType }: SortToolbarProps) => {
+  const { content, handleSelectContent } = useSelectContent(sortType);
+
+  useEffect(() => {
+    setSortType(content);
+  }, [content, setSortType]);
 
   return (
     <div className="flex flex-col gap-30 pt-30">
       <div className="flex gap-30">
         <button
           onClick={() => {
-            sortByNewest();
             handleSelectContent('new');
           }}
           className={combineStyle({
@@ -34,7 +38,6 @@ const SortToolbar = ({ sortByNewest, sortByScore }: SortToolbarProps) => {
         </button>
         <button
           onClick={() => {
-            sortByScore();
             handleSelectContent('score');
           }}
           className={combineStyle({

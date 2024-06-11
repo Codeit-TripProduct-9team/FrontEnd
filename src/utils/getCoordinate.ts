@@ -6,7 +6,7 @@ const getCoordinate = async (address: string): Promise<{ lat: number; lng: numbe
   try {
     const response = await instance.get(
       `${BASED_URL.KAKAO_ROAD}/local/search/address.json?analyze_type=similar&query=${encodedAddress}`,
-      { headers: { Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}` } },
+      { headers: { Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}` } },
     );
     const customLocation = response.data.documents[0];
     return { lat: parseFloat(customLocation.y), lng: parseFloat(customLocation.x) };

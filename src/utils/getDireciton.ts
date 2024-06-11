@@ -18,7 +18,7 @@ const getDirection = async (
     try {
       const response = await instance.get(requestUrl, {
         headers: {
-          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
           'Content-Type': 'application/json',
         },
       });
