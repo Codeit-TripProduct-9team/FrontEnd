@@ -4,7 +4,7 @@ import { mockMyCourse } from '@/src/components/MyRouteContent/mockMyRoute';
 import { useEffect, useState } from 'react';
 import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import CategoryList from './CategoryList';
+import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
 
 type Marker = {
@@ -123,7 +123,7 @@ const AddNearbyPlaceModal = () => {
           </CustomOverlayMap>
         )}
 
-        <CategoryList setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
+        <CategoryButton setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
         <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </Map>
       <div className="flex flex-col gap-12">
