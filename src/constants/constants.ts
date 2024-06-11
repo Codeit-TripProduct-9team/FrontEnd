@@ -23,3 +23,8 @@ export const BASED_URL = {
   KAKAO_ROAD: `https://dapi.kakao.com/v2`,
   KAKKAO_DIRECTION: 'https://apis-navi.kakaomobility.com/v1/directions',
 };
+
+export const TOAST_MESSAGE = {
+  DELETE: '삭제되었습니다.',
+  SAVE: '저장되었습니다.',
+};

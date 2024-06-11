@@ -5,7 +5,7 @@ import { OverlayProvider } from '@toss/use-overlay';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <OverlayProvider>
-      <Component {...pageProps} />{' '}
+      <Component {...pageProps} />
     </OverlayProvider>
   );
 }

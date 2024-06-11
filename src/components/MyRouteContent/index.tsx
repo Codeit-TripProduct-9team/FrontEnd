@@ -17,6 +17,8 @@ import AddPlaceModal from './AddPlaceModal.tsx';
 import SearchBar from './SearchBar';
 import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
 import Button from '../common/button';
+import { openToast } from '@/src/utils/openToast';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -64,6 +66,10 @@ const MyRouteContent = () => {
     ));
   };
 
+  const handleSaveCourse = () => {
+    openToast.success(TOAST_MESSAGE.SAVE);
+  };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
@@ -74,7 +80,9 @@ const MyRouteContent = () => {
               className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
               placeholder="여행지의 제목을 입력해주세요"
             />
-            <Button className="w-100 h-42 font-bold text-14">저장하기</Button>
+            <Button className="w-100 h-42 font-bold text-14" onClick={handleSaveCourse}>
+              저장하기
+            </Button>
           </div>
 
           <KakaoMap />
