@@ -44,3 +44,10 @@ export interface VideoInformationProps {
   tag: string;
   likeCount: number;
 }
+
+export interface videoListProps {
+  id: number;
+  tag: string;
+  title: string;
+  url: string;
+}

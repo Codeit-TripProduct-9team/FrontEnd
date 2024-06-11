@@ -1,35 +1,26 @@
 import { useState, useEffect, ChangeEvent } from 'react';
+import { videoListProps } from '../lib/types';
 
-interface MockDataItem {
-  cardId: number;
-  thumbnail: string;
-  likes: number;
-  title: string;
-  description: string;
-  tag: string[];
-  url: string;
-}
-
-const useSearch = (mockData: { data: MockDataItem[] }) => {
+const useSearch = (searchList: videoListProps[]) => {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchResult, setSearchResult] = useState<MockDataItem[]>([]);
+  const [searchResult, setSearchResult] = useState<videoListProps[]>([]);
+
+  console.log(searchList);
 
   useEffect(() => {
     if (searchKeyword) {
-      const hasKeyword = mockData.data.filter(
-        ({ title, description, tag }) =>
-          title.includes(searchKeyword) ||
-          description.includes(searchKeyword) ||
-          tag.some((tag) => tag.includes(searchKeyword)),
+      const hasKeyword = searchList.filter(
+        ({ title, url, tag }) =>
+          title.includes(searchKeyword) || url.includes(searchKeyword) || tag.includes(searchKeyword),
       );
 
-      const deleteDuplicate = Array.from(new Map(hasKeyword.map((item) => [item.cardId, item])).values());
+      const deleteDuplicate = Array.from(new Map(hasKeyword.map((item) => [item.id, item])).values());
 
       setSearchResult(deleteDuplicate);
     } else {
       setSearchResult([]);
     }
-  }, [searchKeyword, mockData.data]);
+  }, [searchKeyword, searchList]);
 
   const handleChangeKeyword = (event: ChangeEvent<HTMLInputElement>) => {
     const keyword = event.target.value;
