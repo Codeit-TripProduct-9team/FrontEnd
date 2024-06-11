@@ -24,51 +24,51 @@ const MyRouteCardSectionPagination = () => {
   };
 
   return (
-    <div className="mt-40 flex gap-20 justify-center items-center">
+    <div className="mt-40 flex justify-center items-center">
       <div
-        className={`w-30 h-30 flex justify-center items-center cursor-pointer ${
+        className={`w-30 h-30 flex justify-center items-center cursor-pointer border-1 border-gray-30 rounded-4 ${
           offset === 1 && 'opacity-25 cursor-not-allowed'
         }`}
         onClick={handlePreviousPage}
       >
         <ChevronLeftIcon />
       </div>
-      <div className="flex gap-4 justify-center items-center">
-        {pageNumbers.map((number) => {
-          if (
-            number === 1 ||
-            number === maxOffset ||
-            number === offset ||
-            number === offset + 1 ||
-            number === offset - 1
-          ) {
-            return (
-              <button
-                key={number}
-                onClick={() => setOffset(number)}
-                disabled={number === offset}
-                className={`border-1 w-30 h-30 rounded-4 flex justify-center items-center ${
-                  number === offset && 'bg-blue text-white'
-                }`}
-              >
-                {number}
-              </button>
-            );
-          }
+      {/* <div className="flex gap-4 justify-center items-center"> */}
+      {pageNumbers.map((number) => {
+        if (
+          number === 1 ||
+          number === maxOffset ||
+          number === offset ||
+          number === offset + 1 ||
+          number === offset - 1
+        ) {
+          return (
+            <button
+              key={number}
+              onClick={() => setOffset(number)}
+              disabled={number === offset}
+              className={`border-1 border-gray-30 w-30 h-30 rounded-4 flex justify-center items-center ${
+                number === offset && 'bg-blue text-white'
+              }`}
+            >
+              {number}
+            </button>
+          );
+        }
 
-          if (number === offset - 2 || number === offset + 2) {
-            return (
-              <span key={number} className="flex items-center justify-center">
-                ...
-              </span>
-            );
-          }
+        if (number === offset - 2 || number === offset + 2) {
+          return (
+            <span key={number} className="flex items-center justify-center">
+              ...
+            </span>
+          );
+        }
 
-          return null;
-        })}
-      </div>
+        return null;
+      })}
+      {/* </div> */}
       <div
-        className={`w-30 h-30 flex justify-center items-center cursor-pointer ${
+        className={`w-30 h-30 flex justify-center items-center cursor-pointer border-1 border-gray-30 rounded-4 ${
           offset === maxOffset && 'opacity-25 cursor-not-allowed'
         }`}
         onClick={handleNextPage}
