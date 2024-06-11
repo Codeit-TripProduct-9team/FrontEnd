@@ -22,7 +22,6 @@ const ProductReview = () => {
   });
 
   const emptyReveiwData = reviewListData?.status === '4007';
-
   const reveiwList = reviewListData?.data.content;
 
   return (

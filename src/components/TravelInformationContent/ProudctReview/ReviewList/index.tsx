@@ -26,9 +26,13 @@ interface ReviewDataItem {
 
 const ReviewList = ({ reviewList }: ReviewDataProps) => {
   const [editReview, setEditReview] = useState<number | null>(null);
+  const [editScore, setEditScore] = useState(0);
+  const [editContent, setEditContent] = useState('');
 
   const handleReviewEdit = (id: number) => {
     setEditReview(id);
+    setEditContent(editContent);
+    setEditScore(editScore);
   };
 
   const handleEdit = () => {
@@ -48,14 +52,18 @@ const ReviewList = ({ reviewList }: ReviewDataProps) => {
 
               <div className="flex gap-5 pb-16">
                 {editReview === id ? (
-                  <ReviewScore />
+                  <ReviewScore setScore={setEditScore} score={editScore} />
                 ) : (
                   [...Array(5)].map((_, index) => (
                     <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
                   ))
                 )}
               </div>
-              {editReview === id ? <ReviewTextArea content={content} onClick={handleEdit} /> : <p>{content}</p>}
+              {editReview === id ? (
+                <ReviewTextArea content={editContent} setContent={setEditContent} onClick={handleEdit} />
+              ) : (
+                <p>{content}</p>
+              )}
               <ReviewEditButton onClickEdit={() => handleReviewEdit(id)} />
             </li>
           );
