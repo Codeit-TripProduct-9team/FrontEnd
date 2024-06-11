@@ -22,14 +22,20 @@ const CreateReview = ({ videoId }: CreateReviewProps) => {
   });
 
   const handleCreateReview = () => {
-    const reviewData = {
-      videoId: videoId,
-      title: '테스트',
-      nickname: '임시',
-      content,
-      score,
-    };
-    createReviewList.mutate(reviewData);
+    if (score === 0) {
+      alert('별점을 등록해주세요.');
+    }
+
+    if (score !== 0) {
+      const reviewData = {
+        videoId: videoId,
+        title: '테스트',
+        nickname: '임시',
+        content,
+        score,
+      };
+      createReviewList.mutate(reviewData);
+    }
   };
 
   return (

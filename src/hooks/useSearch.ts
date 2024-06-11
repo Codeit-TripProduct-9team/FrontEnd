@@ -5,8 +5,6 @@ const useSearch = (searchList: videoListProps[]) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState<videoListProps[]>([]);
 
-  console.log(searchList);
-
   useEffect(() => {
     if (searchKeyword) {
       const hasKeyword = searchList.filter(
