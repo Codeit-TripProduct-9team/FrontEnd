@@ -14,7 +14,7 @@ const ReviewTextArea = ({ content, setContent, onClick }: ReviewTextAreaProps) =
   return (
     <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
       <textarea
-        className="w-full h-200 py-5 px-28 bg-transparent resize-none focus:outline-none"
+        className="w-full h-200 py-30 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
         onChange={(e) => {

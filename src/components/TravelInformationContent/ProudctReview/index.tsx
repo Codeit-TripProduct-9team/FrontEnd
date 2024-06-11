@@ -1,37 +1,35 @@
-import { useEffect, useState, useCallback } from 'react';
-import ReviewList from './ReviewList';
+import { useState } from 'react';
+
 import SortToolbar from './SortToolbar';
-import { reviewData } from './mock';
+
 import CreateReview from './CreateReview';
-import instance from '@/src/api/axios';
+
 import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+import { getReview } from '@/src/api/getReview';
+import ReviewList from './ReviewList';
+import NoReivewData from './SortToolbar/NoReviewData';
 
 const ProductReview = () => {
-  const [reviewList, setReviewList] = useState(reviewData);
   const [sortType, setSortType] = useState('latest');
 
   const router = useRouter();
   const videoId = router.query.id as string;
 
-  const getReviewList = useCallback(async () => {
-    try {
-      const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=0`);
-      setReviewList(response.data);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [sortType, videoId]);
+  const { data: reviewListData } = useQuery({
+    queryKey: ['reviewList', videoId, sortType],
+    queryFn: () => getReview({ videoId, sortType }),
+  });
 
-  useEffect(() => {
-    getReviewList();
-  }, [getReviewList, sortType]);
+  const emptyReveiwData = reviewListData?.status === '4007';
+
+  const reveiwList = reviewListData?.data.content;
 
   return (
     <div className="flex flex-col w-full pt-65 px-110 bg-white">
       <CreateReview videoId={videoId} />
       <SortToolbar sortType={sortType} setSortType={setSortType} />
-      <ReviewList reviewList={reviewList} />
+      {emptyReveiwData ? <NoReivewData /> : <ReviewList reviewList={reveiwList} />}
     </div>
   );
 };

@@ -25,10 +25,10 @@ const SortToolbar = ({ sortType, setSortType }: SortToolbarProps) => {
       <div className="flex gap-30">
         <button
           onClick={() => {
-            handleSelectContent('new');
+            handleSelectContent('latest');
           }}
           className={combineStyle({
-            isSelected: content === 'new',
+            isSelected: content === 'latest',
             base: sortButtonStyle.base,
             selected: sortButtonStyle.selected,
             notSelected: sortButtonStyle.notSelected,
