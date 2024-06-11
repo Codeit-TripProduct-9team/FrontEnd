@@ -3,7 +3,7 @@ import YouTube from 'react-youtube';
 import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
 
 interface YoutubePlayerProps {
-  videoId: string;
+  videoId: string | undefined;
 }
 
 const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {

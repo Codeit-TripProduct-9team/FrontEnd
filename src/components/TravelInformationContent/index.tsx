@@ -1,38 +1,33 @@
 import { useRouter } from 'next/router';
 
+import { useQuery } from 'react-query';
+
 import SearchBar from './SearchBar';
 import ProductInformation from './ProductInformation';
 import ChangeContent from './ChangeContent';
 
 import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 
-import { youtubeMockData } from './mock';
-import instance from '@/src/api/axios';
-import { useCallback, useEffect } from 'react';
+import { getVideoInformation } from '@/src/api/getVideoInfo';
 
 const TravelInformation = () => {
   const route = useRouter();
   const pageUrl = route.asPath;
   const videoId = route.query.id as string;
 
-  const getYoutubeList = useCallback(async () => {
-    try {
-      const response = await instance.get(`/video/${videoId}`);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [videoId]);
+  const { data: videoInformation } = useQuery({
+    queryKey: ['videoInformation', videoId],
+    queryFn: () => getVideoInformation(videoId),
+    enabled: !!videoId && videoId !== undefined,
+  });
 
-  useEffect(() => {
-    getYoutubeList();
-  }, [getYoutubeList]);
+  const youtubeData = videoInformation?.data;
 
   return (
     <main className="flex flex-col justify-center items-center ">
-      <TravelInformationMeta youtubeData={youtubeMockData} pageUrl={pageUrl} />
+      <TravelInformationMeta youtubeData={youtubeData} pageUrl={pageUrl} />
       <SearchBar />
-      <ProductInformation youtubeData={youtubeMockData} />
+      <ProductInformation youtubeData={youtubeData} />
       <ChangeContent />
     </main>
   );
