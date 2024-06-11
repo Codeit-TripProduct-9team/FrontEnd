@@ -58,7 +58,7 @@ const MyRouteCardSectionPagination = () => {
 
         if (number === offset - 2 || number === offset + 2) {
           return (
-            <span key={number} className="flex items-center justify-center">
+            <span key={number} className="flex items-center justify-center mx-6">
               ...
             </span>
           );
