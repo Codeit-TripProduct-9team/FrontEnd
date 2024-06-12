@@ -30,7 +30,6 @@ type SearchedPlace = {
 
 const AddNearbyPlaceModal = () => {
   const positions = mockMyCourse.coursePlan;
-  const [selectedPlace, setSelectedPlace] = useState({ name: '', position: { lat: 0, lng: 0 } });
   const [mapCenter, setMapCenter] = useState(positions[0].places[0].position);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<Marker>();
@@ -46,11 +45,22 @@ const AddNearbyPlaceModal = () => {
     })
     .flat();
 
+  const [selectedPlace, setSelectedPlace] = useState({
+    name: decomposedData[0].name,
+    position: decomposedData[0].position,
+  });
+
   const handlePlaceClick = (id: number) => {
     const place = decomposedData.find((place) => place.id === id);
     if (place) {
       setSelectedPlace({ name: place.name, position: place.position });
       setMapCenter(place.position);
+    }
+  };
+
+  const handleSearchPlace = (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.target as HTMLInputElement).value.length > 0) {
+      setSelectedQuery((e.target as HTMLInputElement).value);
     }
   };
 
@@ -64,7 +74,6 @@ const AddNearbyPlaceModal = () => {
           },
         },
       );
-      console.log(data);
 
       // Create a marker for each place
       const newMarkers = data.documents.map((place: SearchedPlace) => ({
@@ -79,6 +88,9 @@ const AddNearbyPlaceModal = () => {
 
       // Add the new markers to the map
       setMarkers(newMarkers);
+      // if (newMarkers) {
+      //   setMapCenter(newMarkers[0]);
+      // }
     };
     fetchPlaces();
   }, [selectedDistance, selectedPlace, selectedQuery]);
@@ -122,6 +134,16 @@ const AddNearbyPlaceModal = () => {
             </div>
           </CustomOverlayMap>
         )}
+        <input
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchPlace(e);
+            }
+          }}
+          onBlur={(e) => handleSearchPlace(e)}
+          className="bg-blue absolute left-1/2 transform -translate-x-1/2 text-center rounded-10 text-white placeholder:text-white py-4 px-10"
+          placeholder="원하시는 검색어를 입력하세요."
+        />
 
         <CategoryButton setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
         <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
