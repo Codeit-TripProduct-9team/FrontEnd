@@ -58,8 +58,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       'Content-Type': 'application/json',
     };
     try {
-      const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
-      console.log(response);
+      await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
     } catch (error) {
       console.error(error);
     }
@@ -77,8 +76,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       score: editScore,
     };
     try {
-      const response = await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
-      console.log(response);
+      await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
     } catch (error) {
       console.error(error);
     }
@@ -99,8 +97,6 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       console.error(error);
     }
   };
-
-  console.log(reviewList);
 
   const handleReviewDelete = async (reviewId: number) => {
     try {

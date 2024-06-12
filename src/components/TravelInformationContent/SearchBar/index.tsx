@@ -11,8 +11,6 @@ const SearchBar = () => {
   const [searchList, setSearchList] = useState([]);
   const { searchKeyword, searchResult, handleChangeKeyword, setSearchKeyword } = useSearch(searchList);
 
-  const router = useRouter();
-
   const videoList = async () => {
     try {
       const response = await instance.get('/video');
@@ -27,8 +25,10 @@ const SearchBar = () => {
     videoList();
   }, []);
 
-  const handleRouteContents = (cardId: number) => {
-    const contentLink = `/travel-information/${cardId}`;
+  const router = useRouter();
+
+  const handleRouteContents = (videoId: number) => {
+    const contentLink = `/travel-information/${videoId}`;
     router.push(contentLink);
     setSearchKeyword('');
   };

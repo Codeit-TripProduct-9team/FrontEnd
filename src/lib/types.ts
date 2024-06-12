@@ -37,12 +37,12 @@ export interface kakaoShareProps {
 }
 
 export interface VideoInformationProps {
-  id: number;
-  title: string;
-  content: string;
-  url: string;
-  tag: string;
-  likeCount: number;
+  id?: number;
+  title?: string;
+  content?: string;
+  url?: string;
+  tag?: string;
+  likeCount?: number;
 }
 
 export interface videoListProps {

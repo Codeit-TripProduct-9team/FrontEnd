@@ -1,11 +1,10 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+
 import SearchInformation from './SearchInformation';
 
 import { videoListProps } from '@/src/lib/types';
-
 import InformationSearchSkeleton from '@/src/components/common/skeleton/InformationSearchSkeleton';
-import getYoutubeData from '@/src/api/getYoutubeData';
+import useSearchThumbnail from '@/src/hooks/useSearchthumbnail';
 
 interface SearchContentProps {
   searchResult: videoListProps[];
@@ -13,24 +12,7 @@ interface SearchContentProps {
 }
 
 const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
-  const [thumbnails, setThumbnails] = useState<{ [key: string]: string }>({});
-
-  useEffect(() => {
-    const fetchThumbnails = async () => {
-      const thumbnailsData: { [key: string]: string } = {};
-      for (const { id, url } of searchResult) {
-        const videoId = url.split('v=')[1];
-        const data = await getYoutubeData(videoId);
-        const thumbnail = data?.items[0]?.snippet?.thumbnails?.high?.url;
-        if (thumbnail) {
-          thumbnailsData[id] = thumbnail;
-        }
-      }
-      setThumbnails(thumbnailsData);
-    };
-
-    fetchThumbnails();
-  }, [searchResult]);
+  const thumbnails = useSearchThumbnail(searchResult);
 
   return (
     <ul className="absolute flex flex-col left-120 top-65 pt-20  w-625 h-280 bg-gray-20 border-2 border-gray-50 overflow-y-scroll">

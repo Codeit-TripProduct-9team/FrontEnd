@@ -52,7 +52,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
 
   const createVideoLike = async () => {
     const token = getAccessToken();
-    const body = { data: true };
+    const body = { data: null };
     const headers = {
       Authorization: `Bearer ${token}`,
     };

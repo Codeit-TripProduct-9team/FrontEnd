@@ -4,7 +4,7 @@ import ProductCardButton from './ProductCardButton';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface YoutubeDataProps {
-  youtubeData: VideoInformationProps | undefined;
+  youtubeData: VideoInformationProps | null;
   videoId: string | undefined;
 }
 
