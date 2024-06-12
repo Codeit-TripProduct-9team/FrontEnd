@@ -1,42 +1,15 @@
-import { useRouter } from 'next/router';
-
-import SearchInput from './SearchInput';
+import SearchPage from './SearchPage';
 import SearchContent from './SearchContent';
-import useSearch from '@/src/hooks/useSearch';
-
-import instance from '@/src/api/axios';
-import { useEffect, useState } from 'react';
+import useSearchVideo from '@/src/hooks/useSearchVideo';
 
 const SearchBar = () => {
-  const [searchList, setSearchList] = useState([]);
-  const { searchKeyword, searchResult, handleChangeKeyword, setSearchKeyword } = useSearch(searchList);
-
-  const videoList = async () => {
-    try {
-      const response = await instance.get('/video');
-      const reslut = response.data.data;
-      setSearchList(reslut);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    videoList();
-  }, []);
-
-  const router = useRouter();
-
-  const handleRouteContents = (videoId: number) => {
-    const contentLink = `/travel-information/${videoId}`;
-    router.push(contentLink);
-    setSearchKeyword('');
-  };
+  const { searchKeyword, searchResult, handleChangeKeyword, handleRouteContents } = useSearchVideo();
+  const hasKeyword = searchResult.length > 0;
 
   return (
     <div className="relative w-full ">
-      <SearchInput searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
-      {searchResult.length > 0 && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
+      <SearchPage searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
+      {hasKeyword && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
     </div>
   );
 };

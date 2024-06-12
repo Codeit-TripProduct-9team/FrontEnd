@@ -14,13 +14,16 @@ const useYouTubeData = (videoId: string) => {
       const getYoutubeData = async () => {
         try {
           const part = 'snippet,statistics';
+
           const response = await instance.get(
             `${BASED_URL.YOUTUBE_API}/videos?id=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}&part=${part}`,
           );
           const result = response.data.items[0];
-          setViewCount(result.statistics.viewCount);
-          setUpdatedAt(result.snippet.publishedAt);
-          setThumbnail(result.snippet.thumbnails.default.url);
+          if (result !== undefined) {
+            setViewCount(result.statistics.viewCount);
+            setUpdatedAt(result.snippet.publishedAt);
+            setThumbnail(result.snippet.thumbnails.default.url);
+          }
         } catch (error) {
           console.error('Error:', error);
         }
