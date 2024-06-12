@@ -5,11 +5,11 @@ import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface YoutubeDataProps {
   youtubeData: VideoInformationProps | null;
-  videoId: string | undefined;
+  youtubeId: string;
 }
 
-const YoutubeData = ({ youtubeData, videoId }: YoutubeDataProps) => {
-  const { viewCount, updatedAt, thumbnail } = useYouTubeData(videoId as string);
+const YoutubeData = ({ youtubeData, youtubeId }: YoutubeDataProps) => {
+  const { viewCount, updatedAt, thumbnail } = useYouTubeData(youtubeId);
 
   return (
     <div className="flex flex-col w-full h-378 gap-24">

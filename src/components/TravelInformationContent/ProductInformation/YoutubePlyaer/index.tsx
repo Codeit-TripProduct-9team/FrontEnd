@@ -3,10 +3,10 @@ import YouTube from 'react-youtube';
 import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
 
 interface YoutubePlayerProps {
-  videoId: string | undefined;
+  youtubeId: string;
 }
 
-const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
+const YoutubePlayer = ({ youtubeId }: YoutubePlayerProps) => {
   const { videoSize, onReady, onMouseEnter, onMouseLeave } = useYouTubePlayer();
 
   return (
@@ -16,7 +16,7 @@ const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
       onMouseLeave={onMouseLeave}
     >
       <YouTube
-        videoId={videoId}
+        videoId={youtubeId}
         opts={{
           width: `${videoSize}`,
           height: '378',

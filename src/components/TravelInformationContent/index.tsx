@@ -7,11 +7,13 @@ import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 import useVideoInformaiton from '@/src/hooks/useVideoInformaiton';
 
 const TravelInformation = () => {
+  const { youtubeData, youtubeDataLoading } = useVideoInformaiton();
+
   return (
     <main className="flex flex-col justify-center items-center ">
-      <TravelInformationMeta youtubeData={useVideoInformaiton()} />
+      <TravelInformationMeta youtubeData={youtubeData} />
       <SearchBar />
-      <ProductInformation youtubeData={useVideoInformaiton()} />
+      <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
       <ChangeContent />
     </main>
   );

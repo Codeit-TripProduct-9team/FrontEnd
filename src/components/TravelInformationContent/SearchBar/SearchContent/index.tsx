@@ -15,7 +15,7 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
   const { thumbnails, loading } = useSearchThumbnail(searchResult);
 
   return (
-    <ul className="absolute flex flex-col left-120 top-65  w-625 h-280 bg-gray-20 border-2 border-gray-50 overflow-y-scroll">
+    <ul className="absolute flex flex-col left-120 top-65 w-625 h-280 bg-gray-20 border-2 border-gray-50 overflow-y-scroll">
       {searchResult.map(({ id, title, tag }) => (
         <li
           key={id}

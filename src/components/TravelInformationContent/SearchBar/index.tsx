@@ -1,16 +1,23 @@
-import SearchPage from './SearchPage';
+import FindPageInput from './FindPageInput';
 import SearchContent from './SearchContent';
 import useSearchVideo from '@/src/hooks/useSearchVideo';
+import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 
 const SearchBar = () => {
   const { searchKeyword, searchResult, handleChangeKeyword, handleRouteContents } = useSearchVideo();
-  const hasKeyword = searchResult.length > 0;
+  const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
+  const showSerachContent = isFocused && searchResult.length > 0;
 
   return (
-    <div className="relative w-full ">
-      <SearchPage searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
-      {hasKeyword && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
-    </div>
+    <section className="relative w-full ">
+      <FindPageInput
+        searchKeyword={searchKeyword}
+        onChange={handleChangeKeyword}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+      {showSerachContent && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
+    </section>
   );
 };
 

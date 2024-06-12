@@ -6,6 +6,7 @@ import instance from '../api/axios';
 
 const useVideoInformaiton = () => {
   const [youtubeData, setYoutubeData] = useState<VideoInformationProps | null>(null);
+  const [youtubeDataLoading, setYoutubeDataLoading] = useState(true);
 
   const route = useRouter();
   const videoId = route.query.id as string;
@@ -19,13 +20,15 @@ const useVideoInformaiton = () => {
           setYoutubeData(result);
         } catch (error) {
           console.error(error);
+        } finally {
+          setYoutubeDataLoading(false);
         }
       };
       getVideoInformation();
     }
   }, [videoId]);
 
-  return youtubeData;
+  return { youtubeData, youtubeDataLoading };
 };
 
 export default useVideoInformaiton;
