@@ -13,8 +13,7 @@ import ModalContent from '../common/modal/ModalContent';
 import { MODAL_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
 import { openToast } from '@/src/utils/openToast';
 import { useRouter } from 'next/router';
-import { Cookies } from 'react-cookie';
-import { getCookie, setCookie } from '@/src/utils/cookie';
+import { setCookie } from '@/src/utils/cookie';
 
 interface InputForm {
   text?: string;
