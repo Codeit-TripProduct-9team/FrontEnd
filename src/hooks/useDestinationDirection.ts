@@ -19,10 +19,12 @@ const useDestinationDirection = () => {
   const isValidCoordinate = startPoint && startPoint.lat !== 0 && startPoint.lng !== 0;
 
   useEffect(() => {
+    const position = { lat: currentLocation.latitude, lng: currentLocation.longitude };
     if (accessLocation) {
       setHasCurrentLocation(true);
-      setStartPoint({ lat: currentLocation.latitude, lng: currentLocation.longitude });
-    } else {
+      setStartPoint(position);
+    }
+    if (!accessLocation) {
       setHasCurrentLocation(false);
     }
   }, [accessLocation, currentLocation.latitude, currentLocation.longitude]);

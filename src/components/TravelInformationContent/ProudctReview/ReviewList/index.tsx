@@ -42,33 +42,15 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     ));
   };
 
-  const ACCESS_TOKEN = 'accessToken';
-
-  const getAccessToken = () => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(ACCESS_TOKEN);
-    }
-    return null;
-  };
-  const token = getAccessToken();
-
   const deleteReview = async (reviewId: number) => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
     try {
-      await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
+      await instance.delete(`/video/${videoId}/review/${reviewId}`);
     } catch (error) {
       console.error(error);
     }
   };
 
   const fetchReview = async (reviewId: number) => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
     const body = {
       title: '수정',
       nickname: '수정',
@@ -76,7 +58,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       score: editScore,
     };
     try {
-      await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
+      await instance.put(`/video/${videoId}/review/${reviewId}`, body);
     } catch (error) {
       console.error(error);
     }

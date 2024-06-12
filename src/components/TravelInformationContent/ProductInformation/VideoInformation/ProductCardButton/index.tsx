@@ -12,6 +12,7 @@ import Button from '@/src/components/common/button';
 import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/utils/socialShare';
 import instance from '@/src/api/axios';
 import { useRouter } from 'next/router';
+import { getCookie } from '@/src/utils/cookie';
 
 interface ProductButtonProps {
   title: string | undefined;
@@ -20,6 +21,7 @@ interface ProductButtonProps {
 }
 
 const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps) => {
+  const hasToken = getCookie('accessToken');
   const route = useRouter();
   const videoId = route.query.id as string;
 
@@ -41,20 +43,10 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
     ));
   };
 
-  const ACCESS_TOKEN = 'accessToken';
-
-  const getAccessToken = () => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(ACCESS_TOKEN);
-    }
-    return null;
-  };
-
   const createVideoLike = async () => {
-    const token = getAccessToken();
     const body = { data: null };
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${hasToken}`,
     };
     try {
       const response = await instance.post(`/video/${videoId}/likes`, body, { headers });

@@ -36,7 +36,9 @@ const useSearchVideo = () => {
 
   const handleRouteContents = (videoId: number) => {
     const contentLink = `/travel-information/${videoId}`;
-    router.push(contentLink);
+    setTimeout(() => {
+      router.push(contentLink);
+    }, 500);
     setSearchKeyword('');
   };
 

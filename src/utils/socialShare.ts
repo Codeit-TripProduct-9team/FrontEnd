@@ -1,4 +1,7 @@
+import toast from 'react-hot-toast';
 import { kakaoShareProps } from '../lib/types';
+
+const currentLink = window.location.href;
 
 export const shareKakao = ({ title, description, thumbnail }: kakaoShareProps) => {
   return () => {
@@ -13,14 +16,14 @@ export const shareKakao = ({ title, description, thumbnail }: kakaoShareProps) =
         description: description,
         imageUrl: thumbnail,
         link: {
-          webUrl: window.location.href,
+          webUrl: currentLink,
         },
       },
       buttons: [
         {
-          title: '웹으로 이동',
+          title: 'uTrip으로 이동',
           link: {
-            webUrl: window.location.href,
+            webUrl: currentLink,
           },
         },
       ],
@@ -29,15 +32,16 @@ export const shareKakao = ({ title, description, thumbnail }: kakaoShareProps) =
 };
 
 export const shareFacebook = () => {
-  const link = window.location.href;
+  const link = currentLink;
   window.open(`http://www.facebook.com/sharer/sharer.php?u=${link}`);
 };
 
 export const shareTwitter = () => {
-  const link = window.location.href;
+  const link = currentLink;
   window.open(`https://twitter.com/intent/tweet?text=custom%20text&url=${link}`);
 };
 
 export const currentPageUrl = () => {
-  navigator.clipboard.writeText(window.location.href);
+  navigator.clipboard.writeText(currentLink);
+  toast.success(`링크가 복사되었습니다. ${currentLink}`);
 };

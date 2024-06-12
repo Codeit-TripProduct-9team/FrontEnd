@@ -3,6 +3,9 @@ import ReviewScore from './ReviewScore';
 import { useState } from 'react';
 
 import instance from '@/src/api/axios';
+import toast from 'react-hot-toast';
+import { getCookie } from '@/src/utils/cookie';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 interface CreateReviewProps {
   videoId: string;
@@ -12,21 +15,12 @@ interface CreateReviewProps {
 const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [score, setScore] = useState(0);
   const [content, setContent] = useState('');
-
-  const ACCESS_TOKEN = 'accessToken';
-
-  const getAccessToken = () => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(ACCESS_TOKEN);
-    }
-    return null;
-  };
+  const hasToken = getCookie('accessToken');
 
   const createReview = async () => {
-    const token = getAccessToken();
     const body = { title: '테스트', nickname: '테스트', content: content, score: score };
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${hasToken}`,
       'Content-Type': 'application/json',
     };
     const response = await instance.post(`/video/${videoId}/review`, body, { headers });
@@ -34,16 +28,25 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   };
 
   const handleCreateReview = async () => {
-    if (score === 0) {
-      alert('별점을 등록해주세요.');
+    const hasScore = score === 0;
+    if (hasScore) {
+      toast.error(TOAST_MESSAGE.EMPTY_SCORE);
     }
-    try {
-      await createReview();
-      renderReveiwList();
-      setScore(0);
-      setContent('');
-    } catch (error) {
-      console.error(error);
+
+    if (!hasScore) {
+      try {
+        const response = await createReview();
+        if (response.status == 2000) {
+          renderReveiwList();
+          setScore(0);
+          setContent('');
+          toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
+        }
+      } catch (error: any) {
+        if (error.response.message) {
+          toast.error(error.response.message);
+        }
+      }
     }
   };
 

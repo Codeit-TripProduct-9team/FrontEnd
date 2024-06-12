@@ -1,35 +1,13 @@
-import { useEffect, useState, useCallback } from 'react';
-
 import SortToolbar from './SortToolbar';
 
 import CreateReview from './CreateReview';
-import instance from '@/src/api/axios';
-import { useRouter } from 'next/router';
+
 import ReviewList from './ReviewList';
 import NoReivewData from './SortToolbar/NoReviewData';
+import useGetReviewList from '@/src/hooks/useGetReiveList';
 
 const ProductReview = () => {
-  const [sortType, setSortType] = useState('latest');
-  const [reviewList, setReviewList] = useState([]);
-
-  const router = useRouter();
-  const videoId = router.query.id as string;
-
-  const getReview = useCallback(async () => {
-    try {
-      const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=0`);
-      const result = response.data.data.content;
-      setReviewList(result);
-    } catch (error) {
-      console.error('error');
-    }
-  }, [sortType, videoId]);
-
-  useEffect(() => {
-    if (videoId) {
-      getReview();
-    }
-  }, [getReview, videoId]);
+  const { setSortType, reviewList, getReview, videoId, sortType } = useGetReviewList();
 
   const emptyReveiwData = reviewList.length === 0;
 
