@@ -3,6 +3,7 @@ import { MockDataItem } from '@/src/lib/types';
 import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
 import NoSearchData from '../../mainContent/CardSection/NoSearchData';
+import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
 
 interface filteredDataProps {
   filteredData: MockDataItem[];
@@ -39,11 +40,14 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
         ))}
       </div>
       {filteredData.length !== 0 ? (
-        <div className={`grid grid-cols-3 gap-12`}>
-          {filteredData.map((datas, index) => (
-            <MyRouteListCard key={index} data={datas} />
-          ))}
-        </div>
+        <>
+          <div className={`grid grid-cols-3 gap-12`}>
+            {filteredData.map((data, index) => (
+              <MyRouteListCard key={index} data={data} />
+            ))}
+          </div>
+          <MyRouteCardSectionPagination />
+        </>
       ) : (
         <NoSearchData />
       )}

@@ -2,12 +2,18 @@ import { MockDataItem } from '@/src/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Draggable } from '@hello-pangea/dnd';
+import { openToast } from '@/src/utils/openToast';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 interface ListCardProps {
   data: MockDataItem;
 }
 
 const MyRouteListCard = ({ data }: ListCardProps) => {
+  const handleDeleteMyPlace = () => {
+    openToast.success(TOAST_MESSAGE.DELETE);
+  };
+
   return (
     <Draggable draggableId={`${data.cardId}-${data.cardId}`} index={data.cardId}>
       {(provided) => (
@@ -35,7 +41,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               </div>
               <div
                 className="transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-8"
-                // onClick={handleDeleteMyPlace}
+                onClick={handleDeleteMyPlace}
               >
                 마이플레이스 삭제
               </div>

@@ -1,5 +1,3 @@
-import Button from '../../../button';
-
 const DISTANCE = [1000, 5000, 10000];
 
 type DistanceButtonProps = {
@@ -9,15 +7,15 @@ type DistanceButtonProps = {
 
 const DistanceButton = ({ selectedDistance, setSelectedDistance }: DistanceButtonProps) => {
   return (
-    <div className="flex gap-9 justify-center">
+    <div className="flex flex-col justify-center absolute right-20 rounded-s overflow-hidden text-white bg-gray-30">
       {DISTANCE.map((distance) => (
-        <Button
+        <button
           key={distance}
-          className={`w-109 h-40 bg-gray-30 ${selectedDistance === distance && 'bg-blue text-white'}`}
+          className={`w-63 h-33 border-b-1 last:border-none  rounded-0 ${selectedDistance === distance && 'bg-blue '}`}
           onClick={() => setSelectedDistance(distance)}
         >
           {distance / 1000}km
-        </Button>
+        </button>
       ))}
     </div>
   );

@@ -13,9 +13,12 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import MyRouteCardSection from './MyRouteCardSection';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
-import AddPlaceModal from '../common/modal/MyRoute/AddPlaceModal.tsx';
+import AddPlaceModal from './AddPlaceModal.tsx';
 import SearchBar from './SearchBar';
-import AddNearbyPlaceModal from '../common/modal/MyRoute/AddNearbyPlaceModal.tsx';
+import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
+import Button from '../common/button';
+import { openToast } from '@/src/utils/openToast';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -57,27 +60,36 @@ const MyRouteContent = () => {
 
   const handleAddNearbyPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-491">
+      <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-591">
         <AddNearbyPlaceModal />
       </Modal>
     ));
+  };
+
+  const handleSaveCourse = () => {
+    openToast.success(TOAST_MESSAGE.SAVE);
   };
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
         <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
-          <input
-            // value={titleValue}
-            className="rounded-s h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
-            placeholder="여행지의 제목을 입력해주세요"
-          />
+          <div className="flex gap-12">
+            <input
+              // value={titleValue}
+              className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
+              placeholder="여행지의 제목을 입력해주세요"
+            />
+            <Button className="w-100 h-42 font-bold text-14" onClick={handleSaveCourse}>
+              저장하기
+            </Button>
+          </div>
+
           <KakaoMap />
           <div className="flex justify-end">
             <div>
               <PlaceList />
 
-              {/* 버튼에 모달 핸들러 등록 */}
               <div className="flex gap-9">
                 <button
                   className="w-216 h-60 bg-blue text-white rounded-s flex justify-center items-center font-bold"
@@ -96,7 +108,7 @@ const MyRouteContent = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white rounded-20 px-40 py-20">
+        <div className="flex flex-col bg-white rounded-20 px-40 py-32">
           <SearchBar searchValue={searchValue} onChange={handleSearchInputChange} setSearchValue={setSearchValue} />
 
           <Droppable droppableId="myPlace">

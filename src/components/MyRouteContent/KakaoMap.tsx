@@ -1,38 +1,90 @@
-// import Script from 'next/script';
 import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { mockMyRoute } from './mockMyRoute';
-import React from 'react';
-// const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO}&autoload=false`;
+import React, { useEffect } from 'react';
+import instance from '@/src/api/axios';
+import { useState } from 'react';
 
-// const positions = [
-//   {
-//     title: '카카오',
-//     latlng: { lat: 33.450705, lng: 126.570677 },
-//   },
-//   {
-//     title: '생태연못',
-//     latlng: { lat: 33.450936, lng: 126.569477 },
-//   },
-//   {
-//     title: '텃밭',
-//     latlng: { lat: 33.450879, lng: 126.56994 },
-//   },
-//   {
-//     title: '근린공원',
-//     latlng: { lat: 33.451393, lng: 126.570738 },
-//   },
-// ];
+interface Guide {
+  x: number;
+  y: number;
+}
+
+interface Section {
+  guides: Guide[];
+}
+
+interface Route {
+  sections: Section[];
+}
+
+interface ResponseData {
+  routes: Route[];
+}
 
 const KakaoMap = () => {
   const positions = mockMyRoute.data;
+  const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
+
+  useEffect(() => {
+    const data = {
+      origin: {
+        x: positions[0].latlng.lng,
+        y: positions[0].latlng.lat,
+      },
+      destination: {
+        x: positions[positions.length - 1].latlng.lng,
+        y: positions[positions.length - 1].latlng.lat,
+      },
+      waypoints: positions.slice(1, positions.length - 1).map((position) => ({
+        name: position.place,
+        x: position.latlng.lng,
+        y: position.latlng.lat,
+      })),
+      priority: 'RECOMMEND',
+      car_fuel: 'GASOLINE',
+      car_hipass: false,
+      alternatives: false,
+      road_details: false,
+    };
+    const getPath = async () => {
+      try {
+        const response = await instance.post<ResponseData>(
+          'https://apis-navi.kakaomobility.com/v1/waypoints/directions',
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
+            },
+          },
+        );
+        if (response) {
+          const guides = response.data.routes[0].sections
+            .map((section) => {
+              return section.guides.map((place) => {
+                const { x, y } = place;
+                return { lng: x, lat: y };
+              });
+            })
+            .flat();
+          setPath(guides);
+        } else {
+          console.log('error in calculating path');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getPath();
+  }, [positions]);
+
   return (
     <>
-      {/* <Script src={KAKAO_SDK_URL} /> */}
-      <Map center={positions[0].latlng} className="w-460 h-288 rounded-8 shadow-md z-0">
+      <Map center={positions[0].latlng} level={10} className="w-460 h-288 rounded-8 shadow-md z-0">
         {positions.map((position, index) => (
           <React.Fragment key={`${index}-${position.title}`}>
             <MapMarker
-              // key={`${index}-${position.title}`}
               position={position.latlng}
               title={position.title}
               image={{
@@ -52,12 +104,7 @@ const KakaoMap = () => {
           </React.Fragment>
         ))}
 
-        <Polyline
-          path={positions.map((position) => position.latlng)}
-          strokeWeight={3}
-          strokeColor={'#34C231'}
-          strokeOpacity={1}
-        />
+        <Polyline path={path} strokeWeight={3} strokeColor={'#34C231'} strokeOpacity={1} />
       </Map>
     </>
   );

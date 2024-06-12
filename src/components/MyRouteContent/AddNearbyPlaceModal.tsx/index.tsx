@@ -4,7 +4,7 @@ import { mockMyCourse } from '@/src/components/MyRouteContent/mockMyRoute';
 import { useEffect, useState } from 'react';
 import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import CategoryList from './CategoryList';
+import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
 
 type Marker = {
@@ -30,7 +30,6 @@ type SearchedPlace = {
 
 const AddNearbyPlaceModal = () => {
   const positions = mockMyCourse.coursePlan;
-  const [selectedPlace, setSelectedPlace] = useState({ name: '', position: { lat: 0, lng: 0 } });
   const [mapCenter, setMapCenter] = useState(positions[0].places[0].position);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<Marker>();
@@ -46,11 +45,22 @@ const AddNearbyPlaceModal = () => {
     })
     .flat();
 
+  const [selectedPlace, setSelectedPlace] = useState({
+    name: decomposedData[0].name,
+    position: decomposedData[0].position,
+  });
+
   const handlePlaceClick = (id: number) => {
     const place = decomposedData.find((place) => place.id === id);
     if (place) {
       setSelectedPlace({ name: place.name, position: place.position });
       setMapCenter(place.position);
+    }
+  };
+
+  const handleSearchPlace = (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.target as HTMLInputElement).value.length > 0) {
+      setSelectedQuery((e.target as HTMLInputElement).value);
     }
   };
 
@@ -64,7 +74,6 @@ const AddNearbyPlaceModal = () => {
           },
         },
       );
-      console.log(data);
 
       // Create a marker for each place
       const newMarkers = data.documents.map((place: SearchedPlace) => ({
@@ -79,13 +88,16 @@ const AddNearbyPlaceModal = () => {
 
       // Add the new markers to the map
       setMarkers(newMarkers);
+      // if (newMarkers) {
+      //   setMapCenter(newMarkers[0]);
+      // }
     };
     fetchPlaces();
   }, [selectedDistance, selectedPlace, selectedQuery]);
 
   return (
     <div className="flex flex-col gap-12">
-      <Map center={mapCenter} level={5} className="w-558 h-204 rounded-m shadow-md z-0">
+      <Map center={mapCenter} level={5} className="w-558 h-304 rounded-m shadow-md z-0 relative">
         {markers.map((marker, index) => (
           <MapMarker
             key={`${marker.name}-${index}`}
@@ -113,7 +125,7 @@ const AddNearbyPlaceModal = () => {
               <div className="flex flex-col px-6 pb-6">
                 <span className="text-14">{selectedMarker.roadAddress}</span>
                 <span className="text-12 text-gray-50">(지번: {selectedMarker.address})</span>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
                   <span className="bg-blue rounded-s text-white text-12 px-6 py-2">일정에 추가</span>
                 </div>
@@ -122,14 +134,29 @@ const AddNearbyPlaceModal = () => {
             </div>
           </CustomOverlayMap>
         )}
+        <input
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchPlace(e);
+            }
+          }}
+          onBlur={(e) => handleSearchPlace(e)}
+          className="bg-blue absolute left-1/2 transform -translate-x-1/2 text-center rounded-10 text-white placeholder:text-white py-4 px-10"
+          placeholder="원하시는 검색어를 입력하세요."
+        />
 
-        <CategoryList setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
+        <CategoryButton setSelectedQuery={setSelectedQuery} selectedQuery={selectedQuery} />
+        <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </Map>
       <div className="flex flex-col gap-12">
         <span className="text-center text-14 text-gray-60">위치하신 곳 근방의 장소를 추천해 드려요!</span>
-        <DistanceButton selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
       </div>
-      <ModalPlaceList data={decomposedData} className="h-150" onClick={handlePlaceClick} />
+      <ModalPlaceList
+        data={decomposedData}
+        className="h-190"
+        onClick={handlePlaceClick}
+        selectedPlace={selectedPlace.name}
+      />
     </div>
   );
 };

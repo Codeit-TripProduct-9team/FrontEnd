@@ -78,6 +78,14 @@ const DATA = [
       { id: 5, name: '김해' },
     ],
   },
+  {
+    day: 3,
+    places: [
+      { id: 6, name: '서울' },
+      { id: 7, name: '경포해수욕장' },
+      { id: 8, name: '김해' },
+    ],
+  },
 ];
 
 export type PlaceList = {
@@ -94,7 +102,7 @@ export type Place = {
 
 const PlaceList = () => {
   return (
-    <div className="relative">
+    <div className="relative mb-20 overflow-y-auto h-460 scrollbar-hide">
       <div className="border-l-2 absolute top-10 -left-20 border-gray-60 border-dashed h-[92%]" />
       {DATA.map((data) => (
         <div key={data.day} className="my-20 relative">
@@ -112,7 +120,7 @@ const PlaceList = () => {
           </Droppable>
         </div>
       ))}
-      <div className="flex justify-center items-center relative mb-12 text-12 text-gray-50 w-441 h-60 border-1 rounded-s border-dashed border-gray-40">
+      <div className="flex justify-center items-center relative text-12 text-gray-50 w-441 h-60 border-1 rounded-s border-dashed border-gray-40">
         <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-25 top-20" />
         드래그앤 드랍으로 마음에 드는 여행지를 내 계획에 포함해보세요
       </div>
