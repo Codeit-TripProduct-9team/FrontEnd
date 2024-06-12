@@ -27,4 +27,5 @@ export const BASED_URL = {
 export const TOAST_MESSAGE = {
   DELETE: '삭제되었습니다.',
   SAVE: '저장되었습니다.',
+  LOGIN: '로그인 되었습니다.',
 };
