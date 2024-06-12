@@ -10,8 +10,11 @@ import instance from '@/src/api/axios';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import ModalContent from '../common/modal/ModalContent';
-import { MODAL_MESSAGE } from '../../constants/constants';
-// import { useRouter } from 'next/router';
+import { MODAL_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
+import { openToast } from '@/src/utils/openToast';
+import { useRouter } from 'next/router';
+import { Cookies } from 'react-cookie';
+import { getCookie, setCookie } from '@/src/utils/cookie';
 
 interface InputForm {
   text?: string;
@@ -34,7 +37,7 @@ const SigninContent = () => {
     clearErrors,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
-  // const router = useRouter();
+  const router = useRouter();
 
   //모달 사용
   const overlay = useOverlay();
@@ -49,8 +52,15 @@ const SigninContent = () => {
   const handleSignin = async (data: InputForm) => {
     try {
       const body = { email: data.email, password: data.password };
-      const response = await instance.post('auth/login', body);
-      console.log(response);
+      const response = await instance.post('/auth/login', body);
+      if (response.status === 200) {
+        const accessToken = response.data.data.accessToken;
+        openToast.success(TOAST_MESSAGE.LOGIN);
+        setCookie('accessToken', accessToken, {
+          path: '/',
+        });
+        router.push('/');
+      }
     } catch (error: any) {
       console.log(error);
       if (error.response.status === 400 || error.response.status === 404) {
