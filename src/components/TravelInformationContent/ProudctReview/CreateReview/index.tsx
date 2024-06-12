@@ -1,40 +1,49 @@
 import ReviewTextArea from './ReveiwTextarea';
 import ReviewScore from './ReviewScore';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
-import PostReview, { PostReviewProps } from '@/src/api/postReview';
-import { queryClient } from '@/src/pages/_app';
+
+import instance from '@/src/api/axios';
 
 interface CreateReviewProps {
   videoId: string;
+  renderReveiwList: () => void;
 }
 
-const CreateReview = ({ videoId }: CreateReviewProps) => {
+const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [score, setScore] = useState(0);
   const [content, setContent] = useState('');
 
-  const createReviewList = useMutation({
-    mutationFn: (reviewData: PostReviewProps) => PostReview(reviewData),
-    onSuccess: () => {
-      alert('생성되었습니다.');
-      queryClient.invalidateQueries({ queryKey: ['reviewList'] });
-    },
-  });
+  const ACCESS_TOKEN = 'accessToken';
 
-  const handleCreateReview = () => {
+  const getAccessToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(ACCESS_TOKEN);
+    }
+    return null;
+  };
+
+  const createReview = async () => {
+    const token = getAccessToken();
+    const body = { title: '테스트', nickname: '테스트', content: content, score: score };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await instance.post(`/video/${videoId}/review`, body, { headers });
+    return response.data;
+  };
+
+  const handleCreateReview = async () => {
     if (score === 0) {
       alert('별점을 등록해주세요.');
     }
-
-    if (score !== 0) {
-      const reviewData = {
-        videoId: videoId,
-        title: '테스트',
-        nickname: '임시',
-        content,
-        score,
-      };
-      createReviewList.mutate(reviewData);
+    try {
+      await createReview();
+      renderReveiwList();
+      setScore(0);
+      setContent('');
+    } catch (error) {
+      console.error(error);
     }
   };
 

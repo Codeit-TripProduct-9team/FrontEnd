@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import SearchInformation from './SearchInformation';
 
 import { videoListProps } from '@/src/lib/types';
-import getYoutubeData from '@/src/api/getYoutubeData';
+
 import InformationSearchSkeleton from '@/src/components/common/skeleton/InformationSearchSkeleton';
+import getYoutubeData from '@/src/api/getYoutubeData';
 
 interface SearchContentProps {
   searchResult: videoListProps[];

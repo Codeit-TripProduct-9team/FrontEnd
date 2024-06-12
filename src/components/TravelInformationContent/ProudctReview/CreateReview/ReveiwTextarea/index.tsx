@@ -4,10 +4,11 @@ import useTextCounter from '@/src/hooks/useTextCounter';
 interface ReviewTextAreaProps {
   content: string;
   setContent: (content: string) => void;
-  onClick?: () => void;
+  onClick?: (reviewId?: number) => void;
+  reviewId?: number;
 }
 
-const ReviewTextArea = ({ content, setContent, onClick }: ReviewTextAreaProps) => {
+const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAreaProps) => {
   const maxTextLength = 300;
   const { currentCount, handleCountText } = useTextCounter(maxTextLength, content);
 
@@ -23,7 +24,11 @@ const ReviewTextArea = ({ content, setContent, onClick }: ReviewTextAreaProps) =
         }}
       />
       <Button
-        onClick={onClick}
+        onClick={() => {
+          if (onClick) {
+            onClick(reviewId);
+          }
+        }}
         className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
         disabled={content.trim() === ''}
       >

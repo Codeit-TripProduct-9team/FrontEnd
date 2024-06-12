@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 
 import SearchInput from './SearchInput';
-import SearchContent from './SearchContent/indext';
-
+import SearchContent from './SearchContent';
 import useSearch from '@/src/hooks/useSearch';
 
 import instance from '@/src/api/axios';

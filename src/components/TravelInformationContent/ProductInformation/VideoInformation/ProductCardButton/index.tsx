@@ -10,12 +10,21 @@ import shareIcon from '@/public/assets/icon/share.svg';
 import Modal from '@/src/components/common/modal';
 import Button from '@/src/components/common/button';
 import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/utils/socialShare';
-import { kakaoShareProps } from '@/src/lib/types';
+import instance from '@/src/api/axios';
+import { useRouter } from 'next/router';
 
-const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) => {
+interface ProductButtonProps {
+  title: string | undefined;
+  description: string | undefined;
+  thumbnail: string | undefined;
+}
+
+const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps) => {
+  const route = useRouter();
+  const videoId = route.query.id as string;
+
   const handleRegistMyPlace = () => {
-    //마이플레이스 등록
-    //모달 등록되었습니다.
+    createVideoLike();
   };
 
   const sharedOverlay = useOverlay();
@@ -30,6 +39,29 @@ const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) =
         />
       </Modal>
     ));
+  };
+
+  const ACCESS_TOKEN = 'accessToken';
+
+  const getAccessToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(ACCESS_TOKEN);
+    }
+    return null;
+  };
+
+  const createVideoLike = async () => {
+    const token = getAccessToken();
+    const body = { data: true };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const response = await instance.post(`/video/${videoId}/likes`, body, { headers });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

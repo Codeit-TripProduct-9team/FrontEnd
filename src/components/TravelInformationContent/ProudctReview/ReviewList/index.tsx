@@ -1,9 +1,7 @@
 import { useState } from 'react';
-
 import Image from 'next/image';
 
 import ReviewEditButton from './ReviewEditButton';
-
 import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
 
@@ -11,9 +9,15 @@ import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
 
 import convertDate from '@/src/utils/convertDate';
+import { useOverlay } from '@toss/use-overlay';
+import Modal from '@/src/components/common/modal';
+import DeleteReviewModal from './DeleteReviewModal/indext';
+import instance from '@/src/api/axios';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
+  renderReviewList: () => void;
+  videoId: string;
 }
 
 interface ReviewDataItem {
@@ -24,19 +28,88 @@ interface ReviewDataItem {
   score: number;
 }
 
-const ReviewList = ({ reviewList }: ReviewDataProps) => {
+const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
   const [editReview, setEditReview] = useState<number | null>(null);
   const [editScore, setEditScore] = useState(0);
   const [editContent, setEditContent] = useState('');
 
-  const handleReviewEdit = (id: number) => {
-    setEditReview(id);
-    setEditContent(editContent);
-    setEditScore(editScore);
+  const deleteReviewOverlay = useOverlay();
+  const deleteReviewModal = (reviewId: number) => {
+    deleteReviewOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <DeleteReviewModal reviewId={reviewId} onClickDeleteReview={handleReviewDelete} onClickCancelDelete={close} />
+      </Modal>
+    ));
   };
 
-  const handleEdit = () => {
-    setEditReview(null);
+  const ACCESS_TOKEN = 'accessToken';
+
+  const getAccessToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(ACCESS_TOKEN);
+    }
+    return null;
+  };
+  const token = getAccessToken();
+
+  const deleteReview = async (reviewId: number) => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    try {
+      const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchReview = async (reviewId: number) => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    const body = {
+      title: '수정',
+      nickname: '수정',
+      content: editContent,
+      score: editScore,
+    };
+    try {
+      const response = await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleReviewEdit = (id: number, content: string, score: number) => {
+    setEditReview(id);
+    setEditContent(content);
+    setEditScore(score);
+  };
+
+  const handleEdit = async (id: number) => {
+    try {
+      await fetchReview(id);
+      setEditReview(null);
+      renderReviewList();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log(reviewList);
+
+  const handleReviewDelete = async (reviewId: number) => {
+    try {
+      await deleteReview(reviewId);
+      renderReviewList();
+      deleteReviewOverlay.close();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -60,11 +133,19 @@ const ReviewList = ({ reviewList }: ReviewDataProps) => {
                 )}
               </div>
               {editReview === id ? (
-                <ReviewTextArea content={editContent} setContent={setEditContent} onClick={handleEdit} />
+                <ReviewTextArea
+                  content={editContent}
+                  setContent={setEditContent}
+                  onClick={() => handleEdit(id)}
+                  reviewId={id}
+                />
               ) : (
                 <p>{content}</p>
               )}
-              <ReviewEditButton onClickEdit={() => handleReviewEdit(id)} />
+              <ReviewEditButton
+                onClickEdit={() => handleReviewEdit(id, content, score)}
+                onClickDelete={() => deleteReviewModal(id)}
+              />
             </li>
           );
         })}
