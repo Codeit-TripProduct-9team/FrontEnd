@@ -1,28 +1,31 @@
+import useYouTubeData from '@/src/hooks/useYouTubeData';
+import { VideoInformationProps } from '@/src/lib/types';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 interface TravelInformationMeatProps {
-  youtubeData: { url: string; thumbnail: string; likes: number; title: string; description: string; youtuber: string };
-  pageUrl: string;
+  youtubeData: VideoInformationProps | null;
 }
 
-const TravelInformationMeta = ({ youtubeData, pageUrl }: TravelInformationMeatProps) => {
+const TravelInformationMeta = ({ youtubeData }: TravelInformationMeatProps) => {
+  const { thumbnail } = useYouTubeData(useRouter().query.id as string);
   return (
     <Head>
       <title>uTrip</title>
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      <meta name="description" content={youtubeData.title} />
+      <meta name="description" />
 
-      <meta property="og:image" content={youtubeData.thumbnail} />
-      <meta property="og:image:alt" content="alt" />
-      <meta property="og:url" content={pageUrl} />
-      <meta property="og:title" content={youtubeData.title} />
+      <meta property="og:image" content={thumbnail} />
+      <meta property="og:image:alt" content="img" />
+      <meta property="og:url" content={useRouter().asPath} />
+      <meta property="og:title" content={youtubeData?.title} />
       <meta property="og:type" content="website" />
 
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:url" content={pageUrl} />
-      <meta name="twitter:title" content="utrip: 상세페이지" />
-      <meta name="twitter:description" content="...확인하기" />
-      <meta name="twitter:image" content={youtubeData.thumbnail} />
+      <meta name="twitter:url" content={useRouter().asPath} />
+      <meta name="twitter:title" content={youtubeData?.title} />
+      <meta name="twitter:description" content={youtubeData?.content} />
+      <meta name="twitter:image" content={thumbnail} />
     </Head>
   );
 };
