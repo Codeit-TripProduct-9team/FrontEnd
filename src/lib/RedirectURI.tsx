@@ -20,7 +20,7 @@ const RedirectURI = () => {
     //   } catch (error) {}
     // };
 
-    setTimeout(() => router.push('/signin'), 3000);
+    router.push('/');
   });
 
   return (

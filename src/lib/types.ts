@@ -1,10 +1,10 @@
 export interface MockDataItem {
-  cardId: number;
+  id: number;
   thumbnail: string;
   likes: number;
   title: string;
   description: string;
-  tag: string[];
+  tag: string;
   url: string;
 }
 
