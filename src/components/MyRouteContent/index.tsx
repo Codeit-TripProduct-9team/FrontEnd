@@ -1,12 +1,13 @@
 import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { MockDataItem } from '@/src/lib/types';
 // import { MockMyRouteItem } from './mockMyRoute';
 // import { mockMyRoute } from './mockMyRoute';
-import { mock } from '../mainContent/mock';
+// import { mock } from '../mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
+import mainPageRequestInstance from '@/src/api/mainPageRequest';
 // import NoSearchData from '../mainContent/CardSection/NoSearchData';
 // import { Draggable } from '@hello-pangea/dnd';
 // import CardSection from '../mainContent/CardSection';
@@ -26,11 +27,13 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
+  const [cardData, setCardData] = useState([]);
+
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  const mockSliced = mock.data.slice(0, 9);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mockSliced }, searchValue);
+  // const mockSliced = mock.data.slice(0, 9);
+  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const courseName = useCourseStore((state) => state.data.course[0].name);
   const { movePlace } = useCourseStore();
 
@@ -40,6 +43,18 @@ const MyRouteContent = () => {
       setSectionVisible(true);
     }
   };
+
+  useEffect(() => {
+    const fetchAndLogCardList = async () => {
+      try {
+        const cardList = await mainPageRequestInstance.getCardList();
+        setCardData(cardList);
+      } catch (error) {
+        console.error('Error fetching card list:', error);
+      }
+    };
+    fetchAndLogCardList();
+  }, []);
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source } = result;
