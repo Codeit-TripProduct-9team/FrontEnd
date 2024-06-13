@@ -55,8 +55,17 @@ export const useCourseStore = create<CourseStore>((set) => ({
           );
           if (fromPlaceIndex !== -1) {
             const placeToMove = state.data.course[courseIndex].plan[fromPlanIndex].place.splice(fromPlaceIndex, 1)[0];
-            placeToMove.index = toIndex;
-            state.data.course[courseIndex].plan[toPlanIndex].place.push(placeToMove);
+
+            // 목표 위치로 이동시 해당하는 위치에 추가
+            state.data.course[courseIndex].plan[toPlanIndex].place.splice(toIndex, 0, placeToMove);
+
+            // 인덱스 값 오름차순으로 다시 재지정
+            let globalIndex = 1;
+            for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
+              for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
+                state.data.course[courseIndex].plan[j].place[i].index = globalIndex++;
+              }
+            }
           }
         }
       }
