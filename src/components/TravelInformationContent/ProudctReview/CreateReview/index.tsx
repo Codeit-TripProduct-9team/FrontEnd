@@ -15,6 +15,7 @@ interface CreateReviewProps {
 
 const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [score, setScore] = useState(0);
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const hasToken = getCookie('accessToken');
@@ -26,7 +27,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
       toast.error(TOAST_MESSAGE.EMPTY_SCORE);
     }
     if (hasScore) {
-      const body = { title: '테스트', nickname: '테스트', content: content, score: score };
+      const body = { title: title, nickname: '테스트', content: content, score: score };
       try {
         const headers = {
           Authorization: `Bearer ${hasToken}`,
@@ -36,6 +37,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
           renderReveiwList();
           setScore(0);
           setContent('');
+          setTitle('');
           toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
         }
       } catch (error: any) {
@@ -50,7 +52,13 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
     <div className="flex flex-col justify-center items-center gap-12 border-b-1 border-gray-50">
       <h1 className="text-24 font-bold">리뷰를 작성해 주세요.</h1>
       <ReviewScore score={score} setScore={setScore} />
-      <ReviewTextArea content={content} setContent={setContent} onClick={handleCreateReview} />
+      <ReviewTextArea
+        content={content}
+        title={title}
+        setContent={setContent}
+        setTitle={setTitle}
+        createReview={handleCreateReview}
+      />
     </div>
   );
 };

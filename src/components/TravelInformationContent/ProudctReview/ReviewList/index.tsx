@@ -25,6 +25,7 @@ interface ReviewDataProps {
 
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
+  const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
   const [editReveiwScore, setEditReviewScore] = useState(0);
 
@@ -47,14 +48,13 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
 
   const handleChangeReview = async (id: number) => {
     const body = {
-      title: '수정',
+      title: editReviewTitle,
       nickname: '수정',
       content: editReviewContent,
       score: editReveiwScore,
     };
     const headers = {
       Authorization: `Bearer ${hasToken}`,
-      'Content-Type': 'application/json',
     };
     try {
       const response = await instance.put(`/video/${videoId}/review/${id}`, body, { headers });
@@ -104,9 +104,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
               </div>
               {editReviewId === id ? (
                 <ReviewTextArea
+                  title={editReviewTitle}
+                  setTitle={setEditReviewTitle}
                   content={editReviewContent}
                   setContent={setEditReviewContent}
-                  onClick={() => handleChangeReview(id)}
+                  createReview={() => handleChangeReview(id)}
                   reviewId={id}
                 />
               ) : (
