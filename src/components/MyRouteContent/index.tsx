@@ -19,6 +19,7 @@ import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
 import Button from '../common/button';
 import { openToast } from '@/src/utils/openToast';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -30,6 +31,9 @@ const MyRouteContent = () => {
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   const mockSliced = mock.data.slice(0, 9);
   const filteredData: MockDataItem[] = useFilteredData({ data: mockSliced }, searchValue);
+  const courseName = useCourseStore((state) => state.data.course[0].name);
+  const { movePlace } = useCourseStore();
+
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
@@ -38,14 +42,17 @@ const MyRouteContent = () => {
   };
 
   const handleOnDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     if (!destination) {
       return;
     }
 
-    if (destination.droppableId === 'myPlace' && source.droppableId === 'placeList') {
-      console.log(`${draggableId}`);
+    if (destination) {
+      const fromIndex = source.index;
+      const toIndex = destination.index;
+      console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
+      movePlace(1, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
   };
 
@@ -78,7 +85,7 @@ const MyRouteContent = () => {
             <input
               // value={titleValue}
               className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
-              placeholder="여행지의 제목을 입력해주세요"
+              placeholder={`${courseName ? courseName : '여행지의 제목을 입력해주세요'}`}
             />
             <Button className="w-100 h-42 font-bold text-14" onClick={handleSaveCourse}>
               저장하기

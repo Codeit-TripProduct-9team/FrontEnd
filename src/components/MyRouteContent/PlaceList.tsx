@@ -2,6 +2,7 @@ import React from 'react';
 import PlaceItem from './PlaceItem';
 import { Droppable } from '@hello-pangea/dnd';
 import { MockMyRouteData } from './mockMyRoute';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 
 export const mockMyRoute: MockMyRouteData = {
   data: [
@@ -61,33 +62,6 @@ export const mockMyRoute: MockMyRouteData = {
   ],
 };
 
-//맵에 표시할 때 좌표값 필요
-const DATA = [
-  {
-    day: 1,
-    places: [
-      { id: 1, name: '예산시장' },
-      { id: 2, name: '광주' },
-    ],
-  },
-  {
-    day: 2,
-    places: [
-      { id: 3, name: '서울' },
-      { id: 4, name: '경포해수욕장' },
-      { id: 5, name: '김해' },
-    ],
-  },
-  {
-    day: 3,
-    places: [
-      { id: 6, name: '서울' },
-      { id: 7, name: '경포해수욕장' },
-      { id: 8, name: '김해' },
-    ],
-  },
-];
-
 export type PlaceList = {
   day: number;
   places: Place[];
@@ -101,18 +75,20 @@ export type Place = {
 };
 
 const PlaceList = () => {
+  const courseData = useCourseStore((state) => state.data.course[0].plan);
+
   return (
     <div className="relative mb-20 overflow-y-auto h-460 scrollbar-hide">
       <div className="border-l-2 absolute top-10 -left-20 border-gray-60 border-dashed h-[92%]" />
-      {DATA.map((data) => (
+      {courseData.map((data) => (
         <div key={data.day} className="my-20 relative">
           <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-24 top-5" />
           <h2 className="font-bold mb-12">{data.day}일차</h2>
-          <Droppable droppableId={`day-${data.day}`}>
+          <Droppable droppableId={data.day.toString()}>
             {(provided) => (
               <ul className="flex flex-col gap-12" ref={provided.innerRef} {...provided.droppableProps}>
-                {data.places.map((place, index) => (
-                  <PlaceItem key={place.id} place={place} index={index} />
+                {data.place.map((place) => (
+                  <PlaceItem key={place.name} place={place} />
                 ))}
                 {provided.placeholder}
               </ul>
