@@ -19,7 +19,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   };
 
   return (
-    <Draggable draggableId={`${data.id}-${data.title}`} index={data.id}>
+    <Draggable draggableId={`${data.title}`} index={data.id}>
       {(provided) => (
         <div
           ref={provided.innerRef}

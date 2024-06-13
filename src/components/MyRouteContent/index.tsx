@@ -21,21 +21,24 @@ import Button from '../common/button';
 import { openToast } from '@/src/utils/openToast';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const [cardData, setCardData] = useState([]);
-
+  const myPlaceData = useMyPlaceStore((state) => state.data);
+  const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   // const mockSliced = mock.data.slice(0, 9);
-  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.course[0].name);
-  const { movePlace } = useCourseStore();
+  const courseData = useCourseStore((state) => state.data);
+  const flatCourseData = courseData.course[0].plan.flatMap((data) => data.place);
+  const { movePlace, addPlace } = useCourseStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -48,17 +51,17 @@ const MyRouteContent = () => {
     const fetchAndLogCardList = async () => {
       try {
         const cardList = await mainPageRequestInstance.getCardList();
-        setCardData(cardList);
+        setMyPlaceData(cardList);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
     };
     fetchAndLogCardList();
-  }, []);
+  }, [setMyPlaceData]);
 
   const handleOnDragEnd = (result: DropResult) => {
-    const { destination, source } = result;
-
+    const { destination, source, draggableId } = result;
+    console.log(draggableId);
     if (!destination) {
       return;
     }
@@ -68,6 +71,23 @@ const MyRouteContent = () => {
       const toIndex = destination.index;
       console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
       movePlace(1, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
+    }
+
+    if (destination) {
+      const card = myPlaceData.find((card) => card.title === draggableId);
+      const hasDuplicate = flatCourseData.some((place) => place.name === card.title);
+      if (hasDuplicate) {
+        openToast.error('중복된 장소는 추가할 수 없습니다.');
+        return;
+      } else {
+        addPlace(1, parseInt(destination.droppableId), {
+          index: card.id,
+          name: card.title,
+          img: 'aa',
+          posX: 0,
+          posY: 0,
+        });
+      }
     }
   };
 

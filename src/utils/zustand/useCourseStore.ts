@@ -27,6 +27,7 @@ type CourseStore = {
   data: CourseData;
   setData: (by: CourseData) => void;
   addDay: (courseId: number, newDay: Plan) => void;
+  addPlace: (courseId: number, day: number, newPlace: Place) => void;
   movePlace: (courseId: number, fromDay: number, fromIndex: number, toDay: number, toIndex: number) => void;
 };
 
@@ -40,6 +41,23 @@ export const useCourseStore = create<CourseStore>((set) => ({
       const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
       if (courseIndex !== -1) {
         state.data.course[courseIndex].plan.push(newDay);
+      }
+      return { ...state };
+    }),
+  addPlace: (courseId, day, newPlace) =>
+    set((state) => {
+      const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
+      if (courseIndex !== -1) {
+        const dayIndex = state.data.course[courseIndex].plan.findIndex((plan) => plan.day === day);
+        if (dayIndex !== -1) {
+          state.data.course[courseIndex].plan[dayIndex].place.push(newPlace);
+          let globalIndex = 1;
+          for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
+            for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
+              state.data.course[courseIndex].plan[j].place[i].index = globalIndex++;
+            }
+          }
+        }
       }
       return { ...state };
     }),
