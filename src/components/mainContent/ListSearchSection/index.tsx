@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
@@ -10,13 +10,15 @@ import search from '@/public/assets/icon/search.png';
 import Image from 'next/image';
 import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
+import mainPageRequestInstance from '@/src/api/mainPageRequest';
 
 const ListSearchSection = () => {
+  const [cardData, setCardData] = useState([]);
   const [ref, inView] = useInView({ threshold: 0 });
   const inputRef = useRef<HTMLDivElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -29,6 +31,20 @@ const ListSearchSection = () => {
       behavior: 'smooth',
     });
   };
+
+  console.log(cardData);
+
+  useEffect(() => {
+    const fetchAndLogCardList = async () => {
+      try {
+        const cardList = await mainPageRequestInstance.getCardList();
+        setCardData(cardList);
+      } catch (error) {
+        console.error('Error fetching card list:', error);
+      }
+    };
+    fetchAndLogCardList();
+  }, []);
 
   return (
     <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
