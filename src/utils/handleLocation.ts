@@ -1,5 +1,7 @@
 import getDirection from './getDireciton';
+
 import getCoordinate from '@/src/utils/getCoordinate';
+
 import { placeData } from '../components/TravelInformationContent/ProductDescription/mock';
 
 export const handleStartingPoint = async (

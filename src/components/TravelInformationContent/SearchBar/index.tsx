@@ -1,27 +1,15 @@
-import { useRouter } from 'next/router';
-
-import SearchInput from './SearchInput';
-import SearchContent from './SearchContent/indext';
-
-import useSearch from '@/src/hooks/useSearch';
-
-import { mock } from '../../mainContent/mock';
+import SearchPage from './SearchPage';
+import SearchContent from './SearchContent';
+import useSearchVideo from '@/src/hooks/useSearchVideo';
 
 const SearchBar = () => {
-  const { searchKeyword, searchResult, handleChangeKeyword, setSearchKeyword } = useSearch(mock);
-
-  const router = useRouter();
-
-  const handleRouteContents = (cardId: number) => {
-    const contentLink = `/travel-information/${cardId}`;
-    router.push(contentLink);
-    setSearchKeyword('');
-  };
+  const { searchKeyword, searchResult, handleChangeKeyword, handleRouteContents } = useSearchVideo();
+  const hasKeyword = searchResult.length > 0;
 
   return (
     <div className="relative w-full ">
-      <SearchInput searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
-      {searchResult.length > 0 && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
+      <SearchPage searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
+      {hasKeyword && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
     </div>
   );
 };

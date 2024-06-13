@@ -8,17 +8,17 @@ interface filteredDataProps {
   setSearchValue: (value: string) => void;
 }
 
-const sortMenuList = ['인기순', '최신순', '데이트👩‍❤️‍👨', '가족👪', '혼자😏', '산🚞', '바다🌊', '먹방🌭'];
+const sortMenuList = ['인기순', '데이트👩‍❤️‍👨', '가족👪', '혼자😏', '산🚞', '바다🌊', '먹방🌭'];
 
 const CardSection = ({ filteredData, setSearchValue }: filteredDataProps) => {
   const [sort, setSort] = useState<string>('인기순');
   const GRID_ROW = Math.ceil(filteredData.length / 4);
   const handleClickSortMenu = (menus: string) => {
     setSort(menus);
-    if (menus === '인기순' || menus === '최신순') {
+    if (menus === '인기순') {
       setSearchValue('');
     } else {
-      setSearchValue(menus);
+      menus.length <= 4 ? setSearchValue(menus.slice(0, -2)) : setSearchValue(menus.slice(0, -8));
     }
   };
   // 리팩토링시 커스텀 훅으로 뺄것?
@@ -28,7 +28,7 @@ const CardSection = ({ filteredData, setSearchValue }: filteredDataProps) => {
         {sortMenuList.map((menus, idx) => (
           <input
             key={idx}
-            className={`rounded-s font-bold bg-white py-5 px-15 text-15 cursor-pointer  ${
+            className={`rounded-s font-bold bg-white py-5 px-20 text-15 cursor-pointer  ${
               sort === menus ? 'opacity-100' : 'opacity-50'
             }`}
             type="button"

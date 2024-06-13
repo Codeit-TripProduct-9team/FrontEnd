@@ -1,21 +1,35 @@
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
 
-import useReviewRating from '@/src/hooks/useRating';
+interface ReviewScoreProps {
+  score: number;
+  setScore: (score: number) => void;
+}
 
-const ReviewScore = () => {
-  const { hoverIndex, changeScore, handleStarHover, handleStarLeave, handleStarClick } = useReviewRating();
+const ReviewScore = ({ score, setScore }: ReviewScoreProps) => {
+  const [hoverIndex, setHoverIndex] = useState(-1);
 
-  const selectedScore = (index: number) => (changeScore >= index || hoverIndex >= index ? star : emptyStar);
+  const handleStarHover = (index: number) => {
+    setHoverIndex(index);
+  };
+
+  const handleStarLeave = () => {
+    setHoverIndex(-1);
+  };
+
+  const handleStarClick = (index: number) => {
+    setScore(index + 1);
+  };
 
   return (
     <div className="flex pb-16 gap-5 cursor-pointer">
       {[...Array(5)].map((_, index) => (
         <Image
           key={index}
-          src={selectedScore(index)}
+          src={score > index || hoverIndex >= index ? star : emptyStar}
           width={25}
           height={25}
           alt="star"

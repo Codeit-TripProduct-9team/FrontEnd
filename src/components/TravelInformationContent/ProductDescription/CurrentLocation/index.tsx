@@ -1,4 +1,4 @@
-interface ElaspedTimeProps {
+interface CurrentLocationProps {
   destinationName: string;
   elapsedTime: {
     hours: number;
@@ -7,7 +7,7 @@ interface ElaspedTimeProps {
   startPoint: { lat: number; lng: number };
 }
 
-const CurrentLocation = ({ destinationName, elapsedTime }: ElaspedTimeProps) => {
+const CurrentLocation = ({ destinationName, elapsedTime }: CurrentLocationProps) => {
   return (
     <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-582 p-10 z-10 text-center rounded-s bg-white">
       <p>

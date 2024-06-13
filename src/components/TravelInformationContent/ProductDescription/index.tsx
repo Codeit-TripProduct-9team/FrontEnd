@@ -26,20 +26,22 @@ const ProductDescription = () => {
     setPolylinePath,
   } = useDestinationDirection();
 
-  const elapsedTime = convertTime(duration);
-
   return (
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-12">
         <LocationDescription placeData={placeData} />
         <div className="relative w-622 h-470 my-66 mx-108 rounded-l overflow-hidden">
           {hasCurrentLocation ? (
-            <CurrentLocation startPoint={startPoint} destinationName={placeData.title} elapsedTime={elapsedTime} />
+            <CurrentLocation
+              startPoint={startPoint}
+              destinationName={placeData.title}
+              elapsedTime={convertTime(duration)}
+            />
           ) : (
             <CustomLocation
               destinationName={placeData.title}
               customLocation={customLocation}
-              elapsedTime={elapsedTime}
+              elapsedTime={convertTime(duration)}
               changeStartingPoint={(event) => handleChangeStartingPoint(event, setCustomLocation, setShowMessage)}
               customStartingPoint={() =>
                 handleStartingPoint(

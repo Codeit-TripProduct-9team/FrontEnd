@@ -8,11 +8,6 @@ const getDirection = async (
 ) => {
   const hasStartPoint = startPoint && startPoint.lat !== null && startPoint.lng !== null;
   if (hasStartPoint) {
-    const headers: Record<string, string> = {
-      Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
-      'Content-Type': 'application/json',
-    };
-
     const queryParams = new URLSearchParams({
       origin: `${startPoint.lng},${startPoint.lat}`,
       destination: `${destinationPosition.lng},${destinationPosition.lat}`,
@@ -21,10 +16,14 @@ const getDirection = async (
     const requestUrl = `${BASED_URL.KAKKAO_DIRECTION}?${queryParams}`;
 
     try {
-      const response = await instance.get(requestUrl, { headers: headers });
-      const result = response.data;
-      const elapsedTime = result.routes[0].summary.duration;
-      const path = extractPath(result);
+      const response = await instance.get(requestUrl, {
+        headers: {
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const elapsedTime = response.data.routes[0].summary.duration;
+      const path = extractPath(response.data);
       return { path, elapsedTime };
     } catch (error) {
       console.error('Error:', error);
