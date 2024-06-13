@@ -30,9 +30,9 @@ interface ReviewDataItem {
 }
 
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
-  const [editReview, setEditReview] = useState<number | null>(null);
-  const [editScore, setEditScore] = useState(0);
-  const [editContent, setEditContent] = useState('');
+  const [editReviewId, setEditReviewId] = useState<number | null>(null);
+  const [editReviewContent, setEditReviewContent] = useState('');
+  const [editReveiwScore, setEditReviewScore] = useState(0);
 
   const hasToken = getCookie('accessToken');
 
@@ -45,47 +45,29 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     ));
   };
 
-  const deleteReview = async (reviewId: number) => {
-    try {
-      const headers = {
-        Authorization: `Bearer ${hasToken}`,
-        'Content-Type': 'application/json',
-      };
-      await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
-    } catch (error) {
-      console.error(error);
-    }
+  const handleReviewEditData = (id: number, content: string, score: number) => {
+    setEditReviewId(id);
+    setEditReviewContent(content);
+    setEditReviewScore(score);
   };
 
-  const fetchReview = async (reviewId: number) => {
+  const handleChangeReview = async (id: number) => {
     const body = {
       title: '수정',
       nickname: '수정',
-      content: editContent,
-      score: editScore,
+      content: editReviewContent,
+      score: editReveiwScore,
     };
     const headers = {
       Authorization: `Bearer ${hasToken}`,
       'Content-Type': 'application/json',
     };
     try {
-      await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleReviewEdit = (id: number, content: string, score: number) => {
-    setEditReview(id);
-    setEditContent(content);
-    setEditScore(score);
-  };
-
-  const handleEdit = async (id: number) => {
-    try {
-      await fetchReview(id);
-      setEditReview(null);
-      renderReviewList();
+      const response = await instance.put(`/video/${videoId}/review/${id}`, body, { headers });
+      if (response.status === 200) {
+        setEditReviewId(null);
+        renderReviewList();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -93,9 +75,14 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
 
   const handleReviewDelete = async (reviewId: number) => {
     try {
-      await deleteReview(reviewId);
-      renderReviewList();
-      deleteReviewOverlay.close();
+      const headers = {
+        Authorization: `Bearer ${hasToken}`,
+      };
+      const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
+      if (response.status === 200) {
+        renderReviewList();
+        deleteReviewOverlay.close();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -113,26 +100,26 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
               </div>
 
               <div className="flex gap-5 pb-16">
-                {editReview === id ? (
-                  <ReviewScore setScore={setEditScore} score={editScore} />
+                {editReviewId === id ? (
+                  <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
                 ) : (
                   [...Array(5)].map((_, index) => (
                     <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
                   ))
                 )}
               </div>
-              {editReview === id ? (
+              {editReviewId === id ? (
                 <ReviewTextArea
-                  content={editContent}
-                  setContent={setEditContent}
-                  onClick={() => handleEdit(id)}
+                  content={editReviewContent}
+                  setContent={setEditReviewContent}
+                  onClick={() => handleChangeReview(id)}
                   reviewId={id}
                 />
               ) : (
                 <p>{content}</p>
               )}
               <ReviewEditButton
-                onClickEdit={() => handleReviewEdit(id, content, score)}
+                onClickEdit={() => handleReviewEditData(id, content, score)}
                 onClickDelete={() => deleteReviewModal(id)}
               />
             </li>

@@ -25,10 +25,6 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   const route = useRouter();
   const videoId = route.query.id as string;
 
-  const handleRegistMyPlace = () => {
-    createVideoLike();
-  };
-
   const sharedOverlay = useOverlay();
   const sharedOnModal = () => {
     sharedOverlay.open(({ isOpen, close }) => (
@@ -43,7 +39,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
     ));
   };
 
-  const createVideoLike = async () => {
+  const handleRegistMyPlace = async () => {
     const body = { data: null };
     const headers = {
       Authorization: `Bearer ${hasToken}`,

@@ -1,7 +1,7 @@
+import { useRef } from 'react';
+
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
-import useTextCounter from '@/src/hooks/useTextCounter';
-import { useRef } from 'react';
 
 interface ReviewTextAreaProps {
   content: string;
@@ -12,10 +12,20 @@ interface ReviewTextAreaProps {
 
 const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAreaProps) => {
   const focusRef = useRef<HTMLTextAreaElement>(null);
-  const maxTextLength = 300;
-  const { currentCount, handleCountText } = useTextCounter(maxTextLength, content);
 
   useAutoFocus(focusRef);
+
+  const maxTextLength = 300;
+
+  const handleCountText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = event.target.value;
+    if (text.length <= maxTextLength) {
+      setContent(text);
+    }
+  };
+
+  const currentCount = content.length;
+  const emptyContent = content.trim() === '';
 
   return (
     <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
@@ -24,9 +34,9 @@ const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAr
         className="w-full h-200 py-30 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-          handleCountText(e);
+        onChange={(event) => {
+          setContent(event.target.value);
+          handleCountText(event);
         }}
       />
       <Button
@@ -36,7 +46,7 @@ const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAr
           }
         }}
         className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
-        disabled={content.trim() === ''}
+        disabled={emptyContent}
       >
         작성
       </Button>
