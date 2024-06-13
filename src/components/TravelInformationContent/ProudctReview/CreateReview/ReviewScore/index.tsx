@@ -15,6 +15,7 @@ const ReviewScore = ({ score, setScore }: ReviewScoreProps) => {
 
   const handleStarHover = (index: number) => {
     setHoverIndex(index);
+    setScore(0);
   };
 
   const handleStarLeave = () => {
