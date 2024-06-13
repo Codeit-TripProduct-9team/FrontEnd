@@ -1,11 +1,11 @@
 import ModalPlaceList from '../AddPlaceModal.tsx/ModalPlaceList';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
-import { mockMyCourse } from '@/src/components/MyRouteContent/mockMyRoute';
 import { useEffect, useState } from 'react';
 import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 // import markerIcon from '@/public/assets/icon/marker.png';
 
 type Marker = {
@@ -30,21 +30,21 @@ type SearchedPlace = {
 };
 
 const AddNearbyPlaceModal = () => {
-  const positions = mockMyCourse.coursePlan;
-  const [mapCenter, setMapCenter] = useState(positions[0].places[0].position);
+  const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const decomposedData = courseData
+    .map((course) => {
+      return course.place.map((place) => {
+        const { index, name, img, posX, posY } = place;
+        return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
+      });
+    })
+    .flat();
+
+  const [mapCenter, setMapCenter] = useState(decomposedData[0].position);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<Marker>();
   const [selectedDistance, setSelectedDistance] = useState(1000);
   const [selectedQuery, setSelectedQuery] = useState('음식점');
-
-  const decomposedData = mockMyCourse.coursePlan
-    .map((plan) => {
-      return plan.places.map((place) => {
-        const { id, name, mainImg, position } = place;
-        return { id, name, mainImg, position };
-      });
-    })
-    .flat();
 
   const [selectedPlace, setSelectedPlace] = useState({
     name: decomposedData[0].name,
