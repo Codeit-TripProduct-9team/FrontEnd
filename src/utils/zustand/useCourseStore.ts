@@ -56,8 +56,15 @@ export const useCourseStore = create<CourseStore>((set) => ({
           if (fromPlaceIndex !== -1) {
             const placeToMove = state.data.course[courseIndex].plan[fromPlanIndex].place.splice(fromPlaceIndex, 1)[0];
 
-            // 목표 위치로 이동시 해당하는 위치에 추가
-            state.data.course[courseIndex].plan[toPlanIndex].place.splice(toIndex, 0, placeToMove);
+            // Adjust toIndex if moving within the same plan and fromIndex is greater than toIndex
+            const adjustedToIndex = fromDay === toDay && fromIndex > toIndex ? toIndex - 1 : toIndex;
+            console.log('toDay: ', toDay);
+            console.log('fromIndex: ', fromIndex);
+            console.log('toIndex: ', toIndex);
+            console.log('fromPlaceIndex: ', fromPlaceIndex);
+            console.log('adjustedToIndex: ', adjustedToIndex);
+            // Insert the moved place at the correct position in the destination day's list
+            state.data.course[courseIndex].plan[toPlanIndex].place.splice(adjustedToIndex, 0, placeToMove);
 
             // 인덱스 값 오름차순으로 다시 재지정
             let globalIndex = 1;

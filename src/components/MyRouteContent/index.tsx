@@ -51,6 +51,7 @@ const MyRouteContent = () => {
     if (destination) {
       const fromIndex = source.index;
       const toIndex = destination.index;
+      console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
       movePlace(1, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
   };
