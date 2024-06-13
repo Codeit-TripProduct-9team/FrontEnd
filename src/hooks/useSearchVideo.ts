@@ -4,11 +4,14 @@ import { useRouter } from 'next/router';
 
 import { videoListProps } from '../lib/types';
 import instance from '../api/axios';
+import useDebounce from './useDebounce';
 
 const useSearchVideo = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [searchVideoList, setSearchVideoList] = useState<videoListProps[]>([]);
   const [searchResult, setSearchResult] = useState<videoListProps[]>([]);
+
+  const debounceKeyword = useDebounce(searchKeyword);
 
   const router = useRouter();
 
@@ -28,11 +31,11 @@ const useSearchVideo = () => {
   useEffect(() => {
     const filteredList = searchVideoList.filter(
       ({ title, url, tag }) =>
-        title.includes(searchKeyword) || url.includes(searchKeyword) || tag.includes(searchKeyword),
+        title.includes(debounceKeyword) || url.includes(debounceKeyword) || tag.includes(debounceKeyword),
     );
 
-    setSearchResult(searchKeyword.trim() === '' ? [] : filteredList);
-  }, [searchKeyword, searchVideoList]);
+    setSearchResult(debounceKeyword.trim() === '' ? [] : filteredList);
+  }, [debounceKeyword, searchVideoList]);
 
   const handleRouteContents = (videoId: number) => {
     const contentLink = `/travel-information/${videoId}`;
