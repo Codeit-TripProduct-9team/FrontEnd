@@ -6,6 +6,7 @@ import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
+// import markerIcon from '@/public/assets/icon/marker.png';
 
 type Marker = {
   position: { lat: number; lng: number };
@@ -103,6 +104,13 @@ const AddNearbyPlaceModal = () => {
             key={`${marker.name}-${index}`}
             position={marker.position}
             onClick={() => setSelectedMarker(marker)}
+            image={{
+              src: 'https://cdn4.iconfinder.com/data/icons/essentials-72/24/025_-_Location-1024.png',
+              size: {
+                width: 40,
+                height: 42,
+              },
+            }}
           />
         ))}
         <CustomOverlayMap position={selectedPlace.position} yAnchor={2}>
@@ -113,7 +121,7 @@ const AddNearbyPlaceModal = () => {
         </CustomOverlayMap>
 
         {selectedMarker && (
-          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.5} zIndex={2} clickable={true}>
+          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.45} zIndex={2} clickable={true}>
             <div className="relative rounded-s flex flex-col gap-4 bg-white w-300">
               <div className="bg-blue text-white font-bold p-6 rounded-t-s flex justify-between items-center">
                 <h1>{selectedMarker.name}</h1>
