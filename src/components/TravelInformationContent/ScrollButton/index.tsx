@@ -19,7 +19,7 @@ const ScrollButton = ({ targetId }: ScrollButtonProps) => {
   };
 
   const scrollVisiblePosition = () => {
-    const visiblePosition = window.scrollY > window.innerHeight * 1;
+    const visiblePosition = window.scrollY > window.innerHeight;
     if (visiblePosition) {
       setIsVisible(true);
     }
