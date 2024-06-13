@@ -26,7 +26,6 @@ const getDirection = async (
       const path = extractPath(response.data);
       return { path, elapsedTime };
     } catch (error) {
-      console.error('Error:', error);
       return { path: [], elapsedTime: 0 };
     }
   }

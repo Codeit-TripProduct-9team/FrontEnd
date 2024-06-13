@@ -1,4 +1,6 @@
 import truncateText from '@/src/utils/truncateText';
+import Image from 'next/image';
+import redirectArrow from '/public/assets/icon/arrow-redirect.svg';
 
 interface SearchInformationProps {
   title: string;
@@ -18,6 +20,7 @@ const SearchInformation = ({ title, tag }: SearchInformationProps) => {
             </li>
           ))}
         </ul>
+        <Image src={redirectArrow} alt="redirect" width={20} height={20} />
       </div>
     </div>
   );

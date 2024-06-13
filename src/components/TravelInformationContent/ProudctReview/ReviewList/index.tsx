@@ -13,6 +13,7 @@ import { useOverlay } from '@toss/use-overlay';
 import Modal from '@/src/components/common/modal';
 import DeleteReviewModal from './DeleteReviewModal/indext';
 import instance from '@/src/api/axios';
+import { getCookie } from '@/src/utils/cookie';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -33,6 +34,8 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const [editScore, setEditScore] = useState(0);
   const [editContent, setEditContent] = useState('');
 
+  const hasToken = getCookie('accessToken');
+
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
     deleteReviewOverlay.open(({ isOpen, close }) => (
@@ -44,7 +47,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
 
   const deleteReview = async (reviewId: number) => {
     try {
-      await instance.delete(`/video/${videoId}/review/${reviewId}`);
+      const headers = {
+        Authorization: `Bearer ${hasToken}`,
+        'Content-Type': 'application/json',
+      };
+      await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
     } catch (error) {
       console.error(error);
     }
@@ -57,8 +64,12 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       content: editContent,
       score: editScore,
     };
+    const headers = {
+      Authorization: `Bearer ${hasToken}`,
+      'Content-Type': 'application/json',
+    };
     try {
-      await instance.put(`/video/${videoId}/review/${reviewId}`, body);
+      await instance.put(`/video/${videoId}/review/${reviewId}`, body, { headers });
     } catch (error) {
       console.error(error);
     }
