@@ -6,6 +6,7 @@ import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 
 import useVideoInformaiton from '@/src/hooks/useVideoInformaiton';
 import VideoInformationSkeleton from '../common/skeleton/videonInformationSkeleton';
+import ScorllButton from './ScrollButton';
 
 const TravelInformation = () => {
   const { youtubeData, youtubeDataLoading } = useVideoInformaiton();
@@ -15,12 +16,15 @@ const TravelInformation = () => {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center ">
-      <TravelInformationMeta youtubeData={youtubeData} />
-      <SearchBar />
-      <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
-      <ChangeContent />
-    </main>
+    <>
+      <main id="top" className="flex flex-col justify-center items-center ">
+        <TravelInformationMeta youtubeData={youtubeData} />
+        <SearchBar />
+        <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
+        <ChangeContent />
+        <ScorllButton targetId={'top'} />
+      </main>
+    </>
   );
 };
 
