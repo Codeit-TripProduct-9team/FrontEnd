@@ -22,7 +22,7 @@ const useYouTubeData = (videoId: string) => {
           if (result !== undefined) {
             setViewCount(result.statistics.viewCount);
             setUpdatedAt(result.snippet.publishedAt);
-            setThumbnail(result.snippet.thumbnails.default.url);
+            setThumbnail(result.snippet.thumbnails.high.url);
           }
         } catch (error) {
           console.error('Error:', error);
