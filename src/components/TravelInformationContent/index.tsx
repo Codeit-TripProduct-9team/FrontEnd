@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import SearchBar from './SearchBar';
 import ProductInformation from './ProductInformation';
 import ChangeContent from './ChangeContent';
-import ScorllButton from './ScrollButton';
 
 import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 import VideoInformationSkeleton from '../common/skeleton/videonInformationSkeleton';
@@ -47,7 +46,6 @@ const TravelInformation = () => {
       <SearchBar />
       <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
       <ChangeContent />
-      <ScorllButton targetId={'top'} />
     </main>
   );
 };

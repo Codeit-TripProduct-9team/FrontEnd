@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
+import { useOverlay } from '@toss/use-overlay';
+
+import DeleteReviewModal from './DeleteReviewModal/indext';
 import ReviewEditButton from './ReviewEditButton';
 import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
@@ -9,24 +12,15 @@ import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
 
 import convertDate from '@/src/utils/convertDate';
-import { useOverlay } from '@toss/use-overlay';
 import Modal from '@/src/components/common/modal';
-import DeleteReviewModal from './DeleteReviewModal/indext';
-import instance from '@/src/api/axios';
+import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
+import instance from '@/src/api/axios';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
   renderReviewList: () => void;
   videoId: string;
-}
-
-interface ReviewDataItem {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-  score: number;
 }
 
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
