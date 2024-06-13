@@ -3,67 +3,65 @@ import Image from 'next/image';
 
 import { useOverlay } from '@toss/use-overlay';
 
+import SharedModal from './SharedModal';
+
 import shareIcon from '@/public/assets/icon/share.svg';
 
 import Modal from '@/src/components/common/modal';
 import Button from '@/src/components/common/button';
-import SharedModal from './SharedModal';
+import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/utils/socialShare';
+import instance from '@/src/api/axios';
+import { useRouter } from 'next/router';
 
-interface kakaoShareProps {
-  title: string;
-  description: string;
-  thumbnail: string;
+interface ProductButtonProps {
+  title: string | undefined;
+  description: string | undefined;
+  thumbnail: string | undefined;
 }
 
-const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) => {
+const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps) => {
+  const route = useRouter();
+  const videoId = route.query.id as string;
+
   const handleRegistMyPlace = () => {
-    //마이플레이스 등록
-    //모달 등록되었습니다.
-  };
-
-  const shareKakao = () => {
-    const { Kakao }: any = window;
-    Kakao.cleanup();
-    Kakao.init(process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO);
-    Kakao.Share.createDefaultButton({
-      container: '#kakaotalk-sharing-btn',
-      objectType: 'feed',
-      content: {
-        title: title,
-        description: description,
-        imageUrl: thumbnail,
-        link: {
-          webUrl: window.location.href,
-        },
-      },
-      buttons: [
-        {
-          title: '웹으로 이동',
-          link: {
-            webUrl: window.location.href,
-          },
-        },
-      ],
-    });
-  };
-
-  const shareFacebook = () => {
-    const link = window.location.href;
-    window.open(`http://www.facebook.com/sharer/sharer.php?u=${link}`);
-  };
-
-  const shareTwitter = () => {
-    const link = window.location.href;
-    window.open(`https://twitter.com/intent/tweet?text=custom%20text&url=${link}`);
+    createVideoLike();
   };
 
   const sharedOverlay = useOverlay();
-  const shareddOnModal = () => {
+  const sharedOnModal = () => {
     sharedOverlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
-        <SharedModal shareOnFacebook={shareFacebook} shareOnKakao={shareKakao} shareOnTwitter={shareTwitter} />
+        <SharedModal
+          shareOnFacebook={shareFacebook}
+          shareOnKakao={shareKakao({ title, description, thumbnail })}
+          shareOnTwitter={shareTwitter}
+          currentPageUrl={currentPageUrl}
+        />
       </Modal>
     ));
+  };
+
+  const ACCESS_TOKEN = 'accessToken';
+
+  const getAccessToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(ACCESS_TOKEN);
+    }
+    return null;
+  };
+
+  const createVideoLike = async () => {
+    const token = getAccessToken();
+    const body = { data: null };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const response = await instance.post(`/video/${videoId}/likes`, body, { headers });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -76,8 +74,8 @@ const ProductCardButton = ({ title, description, thumbnail }: kakaoShareProps) =
       <Button className="bg-blue w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleRegistMyPlace}>
         마이플레이스 등록
       </Button>
-      <button className="flex items-center py-6 px-16 rounded-s bg-gray-10">
-        <Image src={shareIcon} alt="share" width={27} height={27} onClick={shareddOnModal} />
+      <button className="flex items-center py-6 px-16 rounded-s bg-gray-10" onClick={sharedOnModal}>
+        <Image src={shareIcon} alt="share" width={27} height={27} />
       </button>
     </div>
   );

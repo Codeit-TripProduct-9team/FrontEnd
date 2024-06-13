@@ -29,3 +29,25 @@ export interface InputForm {
   file?: string;
   verify?: string;
 }
+
+export interface kakaoShareProps {
+  title: string | undefined;
+  description: string | undefined;
+  thumbnail: string | undefined;
+}
+
+export interface VideoInformationProps {
+  id?: number;
+  title?: string;
+  content?: string;
+  url?: string;
+  tag?: string;
+  likeCount?: number;
+}
+
+export interface videoListProps {
+  id: number;
+  tag: string;
+  title: string;
+  url: string;
+}

@@ -1,25 +1,41 @@
-import { useState } from 'react';
+import Button from '@/src/components/common/button';
+import useTextCounter from '@/src/hooks/useTextCounter';
 
-const ReviewTextArea = () => {
-  const [content, setContent] = useState('');
+interface ReviewTextAreaProps {
+  content: string;
+  setContent: (content: string) => void;
+  onClick?: (reviewId?: number) => void;
+  reviewId?: number;
+}
+
+const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAreaProps) => {
   const maxTextLength = 300;
+  const { currentCount, handleCountText } = useTextCounter(maxTextLength, content);
 
-  const handleCountText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = event.target.value;
-    if (text.length <= maxTextLength) {
-      setContent(text);
-    }
-  };
   return (
     <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
       <textarea
-        className="w-full h-200 py-20 px-28 bg-transparent resize-none focus:outline-none"
+        className="w-full h-200 py-30 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
-        onChange={handleCountText}
+        onChange={(e) => {
+          setContent(e.target.value);
+          handleCountText(e);
+        }}
       />
+      <Button
+        onClick={() => {
+          if (onClick) {
+            onClick(reviewId);
+          }
+        }}
+        className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
+        disabled={content.trim() === ''}
+      >
+        작성
+      </Button>
       <div className="absolute bottom-20 right-28 text-18 text-gray-50">
-        {content.length}/{maxTextLength}
+        {currentCount}/{maxTextLength}
       </div>
     </div>
   );

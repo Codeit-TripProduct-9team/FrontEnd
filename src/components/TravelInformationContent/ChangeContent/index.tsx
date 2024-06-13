@@ -1,51 +1,46 @@
-import { useState, useEffect } from 'react';
-
-import { useRouter } from 'next/router';
-
 import ProductDescription from '../ProductDescription';
 import ProductReview from '../ProudctReview';
 
+import combineStyle from '@/src/utils/combineStyle';
+import useSelectContent from '@/src/hooks/useSelectContent';
+
+const contentButtonStyle = {
+  base: 'w-334 pt-25 pb-28 h-full text-22',
+  selected: 'border-b-black border-b-4 font-bold',
+  notSelected: 'border-b-gray-200',
+};
+
 const ChangeContent = () => {
-  const [changeContent, setChangeContent] = useState('information');
-
-  const route = useRouter();
-
-  useEffect(() => {
-    const { content } = route.query;
-    const contentType = typeof content === 'string';
-    if (contentType) {
-      setChangeContent(content);
-    }
-  }, [route.query]);
-
-  const handleChangeContent = (content: string) => {
-    setChangeContent(content);
-    route.push({ pathname: route.pathname, query: { ...route.query, content } });
-  };
-
-  const selectContent = changeContent === 'information';
+  const { content, handleSelectContent } = useSelectContent('product');
 
   return (
     <>
-      <div className="flex justify-center items-center bg-white w-full">
+      <div className="flex justify-center w-full items-center bg-white">
         <button
-          className={`w-334 pt-25 pb-28 h-full text-22  ${
-            selectContent ? 'border-b-black border-b-4 font-bold' : 'border-b-gray-200 '
-          }`}
-          onClick={() => handleChangeContent('information')}
+          className={combineStyle({
+            isSelected: content === 'product',
+            base: contentButtonStyle.base,
+            selected: contentButtonStyle.selected,
+            notSelected: contentButtonStyle.notSelected,
+          })}
+          onClick={() => handleSelectContent('product')}
         >
           상품설명
         </button>
         <button
-          className={`w-334 pt-25 pb-28 h-full text-22 ${
-            !selectContent ? 'border-b-black border-b-4 font-bold' : 'border-b-gray-200 '
-          }`}
-          onClick={() => handleChangeContent('review')}
+          className={combineStyle({
+            isSelected: content === 'review',
+            base: contentButtonStyle.base,
+            selected: contentButtonStyle.selected,
+            notSelected: contentButtonStyle.notSelected,
+          })}
+          onClick={() => handleSelectContent('review')}
         >
           리뷰
         </button>
       </div>
-      {selectContent ? <ProductDescription /> : <ProductReview />}
+      {content === 'product' && <ProductDescription />}
+      {content === 'review' && <ProductReview />}
     </>
   );
 };

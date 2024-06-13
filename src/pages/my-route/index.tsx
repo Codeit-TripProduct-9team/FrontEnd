@@ -7,7 +7,9 @@ import MyRouteContent from '@/src/components/MyRouteContent';
 const MyRoute = () => {
   return (
     <Layout hasFooter={false}>
-      <MyRouteContent />
+      <div className="flex justify-center">
+        <MyRouteContent />
+      </div>
     </Layout>
   );
 };

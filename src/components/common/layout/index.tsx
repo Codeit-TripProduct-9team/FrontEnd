@@ -1,11 +1,15 @@
 import Header from './Header';
 import Footer from './Footer';
+import { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children, hasFooter = true }: { children: React.ReactNode; hasFooter?: boolean }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex-grow bg-gray-10">{children}</div>
+      <main className="flex-grow bg-gray-10">
+        {children}
+        <Toaster position="bottom-center" />
+      </main>
       {hasFooter && <Footer />}
     </div>
   );
