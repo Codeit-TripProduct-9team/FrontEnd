@@ -26,7 +26,9 @@ const ProductReview = () => {
       const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=${queryNumber}`);
       const defaultReviewList = response.data.data.content;
       const countScrollEvent = response.data.data.page_info.totalPages;
-      setReviewList((prevReviewList) => [...prevReviewList, ...defaultReviewList]);
+      setReviewList((prevReviewList) =>
+        queryNumber === 0 ? defaultReviewList : [...prevReviewList, ...defaultReviewList],
+      );
       setCountScrollEvnet(countScrollEvent);
     } catch (error) {
       console.error(error);
@@ -65,6 +67,11 @@ const ProductReview = () => {
       }
     };
   }, [queryNumber, countScrollEvent]);
+
+  useEffect(() => {
+    setReviewList([]);
+    setQueryNumber(0);
+  }, [sortType]);
 
   const emptyReveiwData = reviewList.length === 0;
 

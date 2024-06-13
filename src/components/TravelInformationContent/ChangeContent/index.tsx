@@ -15,7 +15,7 @@ const ChangeContent = () => {
 
   return (
     <>
-      <div className="flex justify-center w-full items-center bg-white">
+      <div id="top" className="flex justify-center w-full items-center bg-white">
         <button
           className={combineStyle({
             isSelected: content === 'product',
