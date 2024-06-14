@@ -5,7 +5,7 @@ import SortToolbar from './SortToolbar';
 import CreateReview from './CreateReview';
 import ReviewList from './ReviewList';
 import NoReivewData from './SortToolbar/NoReviewData';
-import ScrollButton from '../ScrollButton';
+import ScrollButton from './ScrollButton';
 
 import instance from '@/src/api/axios';
 import { ReviewDataItem } from '@/src/lib/types';
