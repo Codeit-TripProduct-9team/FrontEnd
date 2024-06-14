@@ -12,7 +12,7 @@ const TravelProduct = ({ youtubeData, loading }: TravelProductProps) => {
   const youtubeId = youtubeData?.url?.split('v=')[1] as string;
 
   return (
-    <section className="flex flex-nowrap mt-48 mb-80 mx-120 p-35  gap-32 rounded-l bg-white">
+    <section className="flex flex-nowrap mt-48 mb-80 mx-120 p-35 gap-32 rounded-l bg-white">
       {loading ? (
         <VideoInformationSkeleton />
       ) : (

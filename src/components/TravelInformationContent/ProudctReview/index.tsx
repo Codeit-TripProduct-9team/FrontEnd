@@ -24,10 +24,10 @@ const ProductReview = () => {
   const getReviewList = useCallback(async () => {
     try {
       const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=${queryNumber}`);
-      const defaultReviewList = response.data.data.content;
+      const currentFetchingReviewList = response.data.data.content;
       const countScrollEvent = response.data.data.page_info.totalPages;
       setReviewList((prevReviewList) =>
-        queryNumber === 0 ? defaultReviewList : [...prevReviewList, ...defaultReviewList],
+        queryNumber === 0 ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
       );
       setCountScrollEvnet(countScrollEvent);
     } catch (error) {

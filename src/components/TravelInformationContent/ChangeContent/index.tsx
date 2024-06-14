@@ -13,12 +13,15 @@ const contentButtonStyle = {
 const ChangeContent = () => {
   const { content, handleSelectContent } = useSelectContent('product');
 
+  const selectDescriptionContent = content === 'product';
+  const selectReviewContent = content === 'review';
+
   return (
     <>
       <div id="top" className="flex justify-center w-full items-center bg-white">
         <button
           className={combineStyle({
-            isSelected: content === 'product',
+            isSelected: selectDescriptionContent,
             base: contentButtonStyle.base,
             selected: contentButtonStyle.selected,
             notSelected: contentButtonStyle.notSelected,
@@ -29,7 +32,7 @@ const ChangeContent = () => {
         </button>
         <button
           className={combineStyle({
-            isSelected: content === 'review',
+            isSelected: selectReviewContent,
             base: contentButtonStyle.base,
             selected: contentButtonStyle.selected,
             notSelected: contentButtonStyle.notSelected,
@@ -39,8 +42,8 @@ const ChangeContent = () => {
           리뷰
         </button>
       </div>
-      {content === 'product' && <ProductDescription />}
-      {content === 'review' && <ProductReview />}
+      {selectDescriptionContent && <ProductDescription />}
+      {selectReviewContent && <ProductReview />}
     </>
   );
 };

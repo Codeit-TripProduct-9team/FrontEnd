@@ -1,7 +1,10 @@
 import { useRef } from 'react';
 
+import toast from 'react-hot-toast';
+
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 interface ReviewTextAreaProps {
   content: string;
@@ -17,19 +20,16 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
 
   useAutoFocus(focusRef);
 
-  const maxTextLength = 300;
+  const maxTextLength = 500;
 
-  const handleCountText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = event.target.value;
     if (text.length <= maxTextLength) {
       setContent(text);
     }
-  };
-
-  const handleChnageTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const content = event.target.value;
-    setContent(content);
-    handleCountText(event);
+    if (text.length === maxTextLength) {
+      toast.error(TOAST_MESSAGE.FULL_TEXT);
+    }
   };
 
   const handleChnageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +53,7 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
         className="w-full h-180 py-28 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
-        onChange={handleChnageTextArea}
+        onChange={handleChangeTextArea}
       />
       <Button
         onClick={() => createReview(reviewId)}
