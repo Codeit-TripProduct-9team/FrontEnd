@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMyGeolocation from '@/src/hooks/useMyGeolocation';
 import useDestinationDirection from '@/src/hooks/useDestinationDirection';
 
@@ -27,13 +27,27 @@ const ProductDescription = () => {
         `${BASED_URL.KAKAO_ROAD}/local/search/address.json?analyze_type=similar&query=${encodedAddress}`,
         { headers: { Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}` } },
       );
-      const customLocation = response.data.documents[0];
-      return { lat: parseFloat(customLocation.y), lng: parseFloat(customLocation.x) };
+      const hasCoordinate = response.data.documents;
+      const searchLoaction = response.data.documents[0];
+
+      if (hasCoordinate.length === 0) {
+        setValidKeyword(false);
+      }
+
+      if (hasCoordinate.length !== 0) {
+        return { lat: parseFloat(searchLoaction.y), lng: parseFloat(searchLoaction.x) };
+      }
     } catch (error) {
       console.error(error);
       return null;
     }
   };
+
+  useEffect(() => {
+    if (customLocation.trim() !== '') {
+      getMyCoordinate(customLocation);
+    }
+  }, [customLocation]);
 
   const handleStartingPoint = async () => {
     if (customLocation.trim() !== '') {
