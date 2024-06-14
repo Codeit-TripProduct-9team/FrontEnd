@@ -11,16 +11,19 @@ import convertTime from '@/src/utils/convertTime';
 import instance from '@/src/api/axios';
 import { BASED_URL } from '@/src/constants/constants';
 import { placeData } from './mock';
+import toast from 'react-hot-toast';
 
 const ProductDescription = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [validKeyword, setValidKeyword] = useState(true);
   const [customLocation, setCustomLocation] = useState('');
+  const [relatedLocation, setRelatedLocation] = useState([]);
+  const [searchCoordinate, setSearchCoordinate] = useState({ lat: 0, lng: 0 });
 
   const { startPoint, setStartPoint, hasCurrentLocation } = useMyGeolocation();
   const { polylinePath, duration } = useDestinationDirection(startPoint, placeData.position);
 
-  const getMyCoordinate = async (address: string): Promise<{ lat: number; lng: number } | null> => {
+  const getMyCoordinate = async (address: string) => {
     const encodedAddress = encodeURIComponent(address);
     try {
       const response = await instance.get(
@@ -35,30 +38,37 @@ const ProductDescription = () => {
       }
 
       if (hasCoordinate.length !== 0) {
-        return { lat: parseFloat(searchLoaction.y), lng: parseFloat(searchLoaction.x) };
+        setSearchCoordinate({ lat: parseFloat(searchLoaction.y), lng: parseFloat(searchLoaction.x) });
+        setRelatedLocation(hasCoordinate.map((location) => location.address_name));
       }
     } catch (error) {
       console.error(error);
-      return null;
     }
   };
 
   useEffect(() => {
-    if (customLocation.trim() !== '') {
+    const hasCustomLocation = customLocation.trim() === '';
+    if (!hasCustomLocation) {
       getMyCoordinate(customLocation);
+    }
+    if (hasCustomLocation) {
+      setRelatedLocation([]);
     }
   }, [customLocation]);
 
-  const handleStartingPoint = async () => {
-    if (customLocation.trim() !== '') {
-      const coordinate = await getMyCoordinate(customLocation);
+  const handleStartingPoint = () => {
+    const hasCustomLocation = customLocation.trim() === '';
+    if (hasCustomLocation) {
+      toast.error('장소를 입력해 주세요.');
+    }
 
-      if (coordinate === null) {
+    if (!hasCustomLocation) {
+      if (searchCoordinate === null) {
         setValidKeyword(false);
       }
-      if (coordinate !== null) {
+      if (searchCoordinate !== null) {
         setValidKeyword(true);
-        setStartPoint(coordinate);
+        setStartPoint(searchCoordinate);
       }
 
       setShowMessage(true);
@@ -69,6 +79,15 @@ const ProductDescription = () => {
     const location = event.target.value;
     setShowMessage(false);
     setCustomLocation(location);
+  };
+
+  const handleSelectLocation = (location: string) => {
+    setCustomLocation(location);
+    setRelatedLocation([]);
+
+    setTimeout(() => {
+      handleStartingPoint();
+    }, 300);
   };
 
   return (
@@ -91,6 +110,8 @@ const ProductDescription = () => {
               customStartingPoint={() => handleStartingPoint()}
               showMessage={showMessage}
               validKeyword={validKeyword}
+              relatedLocation={relatedLocation}
+              handleSelectLocation={handleSelectLocation}
             />
           )}
           <ProductMap startPoint={startPoint} position={placeData.position} polylinePath={polylinePath} />

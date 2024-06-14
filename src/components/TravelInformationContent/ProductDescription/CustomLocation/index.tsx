@@ -11,6 +11,8 @@ interface CustomLocationProps {
   customStartingPoint: () => void;
   showMessage: boolean;
   validKeyword: boolean;
+  relatedLocation: Array<string>;
+  handleSelectLocation: (location: string) => void;
 }
 const CustomLocation = ({
   destinationName,
@@ -20,10 +22,30 @@ const CustomLocation = ({
   customStartingPoint,
   showMessage,
   validKeyword,
+  relatedLocation,
+  handleSelectLocation,
 }: CustomLocationProps) => {
+  const showRelatedLocation =
+    customLocation.trim() !== '' &&
+    relatedLocation.length !== 0 &&
+    !(relatedLocation.length === 1 && relatedLocation[0] === customLocation);
+
   return (
     <div className="absolute top-20 left-1/2 transform -translate-x-1/2 flex flex-col gap-4 w-582 p-10 z-10 text-center rounded-s">
       <LocationInput location={customLocation} onChange={changeStartingPoint} onClick={customStartingPoint} />
+      {showRelatedLocation && (
+        <ul className="max-h-120  rounded-s bg-white  overflow-y-auto">
+          {relatedLocation.map((location: string, index) => (
+            <li
+              className="p-10 hover:bg-gray-20 cursor-pointer"
+              key={index}
+              onClick={() => handleSelectLocation(location)}
+            >
+              {location}
+            </li>
+          ))}
+        </ul>
+      )}
       {showMessage && (
         <div className="p-10 rounded-s bg-white">
           {validKeyword ? (
