@@ -21,14 +21,7 @@ const ModalPlaceList = ({ data, onClick, selectedPlace, className }: ModalPlaceL
         {data.map((item, index) => (
           <div key={`${item.id}-${index}`} className="flex gap-20" onClick={() => onClick && onClick(item.id)}>
             <div className="w-87 h-87 relative flex-shrink-0 overflow-hidden">
-              <Image
-                src={item.mainImg}
-                alt={item.name}
-                layout="fill"
-                objectFit="cover"
-                objectPosition="center"
-                className="rounded-m "
-              />
+              <Image src={item.mainImg} alt={item.name} fill className="rounded-m object-cover object-center" />
             </div>
             <div className={`${selectedPlace === item.name && 'text-blue'}`}>
               <h1 className="font-bold">{item.name}</h1>
