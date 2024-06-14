@@ -73,7 +73,7 @@ const MyRouteContent = () => {
       movePlace(1, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
-    if (destination) {
+    if (destination && source.droppableId === 'myPlace') {
       const card = myPlaceData.find((card) => card.title === draggableId);
       const hasDuplicate = flatCourseData.some((place) => place.name === card.title);
       if (hasDuplicate) {

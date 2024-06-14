@@ -1,20 +1,24 @@
 // import { Place } from './PlaceList';
 import { Draggable } from '@hello-pangea/dnd';
-import pencil from '@/public/assets/icon/pencil.svg';
 import bin from '@/public/assets/icon/bin.svg';
 import Image from 'next/image';
 import { Place } from '@/src/utils/zustand/useCourseStore';
-// interface Place {
-//   id: number;
-//   name: string;
-// }
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { openToast } from '@/src/utils/openToast';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 type PlaceItemProps = {
   place: Place;
-  // index: number;
 };
 
 const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {
+  const { removePlace } = useCourseStore();
+  const courseId = 1;
+  const handleDeletePlace = (index: number) => {
+    removePlace(courseId, index);
+    openToast.success(TOAST_MESSAGE.DELETE);
+  };
+
   return (
     <Draggable draggableId={`${place.index}-${place.name}`} index={place.index}>
       {(provided) => (
@@ -29,8 +33,14 @@ const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {
             <span className="font-bold">{place.name}</span>
           </div>
           <div className="flex justify-end gap-15">
-            <Image src={pencil} alt="change" width={16} height={16} />
-            <Image src={bin} alt="delete" width={15} height={18} />
+            <Image
+              src={bin}
+              alt="delete"
+              width={15}
+              height={18}
+              className="cursor-pointer"
+              onClick={() => handleDeletePlace(place.index)}
+            />
           </div>
         </li>
       )}
