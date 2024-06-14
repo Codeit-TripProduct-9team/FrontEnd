@@ -112,6 +112,8 @@ const MyRouteContent = () => {
     openToast.success(TOAST_MESSAGE.SAVE);
   };
 
+  console.log(courseData);
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">

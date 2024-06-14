@@ -27,7 +27,7 @@ const PlaceList = () => {
           <h2 className="font-bold mb-12">{data.day}일차</h2>
           <Droppable droppableId={data.day.toString()}>
             {(provided) => (
-              <ul className="flex flex-col gap-12" ref={provided.innerRef} {...provided.droppableProps}>
+              <ul className="flex flex-col gap-12 min-h-60" ref={provided.innerRef} {...provided.droppableProps}>
                 {data.place.map((place) => (
                   <PlaceItem key={place.name} place={place} />
                 ))}
