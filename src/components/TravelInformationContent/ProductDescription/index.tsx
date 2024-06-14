@@ -7,13 +7,13 @@ import CurrentLocation from './CurrentLocation';
 import CustomLocation from './CustomLocation';
 import LocationDescription from './LoactionDescription';
 
+import useDebounce from '@/src/hooks/useDebounce';
 import convertTime from '@/src/utils/convertTime';
 import instance from '@/src/api/axios';
-import { BASED_URL } from '@/src/constants/constants';
+import { BASED_URL, TOAST_MESSAGE } from '@/src/constants/constants';
 import useMyGeolocation from '@/src/hooks/useMyGeolocation';
 import useDestinationDirection from '@/src/hooks/useDestinationDirection';
 import { placeData } from './mock';
-import useDebounce from '@/src/hooks/useDebounce';
 
 const ProductDescription = () => {
   const [showMessage, setShowMessage] = useState(false);
@@ -63,7 +63,7 @@ const ProductDescription = () => {
   const handleStartingPoint = () => {
     const hasCustomLocation = customLocation.trim() !== '';
     if (!hasCustomLocation) {
-      toast.error('장소를 입력해 주세요.');
+      toast.error(TOAST_MESSAGE.EMPTY_LOCATION);
     }
 
     if (hasCustomLocation) {
@@ -98,7 +98,7 @@ const ProductDescription = () => {
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-12">
         <LocationDescription placeData={placeData} />
-        <div className="relative w-622 h-470 my-66 mx-108 rounded-l overflow-hidden">
+        <div className="relative w-822 h-670 my-66 mx-108 rounded-l overflow-hidden">
           {hasCurrentLocation ? (
             <CurrentLocation
               startPoint={startPoint}
@@ -118,7 +118,12 @@ const ProductDescription = () => {
               handleSelectLocation={handleSelectLocation}
             />
           )}
-          <ProductMap startPoint={startPoint} position={placeData.position} polylinePath={polylinePath} />
+          <ProductMap
+            startPoint={startPoint}
+            position={placeData.position}
+            polylinePath={polylinePath}
+            place={placeData.title}
+          />
         </div>
       </div>
     </section>
