@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { kakaoShareProps } from '../lib/types';
 
 export const shareKakao = ({ title, description, thumbnail }: kakaoShareProps) => {
@@ -18,7 +19,7 @@ export const shareKakao = ({ title, description, thumbnail }: kakaoShareProps) =
       },
       buttons: [
         {
-          title: '웹으로 이동',
+          title: 'uTrip으로 이동',
           link: {
             webUrl: window.location.href,
           },
@@ -40,4 +41,5 @@ export const shareTwitter = () => {
 
 export const currentPageUrl = () => {
   navigator.clipboard.writeText(window.location.href);
+  toast.success(`링크가 복사되었습니다. ${window.location.href}`);
 };

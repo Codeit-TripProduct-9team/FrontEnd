@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
+import toast from 'react-hot-toast';
 import { FieldError, useForm } from 'react-hook-form';
 import { useOverlay } from '@toss/use-overlay';
 
@@ -14,11 +15,10 @@ import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
-import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal/index';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
-import checkDuplicate from '@/src/utils/checkDuplicate';
+import { ERROR_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
 
+import checkDuplicate from '@/src/utils/checkDuplicate';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/lib/types';
@@ -45,16 +45,7 @@ const SingupContent = () => {
 
   const isValid = Object.keys(errors).length !== 0;
   const isEmailvalid = !errors.email && isValidateEmail;
-  const modalText = '회원가입을 계속 진행해 주세요.';
 
-  const certifiedOverlay = useOverlay();
-  const certifiedOnModal = () => {
-    certifiedOverlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close}>
-        <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} modalText={modalText} />
-      </Modal>
-    ));
-  };
   const signupOverlay = useOverlay();
   const signupOnModal = () => {
     signupOverlay.open(({ isOpen, close }) => (
@@ -62,7 +53,9 @@ const SingupContent = () => {
         isOpen={isOpen}
         close={() => {
           close();
-          route.push('/signin');
+          setTimeout(() => {
+            route.push('/signin');
+          }, 500);
         }}
       >
         <SuccessSignup nickname={nicknameValue} />
@@ -80,6 +73,7 @@ const SingupContent = () => {
     });
     if (isDuplicate) {
       setIsValidateEmail(true);
+      toast.success(TOAST_MESSAGE.CHECK_DUPLICATE);
     }
     return isDuplicate;
   };
@@ -89,7 +83,7 @@ const SingupContent = () => {
     const validCode = verifyValue === verificationCode;
     if (validCode) {
       setIsVerified(true);
-      certifiedOnModal();
+      toast.success(TOAST_MESSAGE.VERIFY);
     }
   };
 

@@ -36,6 +36,14 @@ export interface kakaoShareProps {
   thumbnail: string | undefined;
 }
 
+export interface ReviewDataItem {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  score: number;
+}
+
 export interface VideoInformationProps {
   id?: number;
   title?: string;
