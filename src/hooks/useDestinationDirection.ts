@@ -1,61 +1,52 @@
 import { useState, useEffect } from 'react';
-import useGeolocation from 'react-hook-geolocation';
-import getDirection from '../utils/getDireciton';
 
-import { placeData } from '../components/TravelInformationContent/ProductDescription/mock';
+import instance from '@/src/api/axios';
+import { BASED_URL } from '@/src/constants/constants';
+import extractPath from '@/src/utils/extractPath';
 
-const useDestinationDirection = () => {
-  const [duration, setDuration] = useState(0);
-  const [startPoint, setStartPoint] = useState({ lat: 0, lng: 0 });
+const useDestinationDirection = (
+  startPoint: { lat: number; lng: number },
+  destinationPosition: { lat: number; lng: number },
+) => {
   const [polylinePath, setPolylinePath] = useState<{ lat: number; lng: number }[]>([]);
-  const [hasCurrentLocation, setHasCurrentLocation] = useState(true);
-  const [showMessage, setShowMessage] = useState(false);
-  const [validKeyword, setValidKeyword] = useState(true);
-  const [customLocation, setCustomLocation] = useState('');
+  const [duration, setDuration] = useState(0);
 
-  const currentLocation = useGeolocation();
-
-  const accessLocation = currentLocation.error === null;
   const isValidCoordinate = startPoint && startPoint.lat !== 0 && startPoint.lng !== 0;
 
   useEffect(() => {
-    if (accessLocation) {
-      setHasCurrentLocation(true);
-      setStartPoint({ lat: currentLocation.latitude, lng: currentLocation.longitude });
-    } else {
-      setHasCurrentLocation(false);
-    }
-  }, [accessLocation, currentLocation.latitude, currentLocation.longitude]);
+    const getDestinationDirection = async () => {
+      const hasStartPoint = startPoint && startPoint.lat !== null && startPoint.lng !== null;
+      if (hasStartPoint) {
+        const queryParams = new URLSearchParams({
+          origin: `${startPoint.lng},${startPoint.lat}`,
+          destination: `${destinationPosition.lng},${destinationPosition.lat}`,
+        });
 
-  useEffect(() => {
-    if (isValidCoordinate) {
-      const getRoute = async () => {
-        const directionData = await getDirection(startPoint, placeData.position);
-        if (directionData) {
-          const { path, elapsedTime } = directionData;
+        const requestUrl = `${BASED_URL.KAKKAO_DIRECTION}?${queryParams}`;
+
+        try {
+          const response = await instance.get(requestUrl, {
+            headers: {
+              Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
+            },
+          });
+          const elapsedTime = response.data.routes[0].summary.duration;
+          const path = extractPath(response.data);
           setPolylinePath(path);
           setDuration(elapsedTime);
+        } catch (error) {
+          setPolylinePath([]);
+          setDuration(0);
         }
-      };
-      getRoute();
-    }
-  }, [isValidCoordinate, startPoint]);
+      }
+    };
 
-  return {
-    duration,
-    startPoint,
-    polylinePath,
-    hasCurrentLocation,
-    showMessage,
-    validKeyword,
-    customLocation,
-    setShowMessage,
-    setValidKeyword,
-    setCustomLocation,
-    setStartPoint,
-    setDuration,
-    setPolylinePath,
-  };
+    if (isValidCoordinate) {
+      getDestinationDirection();
+    }
+  }, [isValidCoordinate, startPoint, destinationPosition]);
+
+  return { polylinePath, duration };
 };
 
 export default useDestinationDirection;

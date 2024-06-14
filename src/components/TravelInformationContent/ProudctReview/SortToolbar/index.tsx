@@ -1,6 +1,5 @@
 import useSelectContent from '@/src/hooks/useSelectContent';
 import combineStyle from '@/src/utils/combineStyle';
-
 import { useEffect } from 'react';
 
 const sortButtonStyle = {
