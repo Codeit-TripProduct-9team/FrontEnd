@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import useMyGeolocation from '@/src/hooks/useMyGeolocation';
-import useDestinationDirection from '@/src/hooks/useDestinationDirection';
+
+import toast from 'react-hot-toast';
 
 import ProductMap from './ProductMap';
 import CurrentLocation from './CurrentLocation';
@@ -10,8 +10,10 @@ import LocationDescription from './LoactionDescription';
 import convertTime from '@/src/utils/convertTime';
 import instance from '@/src/api/axios';
 import { BASED_URL } from '@/src/constants/constants';
+import useMyGeolocation from '@/src/hooks/useMyGeolocation';
+import useDestinationDirection from '@/src/hooks/useDestinationDirection';
 import { placeData } from './mock';
-import toast from 'react-hot-toast';
+import useDebounce from '@/src/hooks/useDebounce';
 
 const ProductDescription = () => {
   const [showMessage, setShowMessage] = useState(false);
@@ -22,6 +24,8 @@ const ProductDescription = () => {
 
   const { startPoint, setStartPoint, hasCurrentLocation } = useMyGeolocation();
   const { polylinePath, duration } = useDestinationDirection(startPoint, placeData.position);
+
+  const debounceCustomLocation = useDebounce(customLocation, 500);
 
   const getMyCoordinate = async (address: string) => {
     const encodedAddress = encodeURIComponent(address);
@@ -47,22 +51,22 @@ const ProductDescription = () => {
   };
 
   useEffect(() => {
-    const hasCustomLocation = customLocation.trim() === '';
-    if (!hasCustomLocation) {
-      getMyCoordinate(customLocation);
-    }
+    const hasCustomLocation = debounceCustomLocation.trim() !== '';
     if (hasCustomLocation) {
+      getMyCoordinate(debounceCustomLocation);
+    }
+    if (!hasCustomLocation) {
       setRelatedLocation([]);
     }
-  }, [customLocation]);
+  }, [debounceCustomLocation]);
 
   const handleStartingPoint = () => {
-    const hasCustomLocation = customLocation.trim() === '';
-    if (hasCustomLocation) {
+    const hasCustomLocation = customLocation.trim() !== '';
+    if (!hasCustomLocation) {
       toast.error('장소를 입력해 주세요.');
     }
 
-    if (!hasCustomLocation) {
+    if (hasCustomLocation) {
       if (searchCoordinate === null) {
         setValidKeyword(false);
       }
