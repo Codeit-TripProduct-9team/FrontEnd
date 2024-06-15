@@ -1,8 +1,8 @@
 import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { mockMyRoute } from './mockMyRoute';
 import React, { useEffect } from 'react';
 import instance from '@/src/api/axios';
 import { useState } from 'react';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 
 interface Guide {
   x: number;
@@ -22,7 +22,14 @@ interface ResponseData {
 }
 
 const KakaoMap = () => {
-  const positions = mockMyRoute.data;
+  const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const positions = courseData.flatMap((course) =>
+    course.place.map((place) => ({
+      title: place.name,
+      latlng: { lat: place.posX, lng: place.posY },
+    })),
+  );
+
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
   useEffect(() => {
@@ -36,7 +43,6 @@ const KakaoMap = () => {
         y: positions[positions.length - 1].latlng.lat,
       },
       waypoints: positions.slice(1, positions.length - 1).map((position) => ({
-        name: position.place,
         x: position.latlng.lng,
         y: position.latlng.lat,
       })),
@@ -97,7 +103,7 @@ const KakaoMap = () => {
             />
             <CustomOverlayMap position={position.latlng} yAnchor={2.5}>
               <div className="relative px-6 py-3 text-white bg-blue rounded-l shadow-sub">
-                <p>{position.place}</p>
+                <p>{position.title}</p>
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-t-8 border-t-blue border-l-8 border-l-transparent border-r-8 border-r-transparent" />
               </div>
             </CustomOverlayMap>
