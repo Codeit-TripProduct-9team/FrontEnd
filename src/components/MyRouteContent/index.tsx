@@ -59,6 +59,8 @@ const MyRouteContent = () => {
     fetchAndLogCardList();
   }, [setMyPlaceData]);
 
+  const coursId = 1;
+
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
     console.log(draggableId);
@@ -70,7 +72,7 @@ const MyRouteContent = () => {
       const fromIndex = source.index;
       const toIndex = destination.index;
       console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
-      movePlace(1, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
+      movePlace(coursId, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
     if (destination && source.droppableId === 'myPlace') {
@@ -111,8 +113,6 @@ const MyRouteContent = () => {
   const handleSaveCourse = () => {
     openToast.success(TOAST_MESSAGE.SAVE);
   };
-
-  console.log(courseData);
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>

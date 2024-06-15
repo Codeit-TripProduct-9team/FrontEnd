@@ -88,32 +88,30 @@ export const useCourseStore = create<CourseStore>((set) => ({
 
   movePlace: (courseId, fromDay, fromIndex, toDay, toIndex) =>
     set((state) => {
-      const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
+      const course = state.data.course;
+      const courseIndex = course.findIndex((course) => course.id === courseId);
       if (courseIndex !== -1) {
-        const fromPlanIndex = state.data.course[courseIndex].plan.findIndex((plan) => plan.day === fromDay);
-        const toPlanIndex = state.data.course[courseIndex].plan.findIndex((plan) => plan.day === toDay);
+        const fromPlanIndex = course[courseIndex].plan.findIndex((plan) => plan.day === fromDay);
+        const toPlanIndex = course[courseIndex].plan.findIndex((plan) => plan.day === toDay);
         if (fromPlanIndex !== -1 && toPlanIndex !== -1) {
-          const fromPlaceIndex = state.data.course[courseIndex].plan[fromPlanIndex].place.findIndex(
+          const fromPlaceIndex = course[courseIndex].plan[fromPlanIndex].place.findIndex(
             (place) => place.index === fromIndex,
           );
+          const toPlaceIndex = course[courseIndex].plan[toPlanIndex].place.findIndex(
+            (place) => place.index === toIndex,
+          );
           if (fromPlaceIndex !== -1) {
-            const placeToMove = state.data.course[courseIndex].plan[fromPlanIndex].place.splice(fromPlaceIndex, 1)[0];
+            // 움직일 장소를 추출
+            const placeToMove = course[courseIndex].plan[fromPlanIndex].place.splice(fromPlaceIndex, 1)[0];
 
-            // Adjust toIndex if moving within the same plan and fromIndex is greater than toIndex
-            const adjustedToIndex = fromDay === toDay && fromIndex > toIndex ? toIndex - 1 : toIndex;
-            console.log('toDay: ', toDay);
-            console.log('fromIndex: ', fromIndex);
-            console.log('toIndex: ', toIndex);
-            console.log('fromPlaceIndex: ', fromPlaceIndex);
-            console.log('adjustedToIndex: ', adjustedToIndex);
-            // Insert the moved place at the correct position in the destination day's list
-            state.data.course[courseIndex].plan[toPlanIndex].place.splice(adjustedToIndex, 0, placeToMove);
+            // 목표 인덱스에 붙혀넣기
+            course[courseIndex].plan[toPlanIndex].place.splice(toPlaceIndex, 0, placeToMove);
 
-            // 인덱스 값 오름차순으로 다시 재지정
+            // 인덱스 값 오름차순으로 재지정
             let globalIndex = 1;
             for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
               for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
-                state.data.course[courseIndex].plan[j].place[i].index = globalIndex++;
+                course[courseIndex].plan[j].place[i].index = globalIndex++;
               }
             }
           }
