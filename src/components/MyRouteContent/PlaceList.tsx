@@ -7,6 +7,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import ConfirmModal from '../common/modal/ConfirmModal';
+import { MODAL_MESSAGE } from '@/src/constants/constants';
 
 export type PlaceList = {
   day: number;
@@ -44,7 +45,12 @@ const PlaceList = () => {
   const OnModal = (callback: () => void) => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
-        <ConfirmModal onConfirm={() => callback()} onCancel={close} />
+        <ConfirmModal
+          onConfirm={() => callback()}
+          onCancel={close}
+          header={MODAL_MESSAGE.CONFIRM_DELETE.header}
+          text={MODAL_MESSAGE.CONFIRM_DELETE.text}
+        />
       </Modal>
     ));
   };
