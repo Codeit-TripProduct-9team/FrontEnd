@@ -34,8 +34,8 @@ const ListCard = ({ data }: ListCardProps) => {
     <div>
       <Link href={`/travel-information/${data.id}`}>
         <div className="flex flex-col overflow-hidden bg-white  w-290 h-290 rounded-30  transition-transform duration-300 transform hover:scale-105 cursor-pointer">
-          <div className="relative  border-1 ">
-            <Image src={thumbnail} width={300} height={300} alt="썸네일" priority className="h-180" />
+          <div className="relative  border-1 w-290 h-160">
+            {thumbnail && <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-center" />}
           </div>
           <div className="flex flex-col justify-between p-10 h-110">
             <div>
