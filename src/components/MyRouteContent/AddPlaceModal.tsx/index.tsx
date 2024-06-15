@@ -10,7 +10,7 @@ const AddPlaceModal = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
   const modifiedData = filteredData.map((item) => ({
-    id: item.cardId,
+    id: item.id,
     mainImg: item.thumbnail,
     name: item.title,
     description: item.description,

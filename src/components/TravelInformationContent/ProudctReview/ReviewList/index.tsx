@@ -40,10 +40,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     ));
   };
 
-  const handleReviewEditData = (id: number, content: string, score: number) => {
+  const handleReviewEditData = (id: number, content: string, score: number, title: string) => {
     setEditReviewId(id);
     setEditReviewContent(content);
     setEditReviewScore(score);
+    setEditReviewTitle(title);
   };
 
   const handleChangeReview = async (id: number) => {
@@ -115,7 +116,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                 <p>{content}</p>
               )}
               <ReviewEditButton
-                onClickEdit={() => handleReviewEditData(id, content, score)}
+                onClickEdit={() => handleReviewEditData(id, content, score, title)}
                 onClickDelete={() => deleteReviewModal(id)}
               />
             </li>

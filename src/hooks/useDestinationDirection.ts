@@ -30,6 +30,7 @@ const useDestinationDirection = (
               Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
             },
           });
+
           const elapsedTime = response.data.routes[0].summary.duration;
           const path = extractPath(response.data);
           setPolylinePath(path);
