@@ -27,6 +27,7 @@ type CourseStore = {
   data: CourseData;
   setData: (by: CourseData) => void;
   addDay: (courseId: number, newDay: Plan) => void;
+  removeDay: (courseId: number, dayIndex: number) => void;
   addPlace: (courseId: number, day: number, newPlace: Place) => void;
   removePlace: (courseId: number, placeIndex: number) => void;
   movePlace: (courseId: number, fromDay: number, fromIndex: number, toDay: number, toIndex: number) => void;
@@ -42,6 +43,19 @@ export const useCourseStore = create<CourseStore>((set) => ({
       const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
       if (courseIndex !== -1) {
         state.data.course[courseIndex].plan.push(newDay);
+      }
+      return { ...state };
+    }),
+  removeDay: (courseId: number, dayIndex: number) =>
+    set((state) => {
+      const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
+      if (courseIndex !== -1) {
+        state.data.course[courseIndex].plan.splice(dayIndex - 1, 1);
+
+        // 일차 오름차순으로 재지정 1일차부터 시작
+        state.data.course[courseIndex].plan.forEach((day, index) => {
+          day.day = index + 1;
+        });
       }
       return { ...state };
     }),

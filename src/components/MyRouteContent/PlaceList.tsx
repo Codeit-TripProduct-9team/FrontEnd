@@ -3,6 +3,7 @@ import PlaceItem from './PlaceItem';
 import { Droppable } from '@hello-pangea/dnd';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
 import { openToast } from '@/src/utils/openToast';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 export type PlaceList = {
   day: number;
@@ -18,7 +19,7 @@ export type Place = {
 
 const PlaceList = () => {
   const courseData = useCourseStore((state) => state.data.course[0].plan);
-  const { addDay } = useCourseStore();
+  const { addDay, removeDay } = useCourseStore();
   const courseId = 1;
   const maxDay = 7;
   const newDay = { day: courseData.length + 1, place: [] };
@@ -28,6 +29,9 @@ const PlaceList = () => {
     } else {
       addDay(courseId, newDay);
     }
+  };
+  const handleDeleteDay = (day: number) => {
+    removeDay(courseId, day);
   };
 
   return (
@@ -39,7 +43,15 @@ const PlaceList = () => {
       {courseData.map((data) => (
         <div key={data.day} className="my-20 relative">
           <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-24 top-5" />
-          <h2 className="font-bold mb-12">{data.day}일차</h2>
+          <div className="flex items-center gap-10 mb-12">
+            <h2 className="font-bold">{data.day}일차</h2>
+            <XCircleIcon
+              width={18}
+              height={18}
+              className="cursor-pointer text-gray-50"
+              onClick={() => handleDeleteDay(data.day)}
+            />
+          </div>
           <Droppable droppableId={data.day.toString()}>
             {(provided) => (
               <ul className="flex flex-col gap-12 min-h-60" ref={provided.innerRef} {...provided.droppableProps}>

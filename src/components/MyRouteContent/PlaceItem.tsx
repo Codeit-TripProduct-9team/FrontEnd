@@ -35,7 +35,7 @@ const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {
           <div className="flex justify-end gap-15">
             <Image
               src={bin}
-              alt="delete"
+              alt="delete place"
               width={15}
               height={18}
               className="cursor-pointer"
