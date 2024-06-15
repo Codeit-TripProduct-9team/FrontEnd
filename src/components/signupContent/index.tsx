@@ -22,6 +22,7 @@ import checkDuplicate from '@/src/utils/checkDuplicate';
 import { REGEX } from '@/src/utils/regex';
 import instance from '@/src/api/axios';
 import { InputForm } from '@/src/lib/types';
+import VerifyButton from './VerifyButton';
 
 const SingupContent = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -177,20 +178,12 @@ const SingupContent = () => {
               isSuccess={isVerified}
             />
           </div>
-          {isVerified ? (
-            <Button type="button" className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`} disabled={true}>
-              인증되었습니다
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`}
-              disabled={!isEmailvalid}
-              onClick={checkVerificationCode}
-            >
-              인증 요청
-            </Button>
-          )}
+          <VerifyButton
+            isVerified={isVerified}
+            error={errors.verify}
+            isEmailValid={isEmailvalid}
+            checkVerificationCode={checkVerificationCode}
+          />
         </div>
         <PasswordInput
           register={register('password', {
