@@ -29,9 +29,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
         >
           <Link href={`/travel-information/${data.id}`} />
           <div className="relative border-1 w-225 h-120">
-            {thumbnail && (
-              <Image src={thumbnail} layout="fill" alt="썸네일" priority objectFit="cover" objectPosition="center" />
-            )}
+            {thumbnail && <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-cetner" />}
           </div>
           <div className="flex flex-col justify-between p-10 h-110">
             <div>
