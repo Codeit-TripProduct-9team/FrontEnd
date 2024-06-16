@@ -3,7 +3,7 @@ import PlaceItem from './PlaceItem';
 import { Droppable } from '@hello-pangea/dnd';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import { openToast } from '@/src/utils/openToast';
-import { XCircleIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import ConfirmModal from '../common/modal/ConfirmModal';
@@ -62,11 +62,11 @@ const PlaceList = () => {
       </div>
       <div className="border-l-2 absolute top-10 -left-20 border-gray-60 border-dashed h-[92%]" />
       {courseData.map((data) => (
-        <div key={data.day} className="my-20 relative">
+        <div key={data.day} className="mb-16 relative">
           <div className="w-10 h-10 bg-gray-60 rounded-full absolute -left-24 top-5" />
           <div className="flex items-center gap-10 mb-12">
             <h2 className="font-bold">{data.day}일차</h2>
-            <XCircleIcon
+            <XMarkIcon
               width={18}
               height={18}
               className="cursor-pointer text-gray-50"

@@ -29,7 +29,7 @@ type SearchedPlace = {
   distance: string;
 };
 
-const AddNearbyPlaceModal = () => {
+const AddNearbyPlaceModal = ({ close }) => {
   const courseId = 1;
   const courseData = useCourseStore((state) => state.data.course[0].plan);
   const decomposedData = courseData
@@ -77,6 +77,7 @@ const AddNearbyPlaceModal = () => {
     };
 
     addPlace(courseId, 1, newPlace);
+    close();
   };
 
   useEffect(() => {
@@ -101,11 +102,7 @@ const AddNearbyPlaceModal = () => {
         distance: place.distance,
       }));
 
-      // Add the new markers to the map
       setMarkers(newMarkers);
-      // if (newMarkers) {
-      //   setMapCenter(newMarkers[0]);
-      // }
     };
     fetchPlaces();
   }, [selectedDistance, selectedPlace, selectedQuery]);
