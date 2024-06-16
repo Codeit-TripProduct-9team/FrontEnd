@@ -20,7 +20,7 @@ import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
 import Button from '../common/button';
 import { openToast } from '@/src/utils/openToast';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';

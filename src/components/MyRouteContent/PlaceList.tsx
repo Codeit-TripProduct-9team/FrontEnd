@@ -1,7 +1,7 @@
 import React from 'react';
 import PlaceItem from './PlaceItem';
 import { Droppable } from '@hello-pangea/dnd';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import { openToast } from '@/src/utils/openToast';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { useOverlay } from '@toss/use-overlay';

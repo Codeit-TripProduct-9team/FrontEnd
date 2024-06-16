@@ -2,8 +2,8 @@
 import { Draggable } from '@hello-pangea/dnd';
 import bin from '@/public/assets/icon/bin.svg';
 import Image from 'next/image';
-import { Place } from '@/src/utils/zustand/useCourseStore';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { Place } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import { openToast } from '@/src/utils/openToast';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 

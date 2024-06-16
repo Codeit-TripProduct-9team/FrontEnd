@@ -2,7 +2,7 @@ import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk
 import React, { useEffect } from 'react';
 import instance from '@/src/api/axios';
 import { useState } from 'react';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 
 interface Guide {
   x: number;

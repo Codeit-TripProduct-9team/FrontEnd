@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import { addDay } from './addDay';
 export interface Place {
   index: number;
   name: string;
@@ -23,7 +23,7 @@ export interface CourseData {
   course: Course[];
 }
 
-type CourseStore = {
+export type CourseStore = {
   data: CourseData;
   setData: (by: CourseData) => void;
   addDay: (courseId: number, newDay: Plan) => void;
@@ -33,19 +33,12 @@ type CourseStore = {
   movePlace: (courseId: number, fromDay: number, fromIndex: number, toDay: number, toIndex: number) => void;
 };
 
-import { mockMyCourse } from '../../components/MyRouteContent/mockMyRoute';
+import { mockMyCourse } from '../../../components/MyRouteContent/mockMyRoute';
 
 export const useCourseStore = create<CourseStore>((set) => ({
   data: mockMyCourse,
   setData: (data) => set((state) => ({ ...state, data })),
-  addDay: (courseId, newDay) =>
-    set((state) => {
-      const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
-      if (courseIndex !== -1) {
-        state.data.course[courseIndex].plan.push(newDay);
-      }
-      return { ...state };
-    }),
+  addDay: (courseId, newDay) => set((state) => addDay(state, courseId, newDay)),
   removeDay: (courseId: number, dayIndex: number) =>
     set((state) => {
       const courseIndex = state.data.course.findIndex((course) => course.id === courseId);

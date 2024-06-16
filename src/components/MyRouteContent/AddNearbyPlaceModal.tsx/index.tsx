@@ -5,7 +5,7 @@ import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 // import markerIcon from '@/public/assets/icon/marker.png';
 
 type Marker = {
