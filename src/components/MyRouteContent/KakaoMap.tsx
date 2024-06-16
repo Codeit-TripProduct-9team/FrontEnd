@@ -1,5 +1,5 @@
 import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import instance from '@/src/api/axios';
 import { useState } from 'react';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
@@ -23,12 +23,16 @@ interface ResponseData {
 
 const KakaoMap = () => {
   const courseData = useCourseStore((state) => state.data.course[0].plan);
-  const positions = courseData.flatMap((course) =>
-    course.place.map((place) => ({
-      title: place.name,
-      latlng: { lat: place.posX, lng: place.posY },
-    })),
-  );
+
+  // memeoize the positions array so that it doesn't get recalculated on every render
+  const positions = useMemo(() => {
+    return courseData.flatMap((course) =>
+      course.place.map((place) => ({
+        title: place.name,
+        latlng: { lat: place.posX, lng: place.posY },
+      })),
+    );
+  }, [courseData]);
 
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
