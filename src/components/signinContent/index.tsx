@@ -53,7 +53,8 @@ const SigninContent = () => {
       const body = { email: data.email, password: data.password };
       const response = await instance.post('/auth/login', body);
       if (response.status === 200) {
-        const accessToken = response.data.data.accessToken;
+        const accessToken = response.data.data.token.accessToken;
+        console.log(accessToken);
         openToast.success(TOAST_MESSAGE.LOGIN);
         setCookie('accessToken', accessToken, {
           path: '/',
