@@ -1,28 +1,73 @@
+import { useEffect, useState } from 'react';
+
 import { useRouter } from 'next/router';
 
-import SearchInput from './SearchInput';
-import SearchContent from './SearchContent/indext';
+import FindPageInput from './FindPageInput';
+import SearchContent from './SearchContent';
 
-import useSearch from '@/src/hooks/useSearch';
-
-import { mock } from '../../mainContent/mock';
+import instance from '@/src/api/axios';
+import useFocusOutClose from '@/src/hooks/useFocusOutClose';
+import useDebounce from '@/src/hooks/useDebounce';
+import { videoListProps } from '@/src/lib/types';
 
 const SearchBar = () => {
-  const { searchKeyword, searchResult, handleChangeKeyword, setSearchKeyword } = useSearch(mock);
+  const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
+
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const [searchVideoList, setSearchVideoList] = useState<videoListProps[]>([]);
+  const [searchResult, setSearchResult] = useState<videoListProps[]>([]);
+
+  const debounceKeyword = useDebounce(searchKeyword);
 
   const router = useRouter();
 
-  const handleRouteContents = (cardId: number) => {
-    const contentLink = `/travel-information/${cardId}`;
-    router.push(contentLink);
+  useEffect(() => {
+    const getVideoList = async () => {
+      try {
+        const response = await instance.get('/video');
+        const reslut = response.data.data;
+        setSearchVideoList(reslut);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getVideoList();
+  }, []);
+
+  useEffect(() => {
+    const filteredList = searchVideoList.filter(
+      ({ title, url, tag }) =>
+        title.includes(debounceKeyword) || url.includes(debounceKeyword) || tag.includes(debounceKeyword),
+    );
+
+    setSearchResult(debounceKeyword.trim() === '' ? [] : filteredList);
+  }, [debounceKeyword, searchVideoList]);
+
+  const handleRouteContentPage = (videoId: number) => {
+    const contentLink = `/travel-information/${videoId}`;
+    setTimeout(() => {
+      router.push(contentLink);
+    }, 500);
     setSearchKeyword('');
   };
 
+  const handleChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = event.target.value;
+    setSearchKeyword(keyword);
+  };
+
+  const showSerachContent = isFocused && searchResult.length > 0;
+
   return (
-    <div className="relative w-full ">
-      <SearchInput searchKeyword={searchKeyword} onChange={handleChangeKeyword} />
-      {searchResult.length > 0 && <SearchContent searchResult={searchResult} onClick={handleRouteContents} />}
-    </div>
+    <section className="relative w-full ">
+      <FindPageInput
+        searchKeyword={searchKeyword}
+        onChange={handleChangeKeyword}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+      {showSerachContent && <SearchContent searchResult={searchResult} onClick={handleRouteContentPage} />}
+    </section>
   );
 };
 

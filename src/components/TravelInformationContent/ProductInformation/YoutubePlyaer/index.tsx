@@ -1,21 +1,22 @@
-import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
 import YouTube from 'react-youtube';
 
+import useYouTubePlayer from '@/src/hooks/useYouTubePlayer';
+
 interface YoutubePlayerProps {
-  videoId: string;
+  youtubeId: string;
 }
 
-const YoutubePlayer = ({ videoId }: YoutubePlayerProps) => {
+const YoutubePlayer = ({ youtubeId }: YoutubePlayerProps) => {
   const { videoSize, onReady, onMouseEnter, onMouseLeave } = useYouTubePlayer();
 
   return (
     <div
+      className="flex items-center justify-center min-w-568 rounded-l overflow-hidden"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="flex items-center justify-center min-w-568 rounded-l overflow-hidden"
     >
       <YouTube
-        videoId={videoId}
+        videoId={youtubeId}
         opts={{
           width: `${videoSize}`,
           height: '378',

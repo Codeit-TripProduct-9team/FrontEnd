@@ -1,10 +1,10 @@
 export interface MockDataItem {
-  cardId: number;
+  id: number;
   thumbnail: string;
   likes: number;
   title: string;
   description: string;
-  tag: string[];
+  tag: string;
   url: string;
 }
 
@@ -31,7 +31,31 @@ export interface InputForm {
 }
 
 export interface kakaoShareProps {
+  title: string | undefined;
+  description: string | undefined;
+  thumbnail: string | undefined;
+}
+
+export interface ReviewDataItem {
+  id: number;
   title: string;
-  description: string;
-  thumbnail: string;
+  content: string;
+  createdAt: string;
+  score: number;
+}
+
+export interface VideoInformationProps {
+  id?: number;
+  title?: string;
+  content?: string;
+  url?: string;
+  tag?: string;
+  likeCount?: number;
+}
+
+export interface videoListProps {
+  id: number;
+  tag: string;
+  title: string;
+  url: string;
 }

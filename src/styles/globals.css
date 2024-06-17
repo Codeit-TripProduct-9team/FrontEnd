@@ -111,12 +111,17 @@
   display: none;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Make it transparent */
+}
+
 /* 호버 시 스크롤바 표시 - WebKit 기반 브라우저용 */
-.scrollbar-hide:hover::-webkit-scrollbar {
+/* .scrollbar-hide:hover::-webkit-scrollbar {
   display: block;
   width: 8px;
   height: 8px;
-}
+} */
 
 /* 호버 시 스크롤바 표시 - Firefox용 */
 .scrollbar-hide:hover {

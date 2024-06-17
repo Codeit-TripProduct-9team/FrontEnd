@@ -23,3 +23,15 @@ export const BASED_URL = {
   KAKAO_ROAD: `https://dapi.kakao.com/v2`,
   KAKKAO_DIRECTION: 'https://apis-navi.kakaomobility.com/v1/directions',
 };
+
+export const TOAST_MESSAGE = {
+  DELETE: '삭제되었습니다.',
+  SAVE: '저장되었습니다.',
+  LOGIN: '로그인 되었습니다.',
+  VERIFY: '인증되었습니다.',
+  CHECK_DUPLICATE: '사용 가능한 이메일 입니다.',
+  SUCCESS_REVIEW: '리뷰가 생성되었습니다.',
+  EMPTY_SCORE: '별점을 등록해 주세요',
+  FULL_TEXT: '더 이상 작성할 수 없습니다.',
+  EMPTY_LOCATION: '장소를 입력해주세요',
+};
