@@ -1,14 +1,15 @@
 // types.ts
-export type Position = {
-  lat: number;
-  lng: number;
-};
+// export type Position = {
+//   posX: number;
+//   posY: number;
+// };
 
 export type PlaceData = {
-  id: number;
+  index: number;
   name: string;
-  mainImg: string;
-  position: Position;
+  img: string;
+  posX: number;
+  posY: number;
 };
 
 export type CourseData = {
