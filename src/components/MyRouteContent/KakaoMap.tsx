@@ -23,6 +23,7 @@ interface ResponseData {
 
 const KakaoMap = () => {
   const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {
@@ -33,8 +34,6 @@ const KakaoMap = () => {
       })),
     );
   }, [courseData]);
-
-  const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
   useEffect(() => {
     const data = {

@@ -7,12 +7,16 @@ interface RemoveDayProps {
 const removeDay: RemoveDayProps = (state, courseId, dayIndex) => {
   const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
   if (courseIndex !== -1) {
-    state.data.course[courseIndex].plan.splice(dayIndex - 1, 1);
+    const newCourse = [...state.data.course];
+    const newPlan = [...newCourse[courseIndex].plan];
+    newPlan.splice(dayIndex - 1, 1);
 
     // Reassign days in ascending order starting from 1
-    state.data.course[courseIndex].plan.forEach((day, index) => {
+    newPlan.forEach((day, index) => {
       day.day = index + 1;
     });
+    newCourse[courseIndex].plan = newPlan;
+    return { ...state, data: { ...state.data, course: newCourse } };
   }
   return { ...state };
 };
