@@ -18,7 +18,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const hasToken = getCookie('accessToken');
+  // const hasToken = getCookie('accessToken');
 
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
@@ -30,7 +30,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
       const body = { title: title, nickname: '테스트', content: content, score: score };
       try {
         const headers = {
-          Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
+          Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
         };
         const response = await instance.post(`/video/${videoId}/review`, body, { headers });
         if (response.status === 200) {

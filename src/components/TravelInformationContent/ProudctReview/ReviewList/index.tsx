@@ -16,6 +16,7 @@ import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
+import dompurify from 'dompurify';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -23,14 +24,16 @@ interface ReviewDataProps {
   videoId: string;
 }
 
+const sanitizer = dompurify.sanitize;
+
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
   const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
   const [editReveiwScore, setEditReviewScore] = useState(0);
 
-  const hasToken = getCookie('accessToken');
-  console.log(hasToken);
+  // const hasToken = getCookie('accessToken');
+  // console.log(hasToken);
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -56,7 +59,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       score: editReveiwScore,
     };
     const headers = {
-      Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
+      Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
     };
     try {
       const response = await instance.patch(`/video/${videoId}/review/${reviewId}`, body, { headers });
@@ -73,7 +76,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const handleReviewDelete = async (reviewId: number) => {
     try {
       const headers = {
-        Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
+        Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
       };
       const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
       if (response.status === 200) {
@@ -115,7 +118,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   reviewId={id}
                 />
               ) : (
-                <p dangerouslySetInnerHTML={{ __html: content }} />
+                <p dangerouslySetInnerHTML={{ __html: sanitizer(content) }} />
               )}
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}
