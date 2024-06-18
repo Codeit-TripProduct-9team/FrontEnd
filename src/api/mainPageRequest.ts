@@ -2,7 +2,7 @@ import instance from './axios';
 
 class mainPageRequest {
   async getCardList() {
-    return (await instance.get(`/video`)).data.data;
+    return (await instance.get(`/video/sort=latest`)).data.data;
   }
 }
 
