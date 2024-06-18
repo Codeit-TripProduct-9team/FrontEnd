@@ -77,8 +77,6 @@ const ProductReview = () => {
 
   const emptyReveiwData = reviewList.length === 0;
 
-  console.log(reviewList);
-
   return (
     <div className="flex flex-col w-full pt-65 px-110 bg-white">
       <CreateReview videoId={videoId} renderReveiwList={getReviewList} />

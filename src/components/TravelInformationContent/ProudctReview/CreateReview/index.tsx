@@ -18,11 +18,12 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  // const hasToken = getCookie('accessToken');
+  const hasToken = getCookie('accessToken');
 
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
 
+    console.log(hasToken);
     if (!hasScore) {
       toast.error(TOAST_MESSAGE.EMPTY_SCORE);
     }
@@ -30,7 +31,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
       const body = { title: title, nickname: '테스트', content: content, score: score };
       try {
         const headers = {
-          Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
+          Authorization: `Bearer ${hasToken}`,
         };
         const response = await instance.post(`/video/${videoId}/review`, body, { headers });
         if (response.status === 200) {
@@ -39,6 +40,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
           setContent('');
           setTitle('');
         }
+
         toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
       } catch (error: any) {
         if (error.response.message) {

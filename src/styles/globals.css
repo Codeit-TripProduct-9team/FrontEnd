@@ -148,12 +148,13 @@
 
 .quill {
   min-height: 170px !important;
-  padding: 18xp 58px 18px 58px;
+  padding: 0 28px 18px 28px;
   width: 98% !important;
 }
 
 .ql-container {
   font-size: 16px !important;
+  border: none !important;
 }
 
 .ql-editor.ql-blank::before {
@@ -161,5 +162,24 @@
 }
 
 .ql-toolbar {
-  z-index: 99;
+  border: none !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ql-size-huge {
+  font-size: 32px !important;
+}
+
+.ql-size-large {
+  font-size: 24px !important;
+}
+
+.ql-size-small {
+  font-size: 14px !important;
+}
+
+#review-text a {
+  color: #0094ff;
+  text-decoration: underline;
 }

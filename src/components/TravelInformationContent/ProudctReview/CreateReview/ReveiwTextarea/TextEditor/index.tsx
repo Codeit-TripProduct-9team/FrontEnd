@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(async () => await import('react-quill'), {
   ssr: false,
@@ -17,16 +17,15 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
 
   const modules = {
     toolbar: [
-      [{ header: [1, 2, false] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
       ['bold', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
       ['link'],
-      [{ align: [] }, { color: [] }, { background: [] }],
+      [{ color: [] }, { background: [] }],
+      ['clean'],
     ],
   };
 
   const formats = [
-    'header',
     'color',
     'size',
     'bold',
@@ -37,19 +36,18 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
     'bullet',
     'indent',
     'link',
-    'image',
-    'video',
-    'align',
     'background',
+    'clean',
   ];
 
+  console.log(content);
   return (
     <ReactQuill
       className="w-[98%] h-170 py-18 px-58"
       placeholder="이곳에서의 경험은 어떠셨나요?"
       value={content}
       onChange={handleChangeText}
-      theme="bubble"
+      theme="snow"
       modules={modules}
       formats={formats}
     />

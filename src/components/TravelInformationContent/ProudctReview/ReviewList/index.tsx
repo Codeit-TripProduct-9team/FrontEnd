@@ -27,13 +27,13 @@ interface ReviewDataProps {
 const sanitizer = dompurify.sanitize;
 
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
+  const [isEdit, setIsEdit] = useState(false);
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
   const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
   const [editReveiwScore, setEditReviewScore] = useState(0);
 
-  // const hasToken = getCookie('accessToken');
-  // console.log(hasToken);
+  const hasToken = getCookie('accessToken');
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -49,6 +49,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     setEditReviewContent(content);
     setEditReviewScore(score);
     setEditReviewTitle(title);
+    setIsEdit(true);
   };
 
   const handleChangeReview = async (reviewId: number) => {
@@ -59,7 +60,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       score: editReveiwScore,
     };
     const headers = {
-      Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
+      Authorization: `Bearer ${hasToken}`,
     };
     try {
       const response = await instance.patch(`/video/${videoId}/review/${reviewId}`, body, { headers });
@@ -76,7 +77,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const handleReviewDelete = async (reviewId: number) => {
     try {
       const headers = {
-        Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY5NjkzMX0.32w8jKEi7m5Vx7Fn3_PHzS_3pf5G5p6axTavPEfnABBetzayS8s1m4fXmTc6cCT2`,
+        Authorization: `Bearer ${hasToken}`,
       };
       const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
       if (response.status === 200) {
@@ -86,6 +87,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleCancleEditReview = () => {
+    setEditReviewId(null);
+    setIsEdit(false);
   };
 
   return (
@@ -116,13 +122,20 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   setContent={setEditReviewContent}
                   createReview={() => handleChangeReview(id)}
                   reviewId={id}
+                  isEdit={isEdit}
+                  cancleEditReview={handleCancleEditReview}
                 />
               ) : (
-                <p dangerouslySetInnerHTML={{ __html: sanitizer(content) }} />
+                <p
+                  id="review-text"
+                  className="max-h-130 overflow-y-scroll"
+                  dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
+                />
               )}
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}
                 onClickDelete={() => deleteReviewModal(id)}
+                isEdit={isEdit}
               />
             </li>
           );

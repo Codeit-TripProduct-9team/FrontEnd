@@ -11,9 +11,20 @@ interface ReviewTextAreaProps {
   setTitle: (title: string) => void;
   createReview?: (reviewId?: number) => void;
   reviewId?: number;
+  isEdit?: boolean;
+  cancleEditReview: () => void;
 }
 
-const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, createReview }: ReviewTextAreaProps) => {
+const ReviewTextArea = ({
+  reviewId,
+  content,
+  title,
+  setContent,
+  setTitle,
+  createReview,
+  isEdit,
+  cancleEditReview,
+}: ReviewTextAreaProps) => {
   const focusRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(focusRef);
@@ -48,11 +59,19 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
       <Button
         type="button"
         onClick={() => createReview(reviewId)}
-        className="absolute bottom-15 right-55 w-60 h-35 text-18 disabled:bg-gray-60"
+        className="absolute bottom-15 right-35 w-60 h-35 text-18 disabled:bg-gray-60"
         disabled={emptyReview}
       >
         작성
       </Button>
+      {isEdit && (
+        <Button
+          onClick={cancleEditReview}
+          className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60 bg-red"
+        >
+          취소
+        </Button>
+      )}
       <div className="absolute bottom-20 right-28 text-18 text-gray-50"></div>
     </div>
   );
