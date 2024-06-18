@@ -12,7 +12,7 @@ interface ReviewTextAreaProps {
   createReview?: (reviewId?: number) => void;
   reviewId?: number;
   isEdit?: boolean;
-  cancleEditReview: () => void;
+  cancleEditReview?: () => void;
 }
 
 const ReviewTextArea = ({

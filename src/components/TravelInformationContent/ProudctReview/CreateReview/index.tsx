@@ -23,7 +23,6 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
 
-    console.log(hasToken);
     if (!hasScore) {
       toast.error(TOAST_MESSAGE.EMPTY_SCORE);
     }

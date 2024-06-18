@@ -40,7 +40,6 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
     'clean',
   ];
 
-  console.log(content);
   return (
     <ReactQuill
       className="w-[98%] h-170 py-18 px-58"

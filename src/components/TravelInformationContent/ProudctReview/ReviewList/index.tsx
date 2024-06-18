@@ -64,7 +64,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     };
     try {
       const response = await instance.patch(`/video/${videoId}/review/${reviewId}`, body, { headers });
-      console.log(response);
+
       if (response.status === 200) {
         setEditReviewId(null);
         renderReviewList();
