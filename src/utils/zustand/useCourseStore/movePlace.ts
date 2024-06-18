@@ -23,19 +23,28 @@ const movePlace: MovePlaceProps = (state, courseId, fromDay, fromIndex, toDay, t
       );
       const toPlaceIndex = course[courseIndex].plan[toPlanIndex].place.findIndex((place) => place.index === toIndex);
       if (fromPlaceIndex !== -1) {
-        // Extract the place to move
-        const placeToMove = course[courseIndex].plan[fromPlanIndex].place.splice(fromPlaceIndex, 1)[0];
+        const newCourse = [...state.data.course];
+        const newPlan = newCourse[courseIndex].plan.map((day) => ({ ...day, place: [...day.place] }));
 
-        // Insert at the target index
-        course[courseIndex].plan[toPlanIndex].place.splice(toPlaceIndex, 0, placeToMove);
+        // Extract the place to move
+        const placeToMove = { ...newPlan[fromPlanIndex].place[fromPlaceIndex] };
+
+        // Remove place from the original day
+        newPlan[fromPlanIndex].place.splice(fromPlaceIndex, 1);
+
+        // Add place to the new day at the target index
+        newPlan[toPlanIndex].place.splice(toPlaceIndex, 0, placeToMove);
 
         // Reassign index values in ascending order
         let globalIndex = 1;
-        for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
-          for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
-            course[courseIndex].plan[j].place[i].index = globalIndex++;
+        for (let j = 0; j < newPlan.length; j++) {
+          for (let i = 0; i < newPlan[j].place.length; i++) {
+            newPlan[j].place[i].index = globalIndex++;
           }
         }
+
+        newCourse[courseIndex].plan = newPlan;
+        return { ...state, data: { ...state.data, course: newCourse } };
       }
     }
   }

@@ -13,15 +13,15 @@ const addPlace: AddPlaceProps = (state, courseId, day, newPlace) => {
       const newPlan = [...newCourse[courseIndex].plan];
       const newPlaceList = [...newPlan[dayIndex].place, newPlace];
 
-      let globalIndex = 1;
-      newPlan.forEach((day) => {
-        day.place = day.place.map((place) => ({
-          ...place,
-          index: globalIndex++,
-        }));
-      });
-
       newPlan[dayIndex].place = newPlaceList;
+
+      // Reassign index values in ascending order
+      let globalIndex = 1;
+      for (let j = 0; j < newPlan.length; j++) {
+        for (let i = 0; i < newPlan[j].place.length; i++) {
+          newPlan[j].place[i].index = globalIndex++;
+        }
+      }
       newCourse[courseIndex].plan = newPlan;
       return { ...state, data: { ...state.data, course: newCourse } };
     }
