@@ -60,6 +60,21 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
     }
   };
 
+  const handleDeleteMyPlace = async () => {
+    const headers = {
+      Authorization: `Bearer ${hasToken}`,
+    };
+    try {
+      const response = await instance.delete(`/user/252/video/${videoId}`, { headers });
+      if (response.status === 200) {
+        toast.success('나의 코스에 등록되었습니다!');
+        setIsLike(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleRouteCustomCourse = async () => {
     if (!isLike) {
       await handleRegistMyPlace();
@@ -82,13 +97,15 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
           지금 코스짜기
         </Button>
       </Link>
-      <Button
-        className={`${isLike ? 'bg-red' : 'bg-blue'} w-161 h-39 text-18 font-bold`}
-        textColor={'white'}
-        onClick={handleRegistMyPlace}
-      >
-        {isLike ? '마이플레이스 삭제' : '마이플레이스 등록'}
-      </Button>
+      {isLike ? (
+        <Button className="bg-red w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleDeleteMyPlace}>
+          마이플레이스 삭제
+        </Button>
+      ) : (
+        <Button className="bg-blue w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleRegistMyPlace}>
+          마이플레이스 등록
+        </Button>
+      )}
       <button className="flex items-center py-6 px-16 rounded-s bg-gray-10" onClick={sharedOnModal}>
         <Image src={shareIcon} alt="share" width={27} height={27} />
       </button>

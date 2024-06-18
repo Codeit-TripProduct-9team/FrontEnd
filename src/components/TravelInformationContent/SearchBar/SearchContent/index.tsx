@@ -41,9 +41,7 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
         const hasYoutubeData = youtubeData.items.length > 0;
         if (hasYoutubeData) {
           const thumbnail = youtubeData.items[0].snippet.thumbnails?.high?.url;
-          if (thumbnail) {
-            searchBarThumbnails[id] = thumbnail;
-          }
+          searchBarThumbnails[id] = thumbnail;
         }
       }
       setThumbnails(searchBarThumbnails);
