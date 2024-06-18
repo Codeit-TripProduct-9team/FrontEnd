@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
+import toast from 'react-hot-toast';
+
 import SortToolbar from './SortToolbar';
 import CreateReview from './CreateReview';
 import ReviewList from './ReviewList';
@@ -9,6 +11,7 @@ import ScrollButton from './ScrollButton';
 
 import instance from '@/src/api/axios';
 import { ReviewDataItem } from '@/src/lib/types';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 const ProductReview = () => {
   const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
@@ -31,7 +34,7 @@ const ProductReview = () => {
       );
       setCountScrollEvnet(countScrollEvent);
     } catch (error) {
-      console.error(error);
+      toast.error(TOAST_MESSAGE.UNKNOW_ERROR);
     }
   }, [sortType, videoId, queryNumber]);
 
