@@ -27,6 +27,13 @@ const KakaoMap = () => {
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {
+    if (courseData.length === 0)
+      return [
+        {
+          title: '서울',
+          latlng: { lat: 37.5665, lng: 126.978 },
+        },
+      ];
     return courseData.flatMap((course) =>
       course.place.map((place) => ({
         title: place.name,
@@ -34,6 +41,9 @@ const KakaoMap = () => {
       })),
     );
   }, [courseData]);
+
+  console.log(courseData);
+  console.log(positions);
 
   useEffect(() => {
     const data = {
