@@ -1,36 +1,64 @@
+import { useRef } from 'react';
+
+import toast from 'react-hot-toast';
+
 import Button from '@/src/components/common/button';
-import useTextCounter from '@/src/hooks/useTextCounter';
+import useAutoFocus from '@/src/hooks/useAtuoFocus';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 interface ReviewTextAreaProps {
   content: string;
+  title: string;
   setContent: (content: string) => void;
-  onClick?: (reviewId?: number) => void;
+  setTitle: (title: string) => void;
+  createReview?: (reviewId?: number) => void;
   reviewId?: number;
 }
 
-const ReviewTextArea = ({ reviewId, content, setContent, onClick }: ReviewTextAreaProps) => {
-  const maxTextLength = 300;
-  const { currentCount, handleCountText } = useTextCounter(maxTextLength, content);
+const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, createReview }: ReviewTextAreaProps) => {
+  const focusRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(focusRef);
+
+  const maxTextLength = 500;
+
+  const handleChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = event.target.value;
+    if (text.length <= maxTextLength) {
+      setContent(text);
+    }
+    if (text.length === maxTextLength) {
+      toast.error(TOAST_MESSAGE.FULL_TEXT);
+    }
+  };
+
+  const handleChnageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    setTitle(title);
+  };
+
+  const currentCount = content.length;
+  const emptyReview = content.trim() === '' || title.trim() === '';
 
   return (
-    <div className="relative w-full h-200 mb-36 rounded-m bg-gray-10 overflow-hidden">
+    <div className="relative flex flex-col w-full h-300 mb-36 rounded-m bg-gray-10 overflow-hidden">
+      <input
+        ref={focusRef}
+        className=" mt-28 mb-10 mx-28 px-18 h-40 text-20 bg-white border-2 rounded-m focus-visible:border-gray-50"
+        placeholder="리뷰의 제목을 입력해주세요!"
+        value={title}
+        onChange={handleChnageInput}
+      />
       <textarea
-        className="w-full h-200 py-30 px-28 bg-transparent resize-none focus:outline-none"
+        className="w-full h-180 py-28 px-28 bg-transparent resize-none focus:outline-none"
         placeholder="이곳에서의 경험은 어떠셨나요?"
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-          handleCountText(e);
-        }}
+        onChange={handleChangeTextArea}
       />
       <Button
-        onClick={() => {
-          if (onClick) {
-            onClick(reviewId);
-          }
-        }}
+        onClick={() => createReview(reviewId)}
         className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
-        disabled={content.trim() === ''}
+        disabled={emptyReview}
       >
         작성
       </Button>

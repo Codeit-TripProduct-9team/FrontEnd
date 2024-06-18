@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
 import Image from 'next/image';
 
 import star from '@/public/assets/icon/star.svg';
@@ -14,6 +15,7 @@ const ReviewScore = ({ score, setScore }: ReviewScoreProps) => {
 
   const handleStarHover = (index: number) => {
     setHoverIndex(index);
+    setScore(0);
   };
 
   const handleStarLeave = () => {
