@@ -7,23 +7,23 @@ interface RemovePlaceProps {
 const removePlace: RemovePlaceProps = (state, courseId, placeIndex) => {
   const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
   if (courseIndex !== -1) {
-    for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
-      const placeIndexInDay = state.data.course[courseIndex].plan[j].place.findIndex(
-        (place) => place.index === placeIndex,
-      );
-      if (placeIndexInDay !== -1) {
-        state.data.course[courseIndex].plan[j].place.splice(placeIndexInDay, 1);
-        break;
-      }
-    }
-  }
-  let globalIndex = 1;
-  for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
-    for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
-      state.data.course[courseIndex].plan[j].place[i].index = globalIndex++;
-    }
-  }
+    const newCourse = [...state.data.course];
+    const newPlan = newCourse[courseIndex].plan.map((day) => ({
+      ...day,
+      place: day.place.filter((place) => place.index !== placeIndex),
+    }));
 
+    let globalIndex = 1;
+    newPlan.forEach((day) => {
+      day.place = day.place.map((place) => ({
+        ...place,
+        index: globalIndex++,
+      }));
+    });
+
+    newCourse[courseIndex].plan = newPlan;
+    return { ...state, data: { ...state.data, course: newCourse } };
+  }
   return { ...state };
 };
 
