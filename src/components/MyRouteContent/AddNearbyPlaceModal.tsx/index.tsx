@@ -147,7 +147,7 @@ const AddNearbyPlaceModal = ({ close }) => {
                 <div className="flex justify-between items-center">
                   <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
                   <span
-                    className="bg-blue rounded-s text-white text-12 px-6 py-2"
+                    className="bg-blue rounded-s text-white text-12 px-6 py-2 cursor-pointer"
                     onClick={handleAddPlace(selectedMarker)}
                   >
                     일정에 추가
