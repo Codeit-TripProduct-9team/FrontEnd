@@ -7,7 +7,10 @@ interface AddDayProps {
 const addDay: AddDayProps = (state, courseId, newDay) => {
   const courseIndex = state.data.course.findIndex((course) => course.id === courseId);
   if (courseIndex !== -1) {
-    state.data.course[courseIndex].plan.push(newDay);
+    const newCourse = [...state.data.course];
+    const newPlan = [...newCourse[courseIndex].plan, newDay];
+    newCourse[courseIndex].plan = newPlan;
+    return { ...state, data: { ...state.data, course: newCourse } };
   }
   return { ...state };
 };

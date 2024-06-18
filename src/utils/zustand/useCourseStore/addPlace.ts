@@ -9,13 +9,21 @@ const addPlace: AddPlaceProps = (state, courseId, day, newPlace) => {
   if (courseIndex !== -1) {
     const dayIndex = state.data.course[courseIndex].plan.findIndex((plan) => plan.day === day);
     if (dayIndex !== -1) {
-      state.data.course[courseIndex].plan[dayIndex].place.push(newPlace);
+      const newCourse = [...state.data.course];
+      const newPlan = [...newCourse[courseIndex].plan];
+      const newPlaceList = [...newPlan[dayIndex].place, newPlace];
+
       let globalIndex = 1;
-      for (let j = 0; j < state.data.course[courseIndex].plan.length; j++) {
-        for (let i = 0; i < state.data.course[courseIndex].plan[j].place.length; i++) {
-          state.data.course[courseIndex].plan[j].place[i].index = globalIndex++;
-        }
-      }
+      newPlan.forEach((day) => {
+        day.place = day.place.map((place) => ({
+          ...place,
+          index: globalIndex++,
+        }));
+      });
+
+      newPlan[dayIndex].place = newPlaceList;
+      newCourse[courseIndex].plan = newPlan;
+      return { ...state, data: { ...state.data, course: newCourse } };
     }
   }
   return { ...state };
