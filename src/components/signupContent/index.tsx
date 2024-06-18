@@ -149,15 +149,15 @@ const SingupContent = () => {
               disabled={isVerified}
             />
           </div>
-          <SendEmail
+          {/* <SendEmail
             isVerified={isVerified}
             userEmail={emailValue}
             disabled={!isEmailvalid}
             setVerificationCode={setVerificationCode}
             error={errors.email?.message}
-          />
+          /> */}
         </div>
-        <div className="flex items-center w-full gap-10">
+        {/* <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
@@ -184,7 +184,7 @@ const SingupContent = () => {
             isEmailValid={isEmailvalid}
             checkVerificationCode={checkVerificationCode}
           />
-        </div>
+        </div> */}
         <PasswordInput
           register={register('password', {
             required: {

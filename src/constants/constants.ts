@@ -38,4 +38,5 @@ export const TOAST_MESSAGE = {
   EMPTY_SCORE: '별점을 등록해 주세요',
   FULL_TEXT: '더 이상 작성할 수 없습니다.',
   EMPTY_LOCATION: '장소를 입력해주세요',
+  UNKNOW_ERROR: '에러가 발생했습니다. ',
 };
