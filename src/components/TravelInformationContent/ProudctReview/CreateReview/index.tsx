@@ -30,16 +30,16 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
       const body = { title: title, nickname: '테스트', content: content, score: score };
       try {
         const headers = {
-          Authorization: `Bearer ${hasToken}`,
+          Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
         };
         const response = await instance.post(`/video/${videoId}/review`, body, { headers });
-        if (response.status == 200) {
+        if (response.status === 200) {
           renderReveiwList();
           setScore(0);
           setContent('');
           setTitle('');
-          toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
         }
+        toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
       } catch (error: any) {
         if (error.response.message) {
           toast.error(error.response.message);

@@ -30,6 +30,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const [editReveiwScore, setEditReviewScore] = useState(0);
 
   const hasToken = getCookie('accessToken');
+  console.log(hasToken);
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -47,7 +48,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     setEditReviewTitle(title);
   };
 
-  const handleChangeReview = async (id: number) => {
+  const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
       nickname: '수정',
@@ -55,10 +56,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       score: editReveiwScore,
     };
     const headers = {
-      Authorization: `Bearer ${hasToken}`,
+      Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
     };
     try {
-      const response = await instance.put(`/video/${videoId}/review/${id}`, body, { headers });
+      const response = await instance.patch(`/video/${videoId}/review/${reviewId}`, body, { headers });
+      console.log(response);
       if (response.status === 200) {
         setEditReviewId(null);
         renderReviewList();
@@ -71,7 +73,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const handleReviewDelete = async (reviewId: number) => {
     try {
       const headers = {
-        Authorization: `Bearer ${hasToken}`,
+        Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InRlc3Q0MTRAY29kZWl0LmNvbSIsImV4cCI6MTcxODY4NzQ1OH0.p8Z3Lpi1OvPtceR3_brfHyowCT9MRwCvV62jbZsgxWjbKGNJs53LYShh3Adge3mc`,
       };
       const response = await instance.delete(`/video/${videoId}/review/${reviewId}`, { headers });
       if (response.status === 200) {
@@ -113,7 +115,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   reviewId={id}
                 />
               ) : (
-                <p>{content}</p>
+                <p dangerouslySetInnerHTML={{ __html: content }} />
               )}
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}

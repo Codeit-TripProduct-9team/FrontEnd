@@ -1,10 +1,8 @@
 import { useRef } from 'react';
 
-import toast from 'react-hot-toast';
-
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
-import { TOAST_MESSAGE } from '@/src/constants/constants';
+import TextEditor from './TextEditor';
 
 interface ReviewTextAreaProps {
   content: string;
@@ -20,16 +18,13 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
 
   useAutoFocus(focusRef);
 
-  const maxTextLength = 500;
+  const deleteTag = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
 
-  const handleChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = event.target.value;
-    if (text.length <= maxTextLength) {
-      setContent(text);
-    }
-    if (text.length === maxTextLength) {
-      toast.error(TOAST_MESSAGE.FULL_TEXT);
-    }
+  const handleTextEditorChange = (content: string) => {
+    setContent(content);
   };
 
   const handleChnageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,11 +32,10 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
     setTitle(title);
   };
 
-  const currentCount = content.length;
-  const emptyReview = content.trim() === '' || title.trim() === '';
+  const emptyReview = deleteTag(content).trim() === '' || title.trim() === '';
 
   return (
-    <div className="relative flex flex-col w-full h-300 mb-36 rounded-m bg-gray-10 overflow-hidden">
+    <div className="relative flex flex-col w-full h-300 mb-36 rounded-m bg-gray-10 ">
       <input
         ref={focusRef}
         className=" mt-28 mb-10 mx-28 px-18 h-40 text-20 bg-white border-2 rounded-m focus-visible:border-gray-50"
@@ -49,22 +43,17 @@ const ReviewTextArea = ({ reviewId, content, title, setContent, setTitle, create
         value={title}
         onChange={handleChnageInput}
       />
-      <textarea
-        className="w-full h-180 py-28 px-28 bg-transparent resize-none focus:outline-none"
-        placeholder="이곳에서의 경험은 어떠셨나요?"
-        value={content}
-        onChange={handleChangeTextArea}
-      />
+      <TextEditor content={content} handleChangeTextArea={handleTextEditorChange} />
+
       <Button
+        type="button"
         onClick={() => createReview(reviewId)}
-        className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60"
+        className="absolute bottom-15 right-55 w-60 h-35 text-18 disabled:bg-gray-60"
         disabled={emptyReview}
       >
         작성
       </Button>
-      <div className="absolute bottom-20 right-28 text-18 text-gray-50">
-        {currentCount}/{maxTextLength}
-      </div>
+      <div className="absolute bottom-20 right-28 text-18 text-gray-50"></div>
     </div>
   );
 };
