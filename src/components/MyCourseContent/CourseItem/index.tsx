@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../../common/modal';
 import LoadMoreModal from '../LoadMoreModal';
 import { Course } from '@/src/lib/types';
 import consolidatePlans from '@/src/utils/combineDayPlans';
+import ConditionalImage from '../ConditionalImage';
 
 const CourseItem = ({ name, plan }: Course) => {
   const planData = consolidatePlans(plan);
@@ -21,7 +21,7 @@ const CourseItem = ({ name, plan }: Course) => {
           close();
         }}
       >
-        <LoadMoreModal />
+        <LoadMoreModal plan={plan} />
       </Modal>
     ));
   };
@@ -36,7 +36,7 @@ const CourseItem = ({ name, plan }: Course) => {
               <p className="font-bold whitespace-nowrap overflow-hidden text-ellipsis pr-10 w-150">
                 {place.index} <span className="font-normal">{place.name}</span>
               </p>
-              {place.index !== firstThreePlaces.length && firstThreePlaces.length !== 3 && (
+              {place.index !== planData.length && planData.length !== 3 && (
                 <div className="flex items-center gap-2 w-full grow">
                   <div className="w-5 h-5 rounded-full bg-gray-70"></div>
                   <hr className="border-dashed border-1 w-200" />
@@ -47,14 +47,16 @@ const CourseItem = ({ name, plan }: Course) => {
           ))}
           {firstThreePlaces.length > 3 && (
             <p>
-              <Link href="">더보기</Link>
+              <button type="button" onClick={handleLoadMoreClick}>
+                더보기
+              </button>
             </p>
           )}
         </div>
       </div>
       <div className="flex gap-10 mb-40">
         {firstThreePlaces.map((place) => (
-          <Image className="rounded-s" key={place.index} src={place.img} alt="place" width={321} height={207} />
+          <ConditionalImage key={place.index} img={place.img} />
         ))}
         {fourthPlace && (
           <div onClick={handleLoadMoreClick} className="relative w-321 h-180 rounded-s overflow-hidden cursor-pointer">
