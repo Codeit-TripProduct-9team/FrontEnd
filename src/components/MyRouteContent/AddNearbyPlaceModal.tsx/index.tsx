@@ -35,14 +35,22 @@ interface AddNearbyPlaceModalProps {
 }
 
 const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) => {
-  const decomposedData = courseData
-    .map((course) => {
-      return course.place.map((place) => {
-        const { index, name, img, posX, posY } = place;
-        return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
-      });
-    })
-    .flat();
+  const decomposedData =
+    courseData.length > 0
+      ? courseData.flatMap((course) => {
+          return course.place.map((place) => {
+            const { index, name, img, posX, posY } = place;
+            return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
+          });
+        })
+      : [
+          {
+            id: 1,
+            name: '을지로입구역',
+            mainImg: '',
+            position: { lat: 37.5661, lng: 126.9827 },
+          },
+        ];
 
   const [mapCenter, setMapCenter] = useState(decomposedData[0].position);
   const [markers, setMarkers] = useState<Marker[]>([]);
