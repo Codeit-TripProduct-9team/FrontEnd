@@ -5,7 +5,7 @@ import instance from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 // import markerIcon from '@/public/assets/icon/marker.png';
 
 type Marker = {
@@ -29,7 +29,8 @@ type SearchedPlace = {
   distance: string;
 };
 
-const AddNearbyPlaceModal = () => {
+const AddNearbyPlaceModal = ({ close }) => {
+  const courseId = 1;
   const courseData = useCourseStore((state) => state.data.course[0].plan);
   const decomposedData = courseData
     .map((course) => {
@@ -45,6 +46,7 @@ const AddNearbyPlaceModal = () => {
   const [selectedMarker, setSelectedMarker] = useState<Marker>();
   const [selectedDistance, setSelectedDistance] = useState(1000);
   const [selectedQuery, setSelectedQuery] = useState('음식점');
+  const { addPlace } = useCourseStore();
 
   const [selectedPlace, setSelectedPlace] = useState({
     name: decomposedData[0].name,
@@ -63,6 +65,19 @@ const AddNearbyPlaceModal = () => {
     if ((e.target as HTMLInputElement).value.length > 0) {
       setSelectedQuery((e.target as HTMLInputElement).value);
     }
+  };
+
+  const handleAddPlace = (selectedMarker: Marker) => () => {
+    const newPlace = {
+      name: selectedMarker.name,
+      index: 1,
+      img: '',
+      posX: selectedMarker.position.lat,
+      posY: selectedMarker.position.lng,
+    };
+
+    addPlace(courseId, 1, newPlace);
+    close();
   };
 
   useEffect(() => {
@@ -87,11 +102,7 @@ const AddNearbyPlaceModal = () => {
         distance: place.distance,
       }));
 
-      // Add the new markers to the map
       setMarkers(newMarkers);
-      // if (newMarkers) {
-      //   setMapCenter(newMarkers[0]);
-      // }
     };
     fetchPlaces();
   }, [selectedDistance, selectedPlace, selectedQuery]);
@@ -135,7 +146,12 @@ const AddNearbyPlaceModal = () => {
                 <span className="text-12 text-gray-50">(지번: {selectedMarker.address})</span>
                 <div className="flex justify-between items-center">
                   <span className="text-green text-12">{selectedMarker.phone || '대표번호가 없습니다.'}</span>
-                  <span className="bg-blue rounded-s text-white text-12 px-6 py-2">일정에 추가</span>
+                  <span
+                    className="bg-blue rounded-s text-white text-12 px-6 py-2 cursor-pointer"
+                    onClick={handleAddPlace(selectedMarker)}
+                  >
+                    일정에 추가
+                  </span>
                 </div>
               </div>
               <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-t-8 border-t-white border-white border-l-8 border-l-transparent border-r-8 border-r-transparent" />

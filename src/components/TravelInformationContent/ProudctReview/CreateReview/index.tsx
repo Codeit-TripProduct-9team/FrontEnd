@@ -33,13 +33,14 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
           Authorization: `Bearer ${hasToken}`,
         };
         const response = await instance.post(`/video/${videoId}/review`, body, { headers });
-        if (response.status == 200) {
+        if (response.status === 200) {
           renderReveiwList();
           setScore(0);
           setContent('');
           setTitle('');
-          toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
         }
+
+        toast.success(TOAST_MESSAGE.SUCCESS_REVIEW);
       } catch (error: any) {
         if (error.response.message) {
           toast.error(error.response.message);

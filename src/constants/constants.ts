@@ -16,6 +16,10 @@ export const MODAL_MESSAGE = {
   SUCCESS_SIGNUP: '회원가입이 완료되었습니다.',
   CERTIFIED_EMAIL: '인증되었습니다.',
   SEND_CODE: '인증 코드가 발송되었습니다.',
+  CONFIRM_DELETE: {
+    header: '일차를 삭제할까요?',
+    text: '일차에 모든 일정이 삭제됩니다.',
+  },
 };
 
 export const BASED_URL = {
@@ -34,4 +38,5 @@ export const TOAST_MESSAGE = {
   EMPTY_SCORE: '별점을 등록해 주세요',
   FULL_TEXT: '더 이상 작성할 수 없습니다.',
   EMPTY_LOCATION: '장소를 입력해주세요',
+  UNKNOW_ERROR: '에러가 발생했습니다. ',
 };
