@@ -24,7 +24,6 @@ interface ResponseData {
 const KakaoMap = () => {
   const courseData = useCourseStore((state) => state.data.plan);
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
-  console.log(courseData);
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {

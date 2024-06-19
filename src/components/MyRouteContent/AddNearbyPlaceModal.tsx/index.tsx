@@ -30,8 +30,7 @@ type SearchedPlace = {
 };
 
 const AddNearbyPlaceModal = ({ close }) => {
-  const courseId = 1;
-  const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const courseData = useCourseStore((state) => state.data.plan);
   const decomposedData = courseData
     .map((course) => {
       return course.place.map((place) => {
@@ -71,12 +70,13 @@ const AddNearbyPlaceModal = ({ close }) => {
     const newPlace = {
       name: selectedMarker.name,
       index: 1,
+      description: '',
       img: '',
       posX: selectedMarker.position.lat,
       posY: selectedMarker.position.lng,
     };
 
-    addPlace(courseId, 1, newPlace);
+    addPlace(1, newPlace);
     close();
   };
 
