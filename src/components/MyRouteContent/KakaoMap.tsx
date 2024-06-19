@@ -22,8 +22,9 @@ interface ResponseData {
 }
 
 const KakaoMap = () => {
-  const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const courseData = useCourseStore((state) => state.data.plan);
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
+  console.log(courseData);
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {
@@ -34,8 +35,8 @@ const KakaoMap = () => {
           latlng: { lat: 37.5665, lng: 126.978 },
         },
       ];
-    return courseData.flatMap((course) =>
-      course.place.map((place) => ({
+    return courseData.flatMap((plan) =>
+      plan.place.map((place) => ({
         title: place.name,
         latlng: { lat: place.posX, lng: place.posY },
       })),
@@ -65,6 +66,7 @@ const KakaoMap = () => {
       alternatives: false,
       road_details: false,
     };
+
     const getPath = async () => {
       try {
         const response = await instance.post<ResponseData>(
