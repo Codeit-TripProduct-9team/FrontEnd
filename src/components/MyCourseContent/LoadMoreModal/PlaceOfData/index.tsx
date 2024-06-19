@@ -1,7 +1,7 @@
-import { PlaceData } from '../../types';
+import { Place } from '@/src/lib/types';
 
 type PlaceOfDataProps = {
-  data: PlaceData;
+  data: Place;
 };
 const PlaceOfData = ({ data }: PlaceOfDataProps) => {
   return <div>{data.name}</div>;

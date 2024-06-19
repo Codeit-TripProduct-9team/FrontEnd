@@ -73,7 +73,7 @@ export const mockMyRoute: MockMyRouteData = {
   ],
 };
 
-import { CourseData } from '@/src/utils/zustand/useCourseStore';
+import { CourseData } from '@/src/lib/types';
 
 export interface mockMyCourseData {
   courseName: string;

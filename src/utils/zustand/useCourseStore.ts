@@ -1,27 +1,6 @@
 import { create } from 'zustand';
-
-export interface Place {
-  index: number;
-  name: string;
-  img: string;
-  posX: number;
-  posY: number;
-}
-
-interface Plan {
-  day: number;
-  place: Place[];
-}
-
-interface Course {
-  id: number;
-  name: string;
-  plan: Plan[];
-}
-
-export interface CourseData {
-  course: Course[];
-}
+import { mockMyCourse } from '../../components/MyRouteContent/mockMyRoute';
+import { CourseData, Place, Plan } from '@/src/lib/types';
 
 type CourseStore = {
   data: CourseData;
@@ -31,8 +10,6 @@ type CourseStore = {
   removePlace: (courseId: number, placeIndex: number) => void;
   movePlace: (courseId: number, fromDay: number, fromIndex: number, toDay: number, toIndex: number) => void;
 };
-
-import { mockMyCourse } from '../../components/MyRouteContent/mockMyRoute';
 
 export const useCourseStore = create<CourseStore>((set) => ({
   data: mockMyCourse,

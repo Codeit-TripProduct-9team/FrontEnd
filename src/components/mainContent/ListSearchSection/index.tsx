@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { mock } from '@/src/components/mainContent/mock';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';

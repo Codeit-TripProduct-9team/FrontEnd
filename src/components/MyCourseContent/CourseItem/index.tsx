@@ -1,19 +1,16 @@
 import Image from 'next/image';
-import { PlaceData } from '../types';
 import Link from 'next/link';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../../common/modal';
 import LoadMoreModal from '../LoadMoreModal';
+import { Course } from '@/src/lib/types';
+import consolidatePlans from '@/src/utils/combineDayPlans';
 
-type CourseItemProps = {
-  name: string;
-  places: PlaceData[];
-};
-
-const CourseItem = ({ name, places }: CourseItemProps) => {
-  const firstThreePlaces = places.slice(0, 3);
-  const fourthPlace = places[3];
-  const remainingCount = places.length - 3;
+const CourseItem = ({ name, plan }: Course) => {
+  const planData = consolidatePlans(plan);
+  const firstThreePlaces = planData.slice(0, 3);
+  const fourthPlace = planData[3];
+  const remainingCount = planData.length - 3;
 
   const loadMoreOverlay = useOverlay();
   const handleLoadMoreClick = () => {
@@ -39,7 +36,7 @@ const CourseItem = ({ name, places }: CourseItemProps) => {
               <p className="font-bold whitespace-nowrap overflow-hidden text-ellipsis pr-10 w-150">
                 {place.index} <span className="font-normal">{place.name}</span>
               </p>
-              {place.index !== places.length && places.length !== 3 && (
+              {place.index !== firstThreePlaces.length && firstThreePlaces.length !== 3 && (
                 <div className="flex items-center gap-2 w-full grow">
                   <div className="w-5 h-5 rounded-full bg-gray-70"></div>
                   <hr className="border-dashed border-1 w-200" />
@@ -48,7 +45,7 @@ const CourseItem = ({ name, places }: CourseItemProps) => {
               )}
             </div>
           ))}
-          {places.length > 3 && (
+          {firstThreePlaces.length > 3 && (
             <p>
               <Link href="">더보기</Link>
             </p>
