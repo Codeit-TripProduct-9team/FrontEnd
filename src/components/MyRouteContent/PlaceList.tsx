@@ -22,9 +22,8 @@ export type Place = {
 };
 
 const PlaceList = () => {
-  const courseData = useCourseStore((state) => state.data.course[0].plan);
+  const courseData = useCourseStore((state) => state.data.plan);
   const { addDay, removeDay } = useCourseStore();
-  const courseId = 1;
   const handleAddDay = () => {
     const maxDay = 7;
     const newDay = { day: courseData.length + 1, place: [] };
@@ -32,12 +31,12 @@ const PlaceList = () => {
     if (courseData.length >= maxDay) {
       openToast.error('최대 7일까지만 추가할 수 있습니다.');
     } else {
-      addDay(courseId, newDay);
+      addDay(newDay);
     }
   };
 
   const handleDeleteDay = (day: number) => {
-    OnModal(() => removeDay(courseId, day));
+    OnModal(() => removeDay(day));
   };
 
   const overlay = useOverlay();
