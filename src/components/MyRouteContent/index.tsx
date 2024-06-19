@@ -63,7 +63,7 @@ const MyRouteContent = () => {
     fetchAndLogCardList();
   }, [setMyPlaceData]);
 
-  const coursId = 1;
+  // const coursId = 1;
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -76,7 +76,7 @@ const MyRouteContent = () => {
       const fromIndex = source.index;
       const toIndex = destination.index;
       console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
-      movePlace(coursId, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
+      movePlace(parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
     if (destination && source.droppableId === 'myPlace') {
@@ -87,10 +87,11 @@ const MyRouteContent = () => {
         return;
       } else {
         //마이플레이스 데이터 나오면 수정 필요
-        addPlace(1, parseInt(destination.droppableId), {
+        addPlace(parseInt(destination.droppableId), {
           index: card.id,
           name: card.title,
-          img: 'aa',
+          description: '',
+          img: '',
           posX: 0,
           posY: 0,
         });
