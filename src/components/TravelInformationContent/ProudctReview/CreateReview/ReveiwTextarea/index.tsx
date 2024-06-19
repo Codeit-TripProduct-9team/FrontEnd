@@ -11,7 +11,7 @@ interface ReviewTextAreaProps {
   setTitle: (title: string) => void;
   createReview?: (reviewId?: number) => void;
   reviewId?: number;
-  isEdit?: boolean;
+  isReveiwEditStatus?: boolean;
   cancleEditReview?: () => void;
 }
 
@@ -22,7 +22,7 @@ const ReviewTextArea = ({
   setContent,
   setTitle,
   createReview,
-  isEdit,
+  isReveiwEditStatus,
   cancleEditReview,
 }: ReviewTextAreaProps) => {
   const focusRef = useRef<HTMLInputElement>(null);
@@ -64,7 +64,7 @@ const ReviewTextArea = ({
       >
         작성
       </Button>
-      {isEdit && (
+      {isReveiwEditStatus && (
         <Button
           onClick={cancleEditReview}
           className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60 bg-red"

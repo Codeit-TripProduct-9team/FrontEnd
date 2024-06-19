@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
+import toast from 'react-hot-toast';
 import { useOverlay } from '@toss/use-overlay';
 
 import DeleteReviewModal from './DeleteReviewModal/indext';
@@ -16,8 +17,8 @@ import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
-import DOMPurify from 'dompurify';
-import ImageReviewModal from './ImageReviewModal';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
+import ReviewListContent from './ReviewListContent';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -25,14 +26,12 @@ interface ReviewDataProps {
   videoId: string;
 }
 
-const sanitizer = DOMPurify.sanitize;
-
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isReveiwEditStatus, setIsReviewEditStatus] = useState(false);
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
+  const [editReveiwScore, setEditReviewScore] = useState(0);
   const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
-  const [editReveiwScore, setEditReviewScore] = useState(0);
 
   const hasToken = getCookie('accessToken');
 
@@ -45,27 +44,18 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     ));
   };
 
-  const imageReviewOverlay = useOverlay();
-  const openImageReviewModal = (content: string) => {
-    imageReviewOverlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close}>
-        <ImageReviewModal content={content} />
-      </Modal>
-    ));
-  };
-
   const handleReviewEditData = (id: number, content: string, score: number, title: string) => {
     setEditReviewId(id);
     setEditReviewContent(content);
     setEditReviewScore(score);
     setEditReviewTitle(title);
-    setIsEdit(true);
+    setIsReviewEditStatus(true);
   };
 
   const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
-      nickname: '수정',
+      nickname: '전역에서 받아서 넣어주기',
       content: editReviewContent,
       score: editReveiwScore,
     };
@@ -80,7 +70,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
         renderReviewList();
       }
     } catch (error) {
-      console.error(error);
+      toast.error(TOAST_MESSAGE.FAILED_EDIT_REVIEW);
     }
   };
 
@@ -95,28 +85,25 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
         deleteReviewOverlay.close();
       }
     } catch (error) {
-      console.error(error);
+      toast.error(TOAST_MESSAGE.FAILED_DELETE_REVIEW);
     }
   };
 
   const handleCancleEditReview = () => {
     setEditReviewId(null);
-    setIsEdit(false);
+    setIsReviewEditStatus(false);
   };
 
   return (
     <div className="flex flex-col py-32">
       <ul className="flex flex-col gap-32">
         {reviewList?.map(({ id, title, content, createdAt, score }) => {
-          const hasImage = content.includes('<img');
-
           return (
             <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
                 <h2 className="text-18 font-bold">{title}</h2>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
-
               <div className="flex gap-5 pb-16">
                 {editReviewId === id ? (
                   <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
@@ -126,7 +113,6 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   ))
                 )}
               </div>
-
               {editReviewId === id ? (
                 <ReviewTextArea
                   title={editReviewTitle}
@@ -135,32 +121,17 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   setContent={setEditReviewContent}
                   createReview={() => handleChangeReview(id)}
                   reviewId={id}
-                  isEdit={isEdit}
+                  isReveiwEditStatus={isReveiwEditStatus}
                   cancleEditReview={handleCancleEditReview}
                 />
               ) : (
-                <div>
-                  {hasImage ? (
-                    <button
-                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                      onClick={() => openImageReviewModal(content)}
-                    >
-                      이미지 첨부된 리뷰입니다. 보러가기
-                    </button>
-                  ) : (
-                    <p
-                      id="review-text"
-                      className="max-h-130 overflow-y-scroll"
-                      dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
-                    />
-                  )}
-                </div>
+                <ReviewListContent content={content} />
               )}
 
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}
                 onClickDelete={() => deleteReviewModal(id)}
-                isEdit={isEdit}
+                isReveiwEditStatus={isReveiwEditStatus}
               />
             </li>
           );

@@ -11,10 +11,12 @@ import instance from '@/src/api/axios';
 import { ReviewDataItem } from '@/src/lib/types';
 
 const ProductReview = () => {
-  const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
   const [queryNumber, setQueryNumber] = useState(0);
-  const [countScrollEvent, setCountScrollEvnet] = useState(0);
   const [sortType, setSortType] = useState('latest');
+  const [scrollControlEvent, setScrollControlEvent] = useState(0);
+  const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
+  const [reviewListError, setReviewListError] = useState(false);
+  const [reviewListLoading, setReviewListLoading] = useState(true);
 
   const router = useRouter();
   const videoId = router.query.id as string;
@@ -25,15 +27,21 @@ const ProductReview = () => {
     try {
       const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=${queryNumber}`);
       const currentFetchingReviewList = response.data.data.content;
-      const countScrollEvent = response.data.data.pageInfo.totalPages;
+      const scrollControlEvent = response.data.data.pageInfo.totalPages;
       if (response.status === 200) {
-        setReviewList((prevReviewList) =>
-          queryNumber === 0 ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
-        );
-        setCountScrollEvnet(countScrollEvent);
+        const firstPage = queryNumber === 0;
+        setTimeout(() => {
+          setReviewList((prevReviewList) =>
+            firstPage ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
+          );
+          setScrollControlEvent(scrollControlEvent);
+          setReviewListError(false);
+        }, 500);
       }
     } catch (error) {
-      console.error(error);
+      setReviewListError(true);
+    } finally {
+      setReviewListLoading(true);
     }
   }, [sortType, videoId, queryNumber]);
 
@@ -48,7 +56,7 @@ const ProductReview = () => {
 
     const handleInfinityScroll = (entries: IntersectionObserverEntry[]) => {
       const targetPosition = entries[0];
-      if (targetPosition.isIntersecting && queryNumber < countScrollEvent - 1) {
+      if (targetPosition.isIntersecting && queryNumber < scrollControlEvent - 1) {
         setQueryNumber((prevqueryNumber) => prevqueryNumber + 1);
       }
     };
@@ -68,7 +76,7 @@ const ProductReview = () => {
         observer.unobserve(currentObserverRef);
       }
     };
-  }, [queryNumber, countScrollEvent]);
+  }, [queryNumber, scrollControlEvent]);
 
   useEffect(() => {
     setReviewList([]);
@@ -76,17 +84,22 @@ const ProductReview = () => {
   }, [sortType]);
 
   const emptyReveiwData = reviewList.length === 0;
+  const ReveiwDataStauts = reviewListError
+    ? '리뷰 데이터를 받아오지 못했습니다'
+    : reviewListLoading
+    ? '리뷰를 받아오는 중입니다.'
+    : '리뷰가 없습니다. 리뷰를 등록해 주세요';
 
   return (
     <div className="flex flex-col w-full pt-65 px-110 bg-white">
       <CreateReview videoId={videoId} renderReveiwList={getReviewList} />
       <SortToolbar sortType={sortType} setSortType={setSortType} />
       {emptyReveiwData ? (
-        <NoReivewData />
+        <NoReivewData message={ReveiwDataStauts} />
       ) : (
         <ReviewList reviewList={reviewList} renderReviewList={getReviewList} videoId={videoId} />
       )}
-      <div ref={observerRef} className="h-10"></div>
+      <div ref={observerRef} className="h-10" />
       <ScrollButton targetId={'top'} />
     </div>
   );

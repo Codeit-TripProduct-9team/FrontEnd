@@ -1,6 +1,6 @@
 import instance from '@/src/api/axios';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { ComponentProps, useMemo, useRef } from 'react';
 
 import 'react-quill/dist/quill.snow.css';
 
@@ -8,7 +8,8 @@ const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
 
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+    // eslint-disable-next-line react/display-name
+    return ({ forwardedRef, ...props }: ComponentProps<typeof ReactQuill>) => <RQ ref={forwardedRef} {...props} />;
   },
   {
     ssr: false,
@@ -21,7 +22,7 @@ interface TextEditorProps {
 }
 
 const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
-  const quillRef = useRef(null);
+  const quillRef = useRef<any>(null);
 
   const handleChangeText = (value: string) => {
     handleChangeTextArea(value);
@@ -95,7 +96,7 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
   return (
     <ReactQuill
       forwardedRef={quillRef}
-      className="w-[98%]  py-18 px-58"
+      className="w-[98%] py-18 px-58"
       placeholder="이곳에서의 경험은 어떠셨나요?"
       value={content}
       onChange={handleChangeText}
@@ -105,5 +106,7 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
     />
   );
 };
+
+TextEditor.displayName = 'TextEditor';
 
 export default TextEditor;

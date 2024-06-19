@@ -43,7 +43,7 @@ const TravelInformation = () => {
   return (
     <main className="flex flex-col justify-center items-center ">
       <TravelInformationMeta youtubeData={youtubeData} />
-      {/* <SearchBar /> */}
+      <SearchBar />
       <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
       <ChangeContent youtubeData={youtubeData} />
     </main>
