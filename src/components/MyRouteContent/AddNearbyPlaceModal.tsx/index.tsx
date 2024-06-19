@@ -6,7 +6,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
-// import markerIcon from '@/public/assets/icon/marker.png';
+import { Plan } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 
 type Marker = {
   position: { lat: number; lng: number };
@@ -29,8 +29,12 @@ type SearchedPlace = {
   distance: string;
 };
 
-const AddNearbyPlaceModal = ({ close }) => {
-  const courseData = useCourseStore((state) => state.data.plan);
+interface AddNearbyPlaceModalProps {
+  close: () => void;
+  courseData: Plan[];
+}
+
+const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) => {
   const decomposedData = courseData
     .map((course) => {
       return course.place.map((place) => {

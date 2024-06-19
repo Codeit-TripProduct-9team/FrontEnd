@@ -111,7 +111,7 @@ const MyRouteContent = () => {
   const handleAddNearbyPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-591">
-        <AddNearbyPlaceModal close={close} />
+        <AddNearbyPlaceModal close={close} courseData={courseData.plan} />
       </Modal>
     ));
   };
@@ -146,7 +146,7 @@ const MyRouteContent = () => {
             </Button>
           </div>
 
-          <KakaoMap />
+          <KakaoMap courseData={courseData.plan} />
           <div className="flex justify-end">
             <div>
               <PlaceList />
