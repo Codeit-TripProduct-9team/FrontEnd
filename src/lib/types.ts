@@ -51,6 +51,7 @@ export interface VideoInformationProps {
   url?: string;
   tag?: string;
   likeCount?: number;
+  imageUrl: string;
 }
 
 export interface videoListProps {

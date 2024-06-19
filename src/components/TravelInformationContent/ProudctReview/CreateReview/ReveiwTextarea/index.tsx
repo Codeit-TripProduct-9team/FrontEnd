@@ -46,7 +46,7 @@ const ReviewTextArea = ({
   const emptyReview = deleteTag(content).trim() === '' || title.trim() === '';
 
   return (
-    <div className="relative flex flex-col w-full h-300 mb-36 rounded-m bg-gray-10 ">
+    <div className="relative flex flex-col w-full min-h-300 mb-36 rounded-m bg-gray-10 ">
       <input
         ref={focusRef}
         className=" mt-28 mb-10 mx-28 px-18 h-40 text-20 bg-white border-2 rounded-m focus-visible:border-gray-50"

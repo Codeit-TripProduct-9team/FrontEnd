@@ -16,7 +16,8 @@ import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
+import ImageReviewModal from './ImageReviewModal';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -24,7 +25,7 @@ interface ReviewDataProps {
   videoId: string;
 }
 
-const sanitizer = dompurify.sanitize;
+const sanitizer = DOMPurify.sanitize;
 
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -40,6 +41,15 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     deleteReviewOverlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close}>
         <DeleteReviewModal reviewId={reviewId} onClickDeleteReview={handleReviewDelete} onClickCancelDelete={close} />
+      </Modal>
+    ));
+  };
+
+  const imageReviewOverlay = useOverlay();
+  const openImageReviewModal = (content: string) => {
+    imageReviewOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <ImageReviewModal content={content} />
       </Modal>
     ));
   };
@@ -98,6 +108,8 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     <div className="flex flex-col py-32">
       <ul className="flex flex-col gap-32">
         {reviewList?.map(({ id, title, content, createdAt, score }) => {
+          const hasImage = content.includes('<img');
+
           return (
             <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
@@ -114,6 +126,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   ))
                 )}
               </div>
+
               {editReviewId === id ? (
                 <ReviewTextArea
                   title={editReviewTitle}
@@ -126,12 +139,24 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   cancleEditReview={handleCancleEditReview}
                 />
               ) : (
-                <p
-                  id="review-text"
-                  className="max-h-130 overflow-y-scroll"
-                  dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
-                />
+                <div>
+                  {hasImage ? (
+                    <button
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      onClick={() => openImageReviewModal(content)}
+                    >
+                      이미지 첨부된 리뷰입니다. 보러가기
+                    </button>
+                  ) : (
+                    <p
+                      id="review-text"
+                      className="max-h-130 overflow-y-scroll"
+                      dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
+                    />
+                  )}
+                </div>
               )}
+
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}
                 onClickDelete={() => deleteReviewModal(id)}
