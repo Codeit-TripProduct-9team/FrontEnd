@@ -31,8 +31,6 @@ const ListSearchSection = () => {
     });
   };
 
-  console.log(cardData);
-
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {

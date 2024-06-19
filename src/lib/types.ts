@@ -4,7 +4,7 @@ export interface MockDataItem {
   likes: number;
   title: string;
   description: string;
-  tag: string;
+  tag: string[];
   url: string;
 }
 
