@@ -36,7 +36,7 @@ const PlaceList = () => {
   };
 
   const handleDeleteDay = (day: number) => {
-    OnModal(() => removeDay(courseId, day));
+    OnModal(() => removeDay(day));
   };
 
   const overlay = useOverlay();

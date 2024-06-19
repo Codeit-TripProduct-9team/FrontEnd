@@ -7,8 +7,7 @@ interface AddPlaceProps {
 const addPlace: AddPlaceProps = (state, day, newPlace) => {
   const dayIndex = state.data.plan.findIndex((plan) => plan.day === day);
   if (dayIndex !== -1) {
-    const newCourse = [...state.data.plan];
-    const newPlan = [...newCourse];
+    const newPlan = [...state.data.plan];
     const newPlaceList = [...newPlan[dayIndex].place, newPlace];
 
     newPlan[dayIndex].place = newPlaceList;
