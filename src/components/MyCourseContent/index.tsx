@@ -4,22 +4,24 @@ import { CourseData } from '@/src/lib/types';
 import { useEffect, useState } from 'react';
 import Button from '../common/button';
 import Link from 'next/link';
+import { userDataStore } from './../../utils/zustand/userDataStore';
 
 const MyCourseContent = () => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const { userData } = userDataStore();
+  const userId = userData.id;
   useEffect(() => {
     const fetchMyCourseList = async () => {
       try {
         //user id 들어갈 예정
-        const course = await myCoursePageRequestInstance.getCourseList(53);
-        console.log(course);
+        const course = await myCoursePageRequestInstance.getCourseList(userId);
         setCourseData(course);
       } catch (error) {
         console.error('Error fetching course list:', error);
       }
     };
     fetchMyCourseList();
-  }, []);
+  }, [userId]);
   return (
     <>
       <div className="flex flex-col justify-center items-center pb-40">

@@ -5,8 +5,17 @@ import LoadMoreModal from '../LoadMoreModal';
 import { Course } from '@/src/lib/types';
 import consolidatePlans from '@/src/utils/combineDayPlans';
 import ConditionalImage from '../ConditionalImage';
+import trash from '@/public/assets/icon/trashIcon.png';
+import pencil from '@/public/assets/icon/pencil.svg';
+import { useRouter } from 'next/router';
 
-const CourseItem = ({ name, plan }: Course) => {
+const CourseItem = ({ id, name, plan }: Course) => {
+  const router = useRouter();
+
+  const handleRouteChange = () => {
+    router.push(`/my-route/${id}`);
+  };
+
   const planData = consolidatePlans(plan);
   const firstThreePlaces = planData.slice(0, 3);
   const fourthPlace = planData[3];
@@ -29,7 +38,13 @@ const CourseItem = ({ name, plan }: Course) => {
   return (
     <article>
       <div className="mb-12 bg-white px-20 py-10 text-gray-70 rounded-s">
-        <strong>{name}</strong>
+        <div className="flex flex-row items-center">
+          <strong>{name}</strong>
+          <button type="button" onClick={handleRouteChange}>
+            <Image src={pencil} alt="icon" width={20} height={20} />
+          </button>
+          <Image src={trash} alt="icon" width={20} height={20} />
+        </div>
         <div className="flex gap-17 mt-12">
           {firstThreePlaces.map((place) => (
             <div key={place.index} className={`flex ${place.index === 0 ? 'w-301' : 'w-315'}`}>
