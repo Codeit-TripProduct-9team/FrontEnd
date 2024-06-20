@@ -16,6 +16,7 @@ import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
+import dompurify from 'dompurify';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -23,7 +24,10 @@ interface ReviewDataProps {
   videoId: string;
 }
 
+const sanitizer = dompurify.sanitize;
+
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
+  const [isEdit, setIsEdit] = useState(false);
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
   const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
@@ -45,9 +49,10 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     setEditReviewContent(content);
     setEditReviewScore(score);
     setEditReviewTitle(title);
+    setIsEdit(true);
   };
 
-  const handleChangeReview = async (id: number) => {
+  const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
       nickname: '수정',
@@ -58,7 +63,8 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       Authorization: `Bearer ${hasToken}`,
     };
     try {
-      const response = await instance.put(`/video/${videoId}/review/${id}`, body, { headers });
+      const response = await instance.patch(`/video/${videoId}/review/${reviewId}`, body, { headers });
+
       if (response.status === 200) {
         setEditReviewId(null);
         renderReviewList();
@@ -81,6 +87,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleCancleEditReview = () => {
+    setEditReviewId(null);
+    setIsEdit(false);
   };
 
   return (
@@ -111,13 +122,20 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                   setContent={setEditReviewContent}
                   createReview={() => handleChangeReview(id)}
                   reviewId={id}
+                  isEdit={isEdit}
+                  cancleEditReview={handleCancleEditReview}
                 />
               ) : (
-                <p>{content}</p>
+                <p
+                  id="review-text"
+                  className="max-h-130 overflow-y-scroll"
+                  dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
+                />
               )}
               <ReviewEditButton
                 onClickEdit={() => handleReviewEditData(id, content, score, title)}
                 onClickDelete={() => deleteReviewModal(id)}
+                isEdit={isEdit}
               />
             </li>
           );

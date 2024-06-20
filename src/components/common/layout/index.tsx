@@ -1,6 +1,8 @@
-import Header from './Header';
+import dynamic from 'next/dynamic';
 import Footer from './Footer';
 import { Toaster } from 'react-hot-toast';
+
+const Header = dynamic(() => import('./Header'), { ssr: false });
 
 const Layout = ({ children, hasFooter = true }: { children: React.ReactNode; hasFooter?: boolean }) => {
   return (

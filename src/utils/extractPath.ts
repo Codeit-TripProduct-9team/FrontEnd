@@ -2,7 +2,7 @@ const extractPath = (result: any) => {
   const path: { lat: number; lng: number }[] = [];
   const pathArray = result.routes[0].sections[0].roads;
   pathArray.forEach((route: any) => {
-    route.vertexes.forEach((vertex: any, index: number) => {
+    route.vertexes.forEach((_, index: number) => {
       const seperateCoordinate = index % 2 === 0;
       if (seperateCoordinate) {
         path.push({

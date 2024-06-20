@@ -19,7 +19,7 @@ const TravelInformationMeta = ({ youtubeData }: TravelInformationMeatProps) => {
     <Head>
       <title>{`uTrip - ${youtubeData.title} `}</title>
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      <meta name="description" />
+      <meta name="description" content={youtubeData.title} />
 
       <meta property="og:image" content={thumbnail} />
       <meta property="og:image:alt" content="img" />

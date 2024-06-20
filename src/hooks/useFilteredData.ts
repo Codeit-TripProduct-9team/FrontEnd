@@ -6,8 +6,8 @@ interface FilteredDataProps {
 }
 
 export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string): MockDataItem[] => {
-  const filteredValues = decomposedSearchValue(searchValue).split(' ');
-
+  if (Array.isArray(data)) {
+    const filteredValues = decomposedSearchValue(searchValue).split(' ');
   return data?.filter((item) => {
     const decomposedTitle = decomposedSearchValue(item.title);
     const decomposedDescription = decomposedSearchValue(item.description);
@@ -19,4 +19,5 @@ export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string
       // decomposedTag.some((tag: string) => tag.includes(filteredValue)),
     );
   });
+
 };
