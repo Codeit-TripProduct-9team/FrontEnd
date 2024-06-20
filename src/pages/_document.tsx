@@ -4,9 +4,7 @@ import Script from 'next/script';
 export default function Document() {
   return (
     <Html lang="ko">
-      <Head>
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      </Head>
+      <Head>{/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}</Head>
       <body>
         <Main />
         <div id="modal" />
