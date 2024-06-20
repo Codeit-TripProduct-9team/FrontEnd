@@ -60,3 +60,33 @@ export interface videoListProps {
   title: string;
   url: string;
 }
+
+//my course list 데이터
+export interface Place {
+  index: number;
+  name: string;
+  img: string;
+  posX: number;
+  posY: number;
+}
+
+export interface Plan {
+  day: number;
+  place: Place[];
+}
+
+export interface Course {
+  id: number;
+  name: string;
+  plan: Plan[];
+}
+
+export interface CourseData {
+  course: Course[];
+}
+
+export interface MyCourseApiResponse {
+  status: string;
+  message: string;
+  data: CourseData;
+}

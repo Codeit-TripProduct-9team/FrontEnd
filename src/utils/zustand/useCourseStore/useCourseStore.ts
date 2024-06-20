@@ -4,6 +4,9 @@ import removeDay from './removeDay';
 import addPlace from './addPlace';
 import removePlace from './removePlace';
 import movePlace from './movePlace';
+import { CourseData, Place, Plan } from '@/src/lib/types';
+import { mockMyCourse } from '../../../components/MyRouteContent/mockMyRoute';
+
 
 export interface Place {
   index: number;
@@ -33,8 +36,6 @@ export type CourseStore = {
   removePlace: (placeIndex: number) => void;
   movePlace: (fromDay: number, fromIndex: number, toDay: number, toIndex: number) => void;
 };
-
-import { mockMyCourse } from '../../../components/MyRouteContent/mockMyRoute';
 
 export const useCourseStore = create<CourseStore>((set) => ({
   data: mockMyCourse,

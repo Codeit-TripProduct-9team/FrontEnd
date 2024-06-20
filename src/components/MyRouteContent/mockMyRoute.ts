@@ -1,3 +1,4 @@
+
 import { CourseData } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 
 export const mockMyCourse: CourseData = {
