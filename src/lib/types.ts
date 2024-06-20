@@ -4,8 +4,9 @@ export interface MockDataItem {
   likes: number;
   title: string;
   description: string;
-  tag: string[];
-  url: string;
+  content: string;
+  tag: [];
+  videoUrl: string;
 }
 
 export interface MockData {
