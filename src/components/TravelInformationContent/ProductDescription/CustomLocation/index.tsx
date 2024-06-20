@@ -69,6 +69,7 @@ const CustomLocation = ({ destinationName, elapsedTime, setStartPoint, isLoading
     const hasCustomLocation = customLocation.trim() !== '';
     if (!hasCustomLocation) {
       toast.error(TOAST_MESSAGE.EMPTY_LOCATION);
+      setRelatedLocation([]);
     }
 
     if (hasCustomLocation) {
@@ -90,22 +91,11 @@ const CustomLocation = ({ destinationName, elapsedTime, setStartPoint, isLoading
     setCustomLocation(location);
   };
 
-  const hasLocation = customLocation.trim() !== '';
-  const hasRelatedLocation = relatedLocation.length !== 0;
-
-  const duplicateInputLocation = relatedLocation.length === 1;
-  const duplicateDestinationAndLocation = relatedLocation[0] === customLocation;
-  const unnecessaryRelatedLocation = duplicateInputLocation && duplicateDestinationAndLocation;
-
-  const showRelatedLocation = hasLocation && hasRelatedLocation && !unnecessaryRelatedLocation;
+  const showRelatedLocation = customLocation.trim() !== '' && relatedLocation[0] !== customLocation;
 
   const LoadingDuration = isLoadingDirection
     ? '시간을 계산 중입니다...'
     : `${`${elapsedTime.hours} 시간 ${elapsedTime.minutes} 분`} 걸려요💨`;
-
-  const SuccessMessage = `${customLocation}에서 ${destinationName}까지 ${LoadingDuration} `;
-
-  const FailedMessage = `잘못된 주소이거나 거리가 너무 가깝습니다`;
 
   return (
     <div className="absolute top-20 left-1/2 transform -translate-x-1/2 flex flex-col gap-4 w-582 p-10 z-10 text-center rounded-s">
@@ -115,7 +105,11 @@ const CustomLocation = ({ destinationName, elapsedTime, setStartPoint, isLoading
       )}
       {showMessage && (
         <div className="p-10 rounded-s bg-white">
-          <p>{validKeyword ? SuccessMessage : FailedMessage}</p>
+          <p>
+            {validKeyword
+              ? `${customLocation}에서 ${destinationName}까지 ${LoadingDuration} `
+              : `잘못된 주소이거나 거리가 너무 가깝습니다`}
+          </p>
         </div>
       )}
     </div>
