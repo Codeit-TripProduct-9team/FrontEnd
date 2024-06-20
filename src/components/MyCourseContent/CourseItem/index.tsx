@@ -13,7 +13,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
   const router = useRouter();
 
   const handleRouteChange = () => {
-    router.push(`/my-route/${id}`);
+    router.push(`/course/${id}`);
   };
 
   const planData = consolidatePlans(plan);
