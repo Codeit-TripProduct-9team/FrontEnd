@@ -20,8 +20,10 @@ import AddNearbyPlaceModal from './AddNearbyPlaceModal.tsx';
 import Button from '../common/button';
 import { openToast } from '@/src/utils/openToast';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
+import { getCookie } from '@/src/utils/cookie';
+import instance from '@/src/api/axios';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -34,10 +36,11 @@ const MyRouteContent = () => {
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   // const mockSliced = mock.data.slice(0, 9);
-  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
-  const courseName = useCourseStore((state) => state.data.course[0].name);
+
+  const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
+  const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
-  const flatCourseData = courseData.course[0].plan.flatMap((data) => data.place);
+  const flatCourseData = courseData.plan.flatMap((data) => data.place);
   const { movePlace, addPlace } = useCourseStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
@@ -46,6 +49,8 @@ const MyRouteContent = () => {
       setSectionVisible(true);
     }
   };
+
+  console.log(courseData);
 
   useEffect(() => {
     const fetchAndLogCardList = async () => {
@@ -59,7 +64,7 @@ const MyRouteContent = () => {
     fetchAndLogCardList();
   }, [setMyPlaceData]);
 
-  const coursId = 1;
+  // const coursId = 1;
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -72,7 +77,7 @@ const MyRouteContent = () => {
       const fromIndex = source.index;
       const toIndex = destination.index;
       console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
-      movePlace(coursId, parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
+      movePlace(parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
     if (destination && source.droppableId === 'myPlace') {
@@ -82,10 +87,12 @@ const MyRouteContent = () => {
         openToast.error('중복된 장소는 추가할 수 없습니다.');
         return;
       } else {
-        addPlace(1, parseInt(destination.droppableId), {
+        //마이플레이스 데이터 나오면 수정 필요
+        addPlace(parseInt(destination.droppableId), {
           index: card.id,
           name: card.title,
-          img: 'aa',
+          description: '',
+          img: '',
           posX: 0,
           posY: 0,
         });
@@ -105,13 +112,24 @@ const MyRouteContent = () => {
   const handleAddNearbyPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-591">
-        <AddNearbyPlaceModal />
+        <AddNearbyPlaceModal close={close} courseData={courseData.plan} />
       </Modal>
     ));
   };
 
-  const handleSaveCourse = () => {
+  const handleSaveCourse = async () => {
     openToast.success(TOAST_MESSAGE.SAVE);
+    try {
+      const response = await instance.post('/course', courseData, {
+        headers: {
+          Authorization: `Bearer ${getCookie('accessToken')}`,
+        },
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -129,7 +147,7 @@ const MyRouteContent = () => {
             </Button>
           </div>
 
-          <KakaoMap />
+          <KakaoMap courseData={courseData.plan} />
           <div className="flex justify-end">
             <div>
               <PlaceList />
