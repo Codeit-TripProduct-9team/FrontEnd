@@ -11,7 +11,7 @@ const MyCourseContent = () => {
     const fetchMyCourseList = async () => {
       try {
         //user id 들어갈 예정
-        const course = await myCoursePageRequestInstance.getCourseList(52);
+        const course = await myCoursePageRequestInstance.getCourseList(53);
         console.log(course);
         setCourseData(course);
       } catch (error) {
@@ -25,7 +25,7 @@ const MyCourseContent = () => {
       <div className="flex flex-col justify-center items-center pb-40">
         <h3 className="text-24 font-bold py-60">저장된 코스 목록</h3>
         <section className="list-none">
-          {courseData.course.length > 0 ? (
+          {courseData && courseData.course.length > 0 ? (
             courseData.course.map((data) => <CourseItem key={data.id} id={data.id} name={data.name} plan={data.plan} />)
           ) : (
             <div className="flex flex-col items-center gap-10">
