@@ -4,6 +4,7 @@ import TextEditor from './TextEditor';
 
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
+import deleteTag from '@/src/utils/deleteTage';
 
 interface ReviewTextAreaProps {
   content: string;
@@ -29,11 +30,6 @@ const ReviewTextArea = ({
   const focusRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(focusRef);
-
-  const deleteTag = (html: string) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || '';
-  };
 
   const handleTextEditorChange = (content: string) => {
     setContent(content);

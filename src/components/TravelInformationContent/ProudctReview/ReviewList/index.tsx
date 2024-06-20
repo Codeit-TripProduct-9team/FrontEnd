@@ -3,19 +3,19 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useOverlay } from '@toss/use-overlay';
 
+import ReviewListContent from './ReviewListContent';
 import DeleteReviewModal from './DeleteReviewModal/indext';
 import ReviewEditButton from './ReviewEditButton';
 import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
 
+import { TOAST_MESSAGE } from '@/src/constants/constants';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import convertDate from '@/src/utils/convertDate';
 import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
-import { TOAST_MESSAGE } from '@/src/constants/constants';
-import ReviewListContent from './ReviewListContent';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -122,9 +122,8 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
               ) : (
                 <div className="flex flex-col gap-20">
                   <ReviewListContent content={content} score={score} title={title} />
-                  {userData.nickname !== nickname && (
+                  {userData.nickname === nickname && (
                     <ReviewEditButton
-                      isReveiwEditStatus={isReveiwEditStatus}
                       onClickEdit={() => handleReviewEditData(id, content, score, title)}
                       onClickDelete={() => deleteReviewModal(id)}
                     />

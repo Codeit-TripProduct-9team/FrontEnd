@@ -1,6 +1,8 @@
-import instance from '@/src/api/axios';
-import dynamic from 'next/dynamic';
 import { ComponentProps, useMemo, useRef } from 'react';
+
+import dynamic from 'next/dynamic';
+
+import instance from '@/src/api/axios';
 
 import 'react-quill/dist/quill.snow.css';
 
@@ -41,10 +43,7 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
           formData.append('file', file);
           formData.append('upload_preset', 'pyaejpx8');
           const body = formData;
-          const response = await instance.post(
-            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_DASHBOARD_NAME}/image/upload`,
-            body,
-          );
+          const response = await instance.post(`https://api.cloudinary.com/v1_1/dhvpt9ojq/image/upload`, body);
 
           const imageUrl = response.data.url;
           const range = quillRef.current.getEditorSelection();
