@@ -8,11 +8,18 @@ import ConditionalImage from '../ConditionalImage';
 import trash from '@/public/assets/icon/trashIcon.png';
 import pencil from '@/public/assets/icon/pencil.svg';
 import { useRouter } from 'next/router';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 
 const CourseItem = ({ id, name, plan }: Course) => {
+  const { setData } = useCourseStore();
   const router = useRouter();
 
   const handleRouteChange = () => {
+    const courseData = {
+      name: name,
+      plan: plan,
+    };
+    setData(courseData);
     router.push(`/course/${id}`);
   };
 
@@ -34,6 +41,8 @@ const CourseItem = ({ id, name, plan }: Course) => {
       </Modal>
     ));
   };
+
+  console.log(plan);
 
   return (
     <article>
