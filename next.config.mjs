@@ -3,12 +3,11 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*/',
-        destination: `http://13.125.37.5:8080/api/:path*/`,
+        source: '/:path*',
+        destination: `${process.env.NEXT_PUBLIC_UTRIP_API_BASE_URL}/:path*`,
       },
     ];
   },
-  trailingSlash: true,
   reactStrictMode: true,
   images: {
     domains: [
