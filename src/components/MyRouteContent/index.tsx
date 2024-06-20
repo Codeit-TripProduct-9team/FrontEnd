@@ -37,7 +37,7 @@ const MyRouteContent = () => {
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   // const mockSliced = mock.data.slice(0, 9);
 
-  const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
+  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
