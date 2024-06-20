@@ -2,7 +2,7 @@ import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk
 import React, { useEffect, useMemo } from 'react';
 import instance from '@/src/api/axios';
 import { useState } from 'react';
-import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import { Plan } from '@/src/lib/types';
 
 interface Guide {
   x: number;
@@ -21,31 +21,38 @@ interface ResponseData {
   routes: Route[];
 }
 
-const KakaoMap = () => {
-  const courseData = useCourseStore((state) => state.data.course[0].plan);
+interface KakaoMapProps {
+  courseData: Plan[];
+}
+
+const KakaoMap = ({ courseData }: KakaoMapProps) => {
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {
-    if (courseData.length === 0)
+    if (courseData.length > 0) {
+      return courseData.flatMap((plan) =>
+        plan.place.map((place) => ({
+          title: place.name,
+          latlng: { lat: place.posX, lng: place.posY },
+        })),
+      );
+    } else {
       return [
         {
-          title: '서울',
-          latlng: { lat: 37.5665, lng: 126.978 },
+          title: '서울 을지로입구역',
+          latlng: { lat: 37.5661, lng: 126.9827 },
         },
       ];
-    return courseData.flatMap((course) =>
-      course.place.map((place) => ({
-        title: place.name,
-        latlng: { lat: place.posX, lng: place.posY },
-      })),
-    );
+    }
   }, [courseData]);
 
   console.log(courseData);
   console.log(positions);
 
   useEffect(() => {
+    if (positions.length === 0) return;
+
     const data = {
       origin: {
         x: positions[0].latlng.lng,
@@ -65,6 +72,7 @@ const KakaoMap = () => {
       alternatives: false,
       road_details: false,
     };
+
     const getPath = async () => {
       try {
         const response = await instance.post<ResponseData>(

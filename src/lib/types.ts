@@ -65,6 +65,7 @@ export interface Place {
   index: number;
   name: string;
   img: string;
+  description: string;
   posX: number;
   posY: number;
 }
@@ -75,7 +76,7 @@ export interface Plan {
 }
 
 export interface Course {
-  id: number;
+  id?: number;
   name: string;
   plan: Plan[];
 }

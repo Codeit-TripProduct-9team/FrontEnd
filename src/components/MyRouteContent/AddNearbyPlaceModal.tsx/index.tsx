@@ -6,7 +6,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
-// import markerIcon from '@/public/assets/icon/marker.png';
+import { Plan } from '@/src/lib/types';
 
 type Marker = {
   position: { lat: number; lng: number };
@@ -29,17 +29,28 @@ type SearchedPlace = {
   distance: string;
 };
 
-const AddNearbyPlaceModal = ({ close }) => {
-  const courseId = 1;
-  const courseData = useCourseStore((state) => state.data.course[0].plan);
-  const decomposedData = courseData
-    .map((course) => {
-      return course.place.map((place) => {
-        const { index, name, img, posX, posY } = place;
-        return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
-      });
-    })
-    .flat();
+interface AddNearbyPlaceModalProps {
+  close: () => void;
+  courseData: Plan[];
+}
+
+const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) => {
+  const decomposedData =
+    courseData.length > 0
+      ? courseData.flatMap((course) => {
+          return course.place.map((place) => {
+            const { index, name, img, posX, posY } = place;
+            return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
+          });
+        })
+      : [
+          {
+            id: 1,
+            name: '을지로입구역',
+            mainImg: '',
+            position: { lat: 37.5661, lng: 126.9827 },
+          },
+        ];
 
   const [mapCenter, setMapCenter] = useState(decomposedData[0].position);
   const [markers, setMarkers] = useState<Marker[]>([]);
@@ -71,12 +82,13 @@ const AddNearbyPlaceModal = ({ close }) => {
     const newPlace = {
       name: selectedMarker.name,
       index: 1,
+      description: '',
       img: '',
       posX: selectedMarker.position.lat,
       posY: selectedMarker.position.lng,
     };
 
-    addPlace(courseId, 1, newPlace);
+    addPlace(1, newPlace);
     close();
   };
 

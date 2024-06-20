@@ -13,9 +13,8 @@ type PlaceItemProps = {
 
 const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {
   const { removePlace } = useCourseStore();
-  const courseId = 1;
   const handleDeletePlace = (index: number) => {
-    removePlace(courseId, index);
+    removePlace(index);
     openToast.success(TOAST_MESSAGE.DELETE);
   };
 
