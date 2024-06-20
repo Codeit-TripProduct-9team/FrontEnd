@@ -11,9 +11,8 @@ interface ListCardProps {
 
 const ListCard = ({ data }: ListCardProps) => {
   const router = useRouter();
-  const videoId = data.url.split('v=')[1];
+  const videoId = data.videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
-  console.log(thumbnail);
 
   const handleClickMyPlace = () => {
     // instance.post(
@@ -43,13 +42,11 @@ const ListCard = ({ data }: ListCardProps) => {
             </div>
             <div className="flex justify-between">
               <div className="flex gap-5">
-                {JSON.parse(data.tag)
-                  .slice(0, 2)
-                  .map((tag: string, index: number) => (
-                    <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
-                      {tag}
-                    </div>
-                  ))}
+                {data.tag.slice(0, 2).map((tag: string, index: number) => (
+                  <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
+                    {tag}
+                  </div>
+                ))}
               </div>
               <div
                 className=" z-10 transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-12"
