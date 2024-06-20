@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Image from 'next/image';
 
+import toast from 'react-hot-toast';
 import { useOverlay } from '@toss/use-overlay';
 
 import DeleteReviewModal from './DeleteReviewModal/indext';
@@ -8,15 +8,14 @@ import ReviewEditButton from './ReviewEditButton';
 import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
 
-import star from '@/public/assets/icon/star.svg';
-import emptyStar from '@/public/assets/icon/star-black.svg';
-
 import convertDate from '@/src/utils/convertDate';
 import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
-import dompurify from 'dompurify';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
+import ReviewListContent from './ReviewListContent';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -24,16 +23,16 @@ interface ReviewDataProps {
   videoId: string;
 }
 
-const sanitizer = dompurify.sanitize;
-
 const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isReveiwEditStatus, setIsReviewEditStatus] = useState(false);
   const [editReviewId, setEditReviewId] = useState<number | null>(null);
+  const [editReveiwScore, setEditReviewScore] = useState(0);
   const [editReviewTitle, setEditReviewTitle] = useState('');
   const [editReviewContent, setEditReviewContent] = useState('');
-  const [editReveiwScore, setEditReviewScore] = useState(0);
 
   const hasToken = getCookie('accessToken');
+
+  const { userData } = userDataStore();
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -49,13 +48,13 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     setEditReviewContent(content);
     setEditReviewScore(score);
     setEditReviewTitle(title);
-    setIsEdit(true);
+    setIsReviewEditStatus(true);
   };
 
   const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
-      nickname: '수정',
+      nickname: userData.nickname,
       content: editReviewContent,
       score: editReveiwScore,
     };
@@ -68,9 +67,10 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       if (response.status === 200) {
         setEditReviewId(null);
         renderReviewList();
+        setIsReviewEditStatus(false);
       }
     } catch (error) {
-      console.error(error);
+      toast.error(TOAST_MESSAGE.FAILED_EDIT_REVIEW);
     }
   };
 
@@ -85,58 +85,52 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
         deleteReviewOverlay.close();
       }
     } catch (error) {
-      console.error(error);
+      toast.error(TOAST_MESSAGE.FAILED_DELETE_REVIEW);
     }
   };
 
   const handleCancleEditReview = () => {
     setEditReviewId(null);
-    setIsEdit(false);
+    setIsReviewEditStatus(false);
   };
 
   return (
     <div className="flex flex-col py-32">
       <ul className="flex flex-col gap-32">
-        {reviewList?.map(({ id, title, content, createdAt, score }) => {
+        {reviewList?.map(({ id, title, content, createdAt, score, nickname }) => {
           return (
             <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
                 <h2 className="text-18 font-bold">{title}</h2>
+                <div className="text-12 text-gray-50">{nickname}</div>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
-
-              <div className="flex gap-5 pb-16">
-                {editReviewId === id ? (
-                  <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
-                ) : (
-                  [...Array(5)].map((_, index) => (
-                    <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
-                  ))
-                )}
-              </div>
               {editReviewId === id ? (
-                <ReviewTextArea
-                  title={editReviewTitle}
-                  setTitle={setEditReviewTitle}
-                  content={editReviewContent}
-                  setContent={setEditReviewContent}
-                  createReview={() => handleChangeReview(id)}
-                  reviewId={id}
-                  isEdit={isEdit}
-                  cancleEditReview={handleCancleEditReview}
-                />
+                <div className="flex flex-col">
+                  <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
+                  <ReviewTextArea
+                    reviewId={id}
+                    isReveiwEditStatus={isReveiwEditStatus}
+                    title={editReviewTitle}
+                    setTitle={setEditReviewTitle}
+                    content={editReviewContent}
+                    setContent={setEditReviewContent}
+                    createReview={() => handleChangeReview(id)}
+                    cancleEditReview={handleCancleEditReview}
+                  />
+                </div>
               ) : (
-                <p
-                  id="review-text"
-                  className="max-h-130 overflow-y-scroll"
-                  dangerouslySetInnerHTML={{ __html: sanitizer(content) }}
-                />
+                <div className="flex flex-col gap-20">
+                  <ReviewListContent content={content} score={score} title={title} />
+                  {userData.nickname !== nickname && (
+                    <ReviewEditButton
+                      isReveiwEditStatus={isReveiwEditStatus}
+                      onClickEdit={() => handleReviewEditData(id, content, score, title)}
+                      onClickDelete={() => deleteReviewModal(id)}
+                    />
+                  )}
+                </div>
               )}
-              <ReviewEditButton
-                onClickEdit={() => handleReviewEditData(id, content, score, title)}
-                onClickDelete={() => deleteReviewModal(id)}
-                isEdit={isEdit}
-              />
             </li>
           );
         })}

@@ -10,8 +10,13 @@ import useGeolocation from 'react-hook-geolocation';
 import extractPath from '@/src/utils/extractPath';
 import { BASED_URL } from '@/src/constants/constants';
 import instance from '@/src/api/axios';
+import { VideoInformationProps } from '@/src/lib/types';
 
-const ProductDescription = () => {
+interface ProductDescriptionProps {
+  youtubeData: VideoInformationProps | null;
+}
+
+const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
   const [duration, setDuration] = useState(0);
   const [isLoadingDirection, setIsLoadingDirection] = useState(true);
   const [hasCurrentLocation, setHasCurrentLocation] = useState(true);
@@ -73,7 +78,7 @@ const ProductDescription = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-30">
       <div className="flex flex-col justify-center items-center gap-12">
-        <LocationDescription placeData={placeData} />
+        <LocationDescription placeData={placeData} youtubeData={youtubeData} />
         <div className="relative w-822 h-670 my-66 mx-108 rounded-l overflow-hidden">
           {hasCurrentLocation ? (
             <CurrentLocation

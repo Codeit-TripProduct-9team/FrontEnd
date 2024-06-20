@@ -35,8 +35,8 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
   useEffect(() => {
     const getSearchBarThumbnails = async () => {
       const searchBarThumbnails: { [key: string]: string } = {};
-      for (const { id, url } of searchResult) {
-        const videoId = url.split('v=')[1];
+      for (const { id, videoUrl } of searchResult) {
+        const videoId = videoUrl.split('v=')[1];
         const youtubeData = await getYoutubeData(videoId);
         const hasYoutubeData = youtubeData.items.length > 0;
         if (hasYoutubeData) {

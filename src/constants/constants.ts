@@ -39,4 +39,8 @@ export const TOAST_MESSAGE = {
   FULL_TEXT: '더 이상 작성할 수 없습니다.',
   EMPTY_LOCATION: '장소를 입력해주세요',
   UNKNOW_ERROR: '에러가 발생했습니다. ',
+  FAILED_EDIT_REVIEW: '리뷰 수정에 실패했습니다.',
+  FAILED_DELETE_REVIEW: '리뷰 삭제에 실패했습니다.',
+  FAILED_CREATE_REVIEW: '로그인 후 작성 가능합니다.',
+  FAILED_MY_PLACE: '로그인 후 진행해주세요.',
 };
