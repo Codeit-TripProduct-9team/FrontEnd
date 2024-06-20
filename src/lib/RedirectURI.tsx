@@ -7,7 +7,6 @@ import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 const RedirectURI = () => {
   const router = useRouter();
-
   useEffect(() => {
     const handleSignin = async () => {
       const code = new URL(window.location.href).searchParams.get('code');
@@ -33,7 +32,7 @@ const RedirectURI = () => {
       }
     };
     handleSignin();
-  }, []);
+  }, [router]);
   return <div>ㅇㅇ</div>;
 };
 
