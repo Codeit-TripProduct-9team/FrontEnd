@@ -18,5 +18,5 @@ export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string
         // decomposedTag.some((tag: string) => tag.includes(filteredValue)),
       );
     });
-  }};
+  }
 };

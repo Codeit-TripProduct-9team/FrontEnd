@@ -9,7 +9,9 @@ import SearchMyCard from './SearchMyCard';
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   // const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
-
+  const handleInputChange = (event: ChangeEvent) => {
+    setSearchValue((event.target as HTMLInputElement).value); // 입력값을 상태에 설정
+  };
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
