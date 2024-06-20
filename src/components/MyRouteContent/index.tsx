@@ -2,15 +2,6 @@ import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useEffect, useState } from 'react';
-// import { MockDataItem } from '@/src/lib/types';
-// import { MockMyRouteItem } from './mockMyRoute';
-// import { mockMyRoute } from './mockMyRoute';
-// import { mock } from '../mainContent/mock';
-// import { useFilteredData } from '@/src/hooks/useFilteredData';
-// import mainPageRequestInstance from '@/src/api/mainPageRequest';
-// import NoSearchData from '../mainContent/CardSection/NoSearchData';
-// import { Draggable } from '@hello-pangea/dnd';
-// import CardSection from '../mainContent/CardSection';
 import MyRouteCardSection from './MyRouteCardSection';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
@@ -26,7 +17,7 @@ import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
-// import { MyPlaceCardData } from '@/src/lib/types';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -36,21 +27,16 @@ const MyRouteContent = () => {
   const myPlaceData = useMyPlaceStore((state) => state.data);
   const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
-
-  // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  // const mockSliced = mock.data.slice(0, 9);
-
   // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceCourseData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
-  console.log(flatCourseData);
   const { movePlace, addPlace } = useCourseStore();
   const { userData } = userDataStore();
   const userId = userData.id;
   const router = useRouter();
   const { courseId } = router.query;
-  // const [myPlaceCardData, setMyPlaceCardData] = useState<MyPlaceCardData[]>([]);
+  const [newCourseName, setNewCourseName] = useState<string>('');
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -63,8 +49,6 @@ const MyRouteContent = () => {
     const fetchMyPlace = async () => {
       try {
         const videoData = await instance.get(`/user/${userId}/video`);
-        console.log(videoData);
-        console.log(videoData.data.data);
         const modifiedVideoData = videoData.data.data.map((item) => ({
           content: item.content,
           id: item.id,
@@ -72,16 +56,11 @@ const MyRouteContent = () => {
           tags: item.tags,
           title: item.title,
         }));
-        console.log('modified', modifiedVideoData);
-
-        // setMyPlaceCardData(videoData.data.data);
 
         const videoId = videoData.data.data.map((item) => item.id);
-        console.log(videoId);
         Promise.all(videoId.map((id) => instance.get(`/course/${id}`))).then((responses) => {
           // responses is an array of responses for each request
           const combinedData = responses.map((response, index) => {
-            console.log('response.data.data:', response.data.data);
             const courseData = response.data.data.course[0];
             return {
               content: modifiedVideoData[index].content,
@@ -96,7 +75,6 @@ const MyRouteContent = () => {
               posY: courseData.posY,
             };
           });
-          console.log('combined', combinedData);
           setMyPlaceData(combinedData);
         });
       } catch (error) {
@@ -108,7 +86,6 @@ const MyRouteContent = () => {
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
-    console.log(draggableId);
     if (!destination) {
       return;
     }
@@ -116,20 +93,16 @@ const MyRouteContent = () => {
     if (destination) {
       const fromIndex = source.index;
       const toIndex = destination.index;
-      console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
       movePlace(parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
     if (destination && source.droppableId === 'myPlace') {
-      console.log('myplace', myPlaceData);
       const card = myPlaceData.find((card) => card.name === draggableId);
-      console.log(card);
       const hasDuplicate = flatCourseData.some((place) => place.name === card.name);
       if (hasDuplicate) {
         openToast.error('중복된 장소는 추가할 수 없습니다.');
         return;
       } else {
-        //마이플레이스 데이터 나오면 수정 필요
         addPlace(parseInt(destination.droppableId), {
           index: 1,
           name: card.name,
@@ -162,7 +135,8 @@ const MyRouteContent = () => {
   const handleSaveCourse = async () => {
     openToast.success(TOAST_MESSAGE.SAVE);
     try {
-      const response = await instance.post(`/user/${userId}/course/${courseId}`, courseData, {
+      const updatedCourseData = { ...courseData, name: newCourseName };
+      const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
         headers: {
           Authorization: `Bearer ${getCookie('accessToken')}`,
         },
@@ -180,7 +154,7 @@ const MyRouteContent = () => {
         <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
           <div className="flex gap-12">
             <input
-              // value={titleValue}
+              onChange={(e) => setNewCourseName(e.target.value)}
               className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
               placeholder={`${courseName ? courseName : '여행지의 제목을 입력해주세요'}`}
             />
