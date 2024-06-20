@@ -1,14 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { mock } from '@/src/components/mainContent/mock';
-import { useFilteredData } from '@/src/hooks/useFilteredData';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
-import { MockDataItem } from '@/src/lib/types';
+// import { MockDataItem } from '@/src/lib/types';
 import { useInView } from 'react-intersection-observer';
 
 import search from '@/public/assets/icon/search.png';
 import Image from 'next/image';
-import CardSection from '../CardSection';
+// import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
 
@@ -18,7 +17,7 @@ const ListSearchSection = () => {
   const inputRef = useRef<HTMLDivElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  // const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -87,7 +86,7 @@ const ListSearchSection = () => {
           <Image src={search} width={30} height={10} alt="검색이미지" className="absolute right-15 top-15" />
         )}
       </div>
-      <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+      {/* <CardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
       {!inView && (
         <div onClick={handleClickFloat} className="fixed  bottom-0 animate-bounceOnce">
           <InputNavigator />

@@ -2,16 +2,16 @@ import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MockDataItem } from '@/src/lib/types';
+// import { MockDataItem } from '@/src/lib/types';
 // import { MockMyRouteItem } from './mockMyRoute';
 // import { mockMyRoute } from './mockMyRoute';
 // import { mock } from '../mainContent/mock';
-import { useFilteredData } from '@/src/hooks/useFilteredData';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
 // import NoSearchData from '../mainContent/CardSection/NoSearchData';
 // import { Draggable } from '@hello-pangea/dnd';
 // import CardSection from '../mainContent/CardSection';
-import MyRouteCardSection from './MyRouteCardSection';
+// import MyRouteCardSection from './MyRouteCardSection';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import AddPlaceModal from './AddPlaceModal.tsx';
@@ -36,6 +36,7 @@ const MyRouteContent = () => {
 
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   // const mockSliced = mock.data.slice(0, 9);
+
   const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
@@ -175,7 +176,7 @@ const MyRouteContent = () => {
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+                {/* <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
 
                 {provided.placeholder}
               </div>
