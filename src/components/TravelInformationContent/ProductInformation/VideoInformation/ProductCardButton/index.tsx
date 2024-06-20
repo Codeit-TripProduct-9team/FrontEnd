@@ -15,6 +15,7 @@ import { getCookie } from '@/src/utils/cookie';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
+import { TOAST_MESSAGE } from '@/src/constants/constants';
 
 interface ProductButtonProps {
   title: string | undefined;
@@ -51,7 +52,6 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
     const checkUserRegisterPlace = async () => {
       try {
         const response = await instance.get(`/user/${userId}/video`);
-        console.log(response);
         const result = response.data.data?.map((element: any) => element.title);
 
         setCheckUserLikePlace(result);
@@ -66,7 +66,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
 
   const handleRegistMyPlace = async () => {
     if (userId === 0) {
-      toast.error('로그인 후 진행해주세요.');
+      toast.error(TOAST_MESSAGE.FAILED_MY_PLACE);
       return;
     }
 
