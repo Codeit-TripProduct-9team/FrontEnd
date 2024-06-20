@@ -31,7 +31,6 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
 
   const { userData } = userDataStore();
   const userId = userData.id;
-  console.log(userId);
   const hasToken = getCookie('accessToken');
 
   const sharedOverlay = useOverlay();
