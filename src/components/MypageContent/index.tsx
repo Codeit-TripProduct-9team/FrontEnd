@@ -1,15 +1,14 @@
-import CardSection from '../mainContent/CardSection';
-import { MockDataItem } from '@/src/lib/types';
-import { useFilteredData } from '@/src/hooks/useFilteredData';
-import { mock } from '../mainContent/mock';
-import { useState } from 'react';
+// import CardSection from '../mainContent/CardSection';
+// import { MockDataItem } from '@/src/lib/types';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
+import { ChangeEvent, useState } from 'react';
 import Link from 'next/link';
 import Button from '../common/button';
 import SearchMyCard from './SearchMyCard';
 
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  // const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
 
   return (
     <>
@@ -32,13 +31,12 @@ const MypageContent = () => {
         </div>
       </section>
       <hr className="mx-110" />
-      <section className="flex flex-col relative items-center gap-10 mb-80">
-        <p className="mt-10 mr-1160 text-gray-60 ">저장된 리뷰 목록</p>
-        <div className="flex flex-col items-center relative">
-          <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
-          <div className="absolute right-5 -top-10 w-500">
-            <SearchMyCard searchValue={searchValue} setSearchValue={setSearchValue} />
-          </div>
+
+      <section className="py-20 flex flex-col relative">
+        <p>저장된 리뷰 목록</p>
+        <input className="absolute right-110" value={searchValue} onChange={handleInputChange} placeholder="검색하기" />
+        <div className="flex flex-col items-center">
+          {/* <CardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
         </div>
       </section>
     </>

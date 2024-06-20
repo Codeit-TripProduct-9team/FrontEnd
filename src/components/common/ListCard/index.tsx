@@ -11,9 +11,8 @@ interface ListCardProps {
 
 const ListCard = ({ data }: ListCardProps) => {
   const router = useRouter();
-  const videoId = data.url.split('v=')[1];
+  const videoId = data.videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
-  console.log(thumbnail);
 
   const handleClickMyPlace = () => {
     // instance.post(
