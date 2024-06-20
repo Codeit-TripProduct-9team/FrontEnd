@@ -6,7 +6,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
-import { Plan } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import { Plan } from '@/src/lib/types';
 
 type Marker = {
   position: { lat: number; lng: number };

@@ -11,9 +11,9 @@ const ConditionalImage = ({ img, width = 321, height = 207 }: ConditionalImagePr
   return (
     <span className="rounded-s">
       {img === 'img' ? (
-        <Image src={img} alt="place" width={width} height={height} />
-      ) : (
         <Image src={noImage} alt="img" width={width} height={height} />
+      ) : (
+        <Image src={img} alt="place" width={width} height={height} />
       )}
     </span>
   );
