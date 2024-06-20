@@ -24,6 +24,8 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStor
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
+import { useRouter } from 'next/router';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -42,6 +44,10 @@ const MyRouteContent = () => {
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
   const { movePlace, addPlace } = useCourseStore();
+  const { userData } = userDataStore();
+  const userId = userData.id;
+  const router = useRouter();
+  const { courseId } = router.query;
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -49,8 +55,6 @@ const MyRouteContent = () => {
       setSectionVisible(true);
     }
   };
-
-  console.log(courseData);
 
   useEffect(() => {
     const fetchAndLogCardList = async () => {
@@ -63,8 +67,6 @@ const MyRouteContent = () => {
     };
     fetchAndLogCardList();
   }, [setMyPlaceData]);
-
-  // const coursId = 1;
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -120,7 +122,7 @@ const MyRouteContent = () => {
   const handleSaveCourse = async () => {
     openToast.success(TOAST_MESSAGE.SAVE);
     try {
-      const response = await instance.post('/course', courseData, {
+      const response = await instance.post(`/user/${userId}/course/${courseId}`, courseData, {
         headers: {
           Authorization: `Bearer ${getCookie('accessToken')}`,
         },

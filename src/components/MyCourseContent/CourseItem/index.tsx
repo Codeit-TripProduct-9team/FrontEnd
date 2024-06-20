@@ -42,8 +42,6 @@ const CourseItem = ({ id, name, plan }: Course) => {
     ));
   };
 
-  console.log(plan);
-
   return (
     <article>
       <div className="mb-12 bg-white px-20 py-10 text-gray-70 rounded-s">
