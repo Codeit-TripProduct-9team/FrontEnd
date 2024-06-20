@@ -1,14 +1,13 @@
-import CardSection from '../mainContent/CardSection';
-import { MockDataItem } from '@/src/lib/types';
-import { useFilteredData } from '@/src/hooks/useFilteredData';
-import { mock } from '../mainContent/mock';
+// import CardSection from '../mainContent/CardSection';
+// import { MockDataItem } from '@/src/lib/types';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
 import { ChangeEvent, useState } from 'react';
 import Link from 'next/link';
 import Button from '../common/button';
 
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  // const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
 
   const handleInputChange = (event: ChangeEvent) => {
     setSearchValue((event.target as HTMLInputElement).value); // 입력값을 상태에 설정
@@ -38,7 +37,7 @@ const MypageContent = () => {
         <p>저장된 리뷰 목록</p>
         <input className="absolute right-110" value={searchValue} onChange={handleInputChange} placeholder="검색하기" />
         <div className="flex flex-col items-center">
-          <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
+          {/* <CardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
         </div>
       </section>
     </>
