@@ -7,6 +7,7 @@ import ReviewScore from './ReviewScore';
 import instance from '@/src/api/axios';
 import { getCookie } from '@/src/utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface CreateReviewProps {
   videoId: string;
@@ -20,14 +21,20 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
 
   const hasToken = getCookie('accessToken');
 
+  const { userData } = userDataStore();
+
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
+
+    if (userData.nickname === '') {
+      toast.error('로그인 후 작성 가능합니다.');
+    }
 
     if (!hasScore) {
       toast.error(TOAST_MESSAGE.EMPTY_SCORE);
     }
     if (hasScore) {
-      const body = { title: title, nickname: '테스트', content: content, score: score };
+      const body = { title: title, nickname: userData.nickname, content: content, score: score };
       try {
         const headers = {
           Authorization: `Bearer ${hasToken}`,

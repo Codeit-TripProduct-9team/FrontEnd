@@ -36,8 +36,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     const filteredList = searchVideoList.filter(
-      ({ title, url, tag }) =>
-        title.includes(debounceKeyword) || url.includes(debounceKeyword) || tag.includes(debounceKeyword),
+      ({ title, tag }) => title.includes(debounceKeyword) || tag?.some((content) => content.includes(debounceKeyword)),
     );
 
     setSearchResult(debounceKeyword.trim() === '' ? [] : filteredList);

@@ -41,6 +41,7 @@ export interface ReviewDataItem {
   title: string;
   content: string;
   createdAt: string;
+  nickname: string;
   score: number;
 }
 
@@ -48,15 +49,15 @@ export interface VideoInformationProps {
   id?: number;
   title?: string;
   content?: string;
-  url?: string;
-  tag?: string;
+  videoUrl?: string;
+  tag?: string[];
   likeCount?: number;
   imageUrl: string;
 }
 
 export interface videoListProps {
   id: number;
-  tag: string;
+  tag: string[];
   title: string;
-  url: string;
+  videoUrl: string;
 }
