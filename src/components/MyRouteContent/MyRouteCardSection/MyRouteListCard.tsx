@@ -1,4 +1,5 @@
-import { MockDataItem } from '@/src/lib/types';
+// import { MockDataItem } from '@/src/lib/types';
+import { MyPlaceCardData } from '@/src/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Draggable } from '@hello-pangea/dnd';
@@ -7,10 +8,11 @@ import { TOAST_MESSAGE } from '@/src/constants/constants';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface ListCardProps {
-  data: MockDataItem;
+  data: MyPlaceCardData;
 }
 
 const MyRouteListCard = ({ data }: ListCardProps) => {
+  console.log(data);
   const videoId = data.videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
 

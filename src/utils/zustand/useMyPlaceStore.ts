@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 
 interface MyPlace {
-  id: number;
-  title: string;
-  url: string;
-  tag: string[];
+  index: number;
+  name: string;
+  img: string;
+  description: string;
+  posX: number;
+  posY: number;
 }
 
 type MyPlaceStore = {

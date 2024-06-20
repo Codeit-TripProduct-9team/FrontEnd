@@ -93,3 +93,12 @@ export interface MyCourseApiResponse {
   message: string;
   data: CourseData;
 }
+
+export interface MyPlaceCardData {
+  title: string;
+  description: string;
+  content: string;
+  tag: string[];
+  videoUrl: string;
+  id: number;
+}
