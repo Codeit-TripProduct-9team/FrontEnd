@@ -12,8 +12,9 @@ interface ListCardProps {
 }
 
 const MyRouteListCard = ({ data }: ListCardProps) => {
-  console.log(data);
-  const videoId = data.videoUrl.split('v=')[1];
+  console.log('data', data);
+  const { content, description, img, name, id, posX, posY, tags, title, videoUrl } = data;
+  const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
 
   const handleDeleteMyPlace = () => {
@@ -21,27 +22,28 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   };
 
   return (
-    <Draggable draggableId={`${data.title}`} index={data.id}>
+    <Draggable draggableId={`${name}`} index={id}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex flex-col overflow-hidden bg-white w-225 h-225 rounded-s shadow-main transition-transform duration-300 transform hover:scale-105 cursor-pointer"
+          // className="flex flex-col overflow-hidden bg-white w-225 h-225 rounded-s shadow-main transition-transform duration-300 transform hover:scale-105 cursor-pointer"
+
+          className="flex flex-col  bg-white  rounded-s shadow-main transition-transform duration-300 transform hover:scale-105 cursor-pointer"
         >
-          <Link href={`/travel-information/${data.id}`} />
           <div className="relative border-1 w-225 h-120">
             {thumbnail && <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-cetner" />}
           </div>
           <div className="flex flex-col justify-between p-10 h-110">
             <div>
-              <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{data.title}</h2>
+              <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{title}</h2>
             </div>
             <div className="flex justify-between">
               <div className="flex gap-5">
-                {data.tag?.slice(0, 2).map((tag: string, index: number) => (
+                {tags?.slice(0, 2).map((tags: string, index: number) => (
                   <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
-                    {tag}
+                    {tags}
                   </div>
                 ))}
               </div>
@@ -51,6 +53,18 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               >
                 마이플레이스 삭제
               </div>
+            </div>
+          </div>
+
+          <div className="relative border-1 w-225 h-120">
+            {img && <Image src={img} fill alt="장소" priority className="object-cover object-cetner" />}
+          </div>
+          <div className="flex flex-col justify-between p-10 h-110">
+            <div>
+              <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{name}</h2>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-12">{description}</p>
             </div>
           </div>
         </div>

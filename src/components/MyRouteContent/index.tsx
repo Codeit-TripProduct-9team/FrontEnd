@@ -26,14 +26,14 @@ import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
-import { MyPlaceCardData } from '@/src/lib/types';
+// import { MyPlaceCardData } from '@/src/lib/types';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
 const MyRouteContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const myPlaceCourseData = useMyPlaceStore((state) => state.data);
+  const myPlaceData = useMyPlaceStore((state) => state.data);
   const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
 
@@ -50,7 +50,7 @@ const MyRouteContent = () => {
   const userId = userData.id;
   const router = useRouter();
   const { courseId } = router.query;
-  const [myPlaceCardData, setMyPlaceCardData] = useState<MyPlaceCardData[]>([]);
+  // const [myPlaceCardData, setMyPlaceCardData] = useState<MyPlaceCardData[]>([]);
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -74,7 +74,7 @@ const MyRouteContent = () => {
         }));
         console.log('modified', modifiedVideoData);
 
-        setMyPlaceCardData(videoData.data.data);
+        // setMyPlaceCardData(videoData.data.data);
 
         const videoId = videoData.data.data.map((item) => item.id);
         console.log(videoId);
@@ -121,8 +121,8 @@ const MyRouteContent = () => {
     }
 
     if (destination && source.droppableId === 'myPlace') {
-      console.log(myPlaceCourseData);
-      const card = myPlaceCourseData.find((card) => card.name === draggableId);
+      console.log('myplace', myPlaceData);
+      const card = myPlaceData.find((card) => card.name === draggableId);
       console.log(card);
       const hasDuplicate = flatCourseData.some((place) => place.name === card.name);
       if (hasDuplicate) {
@@ -218,7 +218,7 @@ const MyRouteContent = () => {
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <MyRouteCardSection filteredData={myPlaceCardData} setSearchValue={setSearchValue} />
+                <MyRouteCardSection filteredData={myPlaceData} setSearchValue={setSearchValue} />
 
                 {provided.placeholder}
               </div>

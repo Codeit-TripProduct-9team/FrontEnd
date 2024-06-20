@@ -4,10 +4,10 @@ import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
 import NoSearchData from '../../mainContent/CardSection/NoSearchData';
 import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
-import { MyPlaceCardData } from '@/src/lib/types';
+import { MyPlace } from '@/src/lib/types';
 
 interface filteredDataProps {
-  filteredData: MyPlaceCardData[];
+  filteredData: MyPlace[];
   setSearchValue: (value: string) => void;
 }
 

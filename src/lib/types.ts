@@ -94,11 +94,15 @@ export interface MyCourseApiResponse {
   data: CourseData;
 }
 
-export interface MyPlaceCardData {
-  title: string;
+export interface MyPlace {
+  name: string;
+  img: string;
   description: string;
+  posX: number;
+  posY: number;
   content: string;
-  tag: string[];
-  videoUrl: string;
   id: number;
+  videoUrl: string;
+  tags: string[];
+  title: string;
 }
