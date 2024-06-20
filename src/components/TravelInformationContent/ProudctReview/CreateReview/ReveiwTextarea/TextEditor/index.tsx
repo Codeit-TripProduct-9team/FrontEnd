@@ -38,16 +38,15 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
       if (file) {
         try {
           const formData = new FormData();
-          formData.append('image', file);
+          formData.append('file', file);
+          formData.append('upload_preset', 'pyaejpx8');
           const body = formData;
-          const headers = {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQwMSwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxODc2NzQ0NCwiaXNzIjoic3AtdGFza2lmeSJ9.kenvgVkOXQxTg4N5QPRRz0mK-EqekzLpKgJbq5l2AME`,
-          };
-          const response = await instance.post('https://sp-taskify-api.vercel.app/4-14/users/me/image', body, {
-            headers,
-          });
+          const response = await instance.post(
+            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_DASHBOARD_NAME}/image/upload`,
+            body,
+          );
 
-          const imageUrl = response.data.profileImageUrl;
+          const imageUrl = response.data.url;
           const range = quillRef.current.getEditorSelection();
           quillRef.current.getEditor().insertEmbed(range.index, 'image', imageUrl);
           quillRef.current.getEditor().setSelection(range.index + 1);
