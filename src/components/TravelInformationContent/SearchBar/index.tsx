@@ -11,12 +11,10 @@ import useDebounce from '@/src/hooks/useDebounce';
 import { videoListProps } from '@/src/lib/types';
 
 const SearchBar = () => {
-  const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
-
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [searchVideoList, setSearchVideoList] = useState<videoListProps[]>([]);
-  const [searchResult, setSearchResult] = useState<videoListProps[]>([]);
 
+  const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
   const debounceKeyword = useDebounce(searchKeyword);
 
   const router = useRouter();
@@ -34,13 +32,9 @@ const SearchBar = () => {
     getVideoList();
   }, []);
 
-  useEffect(() => {
-    const filteredList = searchVideoList.filter(
-      ({ title, tag }) => title.includes(debounceKeyword) || tag?.some((content) => content.includes(debounceKeyword)),
-    );
-
-    setSearchResult(debounceKeyword.trim() === '' ? [] : filteredList);
-  }, [debounceKeyword, searchVideoList]);
+  const filteredList = searchVideoList.filter(
+    ({ title, tag }) => title.includes(debounceKeyword) || tag?.some((content) => content.includes(debounceKeyword)),
+  );
 
   const handleRouteContentPage = (videoId: number) => {
     const contentLink = `/travel-information/${videoId}`;
@@ -54,6 +48,8 @@ const SearchBar = () => {
     const keyword = event.target.value;
     setSearchKeyword(keyword);
   };
+
+  const searchResult = debounceKeyword.trim() === '' ? [] : filteredList;
 
   const showSerachContent = isFocused && searchResult.length > 0;
 

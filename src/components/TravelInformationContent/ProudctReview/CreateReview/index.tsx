@@ -27,12 +27,15 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
     const hasScore = score !== 0;
 
     if (userData.nickname === '') {
-      toast.error('로그인 후 작성 가능합니다.');
+      toast.error(TOAST_MESSAGE.FAILED_CREATE_REVIEW);
+      return;
     }
 
     if (!hasScore) {
       toast.error(TOAST_MESSAGE.EMPTY_SCORE);
+      return;
     }
+
     if (hasScore) {
       const body = { title: title, nickname: userData.nickname, content: content, score: score };
       try {

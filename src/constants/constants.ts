@@ -41,4 +41,5 @@ export const TOAST_MESSAGE = {
   UNKNOW_ERROR: '에러가 발생했습니다. ',
   FAILED_EDIT_REVIEW: '리뷰 수정에 실패했습니다.',
   FAILED_DELETE_REVIEW: '리뷰 삭제에 실패했습니다.',
+  FAILED_CREATE_REVIEW: '로그인 후 작성 가능합니다.',
 };

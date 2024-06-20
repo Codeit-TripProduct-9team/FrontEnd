@@ -21,7 +21,7 @@ const LocationDescription = ({ placeData, youtubeData }: PlaceDataProps) => {
         className="w-full h-455 object-cover"
         width={1440}
         height={455}
-        src={youtubeData.imageUrl}
+        src={youtubeData?.imageUrl}
         alt="defalut"
         quality={100}
         priority

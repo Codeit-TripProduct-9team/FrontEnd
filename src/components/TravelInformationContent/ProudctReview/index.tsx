@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
+
 import { useRouter } from 'next/router';
 
 import SortToolbar from './SortToolbar';
 import CreateReview from './CreateReview';
 import ReviewList from './ReviewList';
-import NoReivewData from './SortToolbar/NoReviewData';
+import EmptyReview from './EmptyReview';
 import ScrollButton from './ScrollButton';
 
 import instance from '@/src/api/axios';
@@ -15,8 +16,6 @@ const ProductReview = () => {
   const [sortType, setSortType] = useState('latest');
   const [scrollControlEvent, setScrollControlEvent] = useState(0);
   const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
-  const [reviewListError, setReviewListError] = useState(false);
-  const [reviewListLoading, setReviewListLoading] = useState(true);
 
   const router = useRouter();
   const videoId = router.query.id as string;
@@ -30,18 +29,13 @@ const ProductReview = () => {
       const scrollControlEvent = response.data.data.pageInfo.totalPages;
       if (response.status === 200) {
         const firstPage = queryNumber === 0;
-        setTimeout(() => {
-          setReviewList((prevReviewList) =>
-            firstPage ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
-          );
-          setScrollControlEvent(scrollControlEvent);
-          setReviewListError(false);
-        }, 500);
+        setReviewList((prevReviewList) =>
+          firstPage ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
+        );
+        setScrollControlEvent(scrollControlEvent);
       }
     } catch (error) {
-      setReviewListError(true);
-    } finally {
-      setReviewListLoading(true);
+      console.error(error);
     }
   }, [sortType, videoId, queryNumber]);
 
@@ -84,24 +78,19 @@ const ProductReview = () => {
   }, [sortType]);
 
   const emptyReveiwData = reviewList.length === 0;
-  const ReveiwDataStauts = reviewListError
-    ? '리뷰 데이터를 받아오지 못했습니다'
-    : reviewListLoading
-    ? '리뷰를 받아오는 중입니다.'
-    : '리뷰가 없습니다. 리뷰를 등록해 주세요';
 
   return (
-    <div className="flex flex-col w-full pt-65 px-110 bg-white">
+    <section className="flex flex-col w-full pt-65 px-110 bg-white">
       <CreateReview videoId={videoId} renderReveiwList={getReviewList} />
       <SortToolbar sortType={sortType} setSortType={setSortType} />
       {emptyReveiwData ? (
-        <NoReivewData message={ReveiwDataStauts} />
+        <EmptyReview />
       ) : (
         <ReviewList reviewList={reviewList} renderReviewList={getReviewList} videoId={videoId} />
       )}
       <div ref={observerRef} className="h-10" />
       <ScrollButton targetId={'top'} />
-    </div>
+    </section>
   );
 };
 

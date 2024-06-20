@@ -20,12 +20,7 @@ const ScrollButton = ({ targetId }: ScrollButtonProps) => {
 
   const scrollVisiblePosition = () => {
     const visiblePosition = window.scrollY > window.innerHeight;
-    if (visiblePosition) {
-      setIsVisible(true);
-    }
-    if (!visiblePosition) {
-      setIsVisible(false);
-    }
+    return visiblePosition ? setIsVisible(true) : setIsVisible(false);
   };
 
   useEffect(() => {

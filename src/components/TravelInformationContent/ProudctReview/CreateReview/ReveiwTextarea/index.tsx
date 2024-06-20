@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 
+import TextEditor from './TextEditor';
+
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
-import TextEditor from './TextEditor';
 
 interface ReviewTextAreaProps {
   content: string;

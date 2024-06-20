@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Image from 'next/image';
 
 import toast from 'react-hot-toast';
 import { useOverlay } from '@toss/use-overlay';
@@ -9,9 +8,6 @@ import ReviewEditButton from './ReviewEditButton';
 import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
 
-import star from '@/public/assets/icon/star.svg';
-import emptyStar from '@/public/assets/icon/star-black.svg';
-
 import convertDate from '@/src/utils/convertDate';
 import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
@@ -19,6 +15,7 @@ import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 import ReviewListContent from './ReviewListContent';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];
@@ -34,6 +31,8 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const [editReviewContent, setEditReviewContent] = useState('');
 
   const hasToken = getCookie('accessToken');
+
+  const { userData } = userDataStore();
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -55,7 +54,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
-      nickname: '전역에서 받아서 넣어주기',
+      nickname: userData.nickname,
       content: editReviewContent,
       score: editReveiwScore,
     };
@@ -68,6 +67,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
       if (response.status === 200) {
         setEditReviewId(null);
         renderReviewList();
+        setIsReviewEditStatus(false);
       }
     } catch (error) {
       toast.error(TOAST_MESSAGE.FAILED_EDIT_REVIEW);
@@ -94,8 +94,6 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
     setIsReviewEditStatus(false);
   };
 
-  console.log(reviewList);
-
   return (
     <div className="flex flex-col py-32">
       <ul className="flex flex-col gap-32">
@@ -107,35 +105,32 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
                 <div className="text-12 text-gray-50">{nickname}</div>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
-              <div className="flex gap-5 pb-16">
-                {editReviewId === id ? (
-                  <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
-                ) : (
-                  [...Array(5)].map((_, index) => (
-                    <Image key={index} src={index < score ? star : emptyStar} width={25} height={25} alt="star" />
-                  ))
-                )}
-              </div>
               {editReviewId === id ? (
-                <ReviewTextArea
-                  title={editReviewTitle}
-                  setTitle={setEditReviewTitle}
-                  content={editReviewContent}
-                  setContent={setEditReviewContent}
-                  createReview={() => handleChangeReview(id)}
-                  reviewId={id}
-                  isReveiwEditStatus={isReveiwEditStatus}
-                  cancleEditReview={handleCancleEditReview}
-                />
+                <div className="flex flex-col">
+                  <ReviewScore setScore={setEditReviewScore} score={editReveiwScore} />
+                  <ReviewTextArea
+                    reviewId={id}
+                    isReveiwEditStatus={isReveiwEditStatus}
+                    title={editReviewTitle}
+                    setTitle={setEditReviewTitle}
+                    content={editReviewContent}
+                    setContent={setEditReviewContent}
+                    createReview={() => handleChangeReview(id)}
+                    cancleEditReview={handleCancleEditReview}
+                  />
+                </div>
               ) : (
-                <ReviewListContent content={content} />
+                <div className="flex flex-col gap-20">
+                  <ReviewListContent content={content} score={score} title={title} />
+                  {userData.nickname !== nickname && (
+                    <ReviewEditButton
+                      isReveiwEditStatus={isReveiwEditStatus}
+                      onClickEdit={() => handleReviewEditData(id, content, score, title)}
+                      onClickDelete={() => deleteReviewModal(id)}
+                    />
+                  )}
+                </div>
               )}
-
-              <ReviewEditButton
-                onClickEdit={() => handleReviewEditData(id, content, score, title)}
-                onClickDelete={() => deleteReviewModal(id)}
-                isReveiwEditStatus={isReveiwEditStatus}
-              />
             </li>
           );
         })}
