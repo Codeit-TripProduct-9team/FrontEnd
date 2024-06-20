@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 
+import TextEditor from './TextEditor';
+
 import Button from '@/src/components/common/button';
 import useAutoFocus from '@/src/hooks/useAtuoFocus';
-import TextEditor from './TextEditor';
 
 interface ReviewTextAreaProps {
   content: string;
@@ -11,7 +12,7 @@ interface ReviewTextAreaProps {
   setTitle: (title: string) => void;
   createReview?: (reviewId?: number) => void;
   reviewId?: number;
-  isEdit?: boolean;
+  isReveiwEditStatus?: boolean;
   cancleEditReview?: () => void;
 }
 
@@ -22,7 +23,7 @@ const ReviewTextArea = ({
   setContent,
   setTitle,
   createReview,
-  isEdit,
+  isReveiwEditStatus,
   cancleEditReview,
 }: ReviewTextAreaProps) => {
   const focusRef = useRef<HTMLInputElement>(null);
@@ -46,7 +47,7 @@ const ReviewTextArea = ({
   const emptyReview = deleteTag(content).trim() === '' || title.trim() === '';
 
   return (
-    <div className="relative flex flex-col w-full h-300 mb-36 rounded-m bg-gray-10 ">
+    <div className="relative flex flex-col w-full min-h-300 mb-36 rounded-m bg-gray-10 ">
       <input
         ref={focusRef}
         className=" mt-28 mb-10 mx-28 px-18 h-40 text-20 bg-white border-2 rounded-m focus-visible:border-gray-50"
@@ -64,7 +65,7 @@ const ReviewTextArea = ({
       >
         작성
       </Button>
-      {isEdit && (
+      {isReveiwEditStatus && (
         <Button
           onClick={cancleEditReview}
           className="absolute bottom-15 right-105 w-60 h-35 text-18 disabled:bg-gray-60 bg-red"

@@ -7,7 +7,6 @@ import ProductInformation from './ProductInformation';
 import ChangeContent from './ChangeContent';
 
 import TravelInformationMeta from '../common/meta/TravelInformationMeta';
-import VideoInformationSkeleton from '../common/skeleton/videonInformationSkeleton';
 
 import { VideoInformationProps } from '@/src/lib/types';
 import instance from '@/src/api/axios';
@@ -36,16 +35,12 @@ const TravelInformation = () => {
     }
   }, [videoId]);
 
-  if (youtubeDataLoading) {
-    return <VideoInformationSkeleton />;
-  }
-
   return (
     <main className="flex flex-col justify-center items-center ">
       <TravelInformationMeta youtubeData={youtubeData} />
       <SearchBar />
       <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
-      <ChangeContent />
+      <ChangeContent youtubeData={youtubeData} />
     </main>
   );
 };
