@@ -7,15 +7,17 @@ interface ConditionalImageProps {
   height?: number;
 }
 
-const ConditionalImage = ({ img, width = 321, height = 207 }: ConditionalImageProps) => {
+const ConditionalImage = ({ img, width = 321, height = 180 }: ConditionalImageProps) => {
   return (
-    <span className="rounded-s">
-      {img === 'img' ? (
-        <Image src={noImage} alt="img" width={width} height={height} />
-      ) : (
-        <Image src={img} alt="place" width={width} height={height} />
-      )}
-    </span>
+    <div className="relative w-321 h-180 rounded-s cursor-pointer overflow-hidden">
+      <span className="absolute w-full h-full object-cover ">
+        {img === 'img' ? (
+          <Image src={noImage} alt="img" width={width} height={height} />
+        ) : (
+          <Image src={img} alt="place" width={width} height={height} />
+        )}
+      </span>
+    </div>
   );
 };
 
