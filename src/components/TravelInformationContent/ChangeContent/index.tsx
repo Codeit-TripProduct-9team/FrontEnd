@@ -17,6 +17,7 @@ interface ChaneContentProps {
 
 const ChangeContent = ({ youtubeData }: ChaneContentProps) => {
   const { content, handleSelectContent } = useSelectContent('product');
+  const { base, selected, notSelected } = contentButtonStyle;
 
   const selectDescriptionContent = content === 'product';
   const selectReviewContent = content === 'review';
@@ -27,9 +28,9 @@ const ChangeContent = ({ youtubeData }: ChaneContentProps) => {
         <button
           className={combineStyle({
             isSelected: selectDescriptionContent,
-            base: contentButtonStyle.base,
-            selected: contentButtonStyle.selected,
-            notSelected: contentButtonStyle.notSelected,
+            base: base,
+            selected: selected,
+            notSelected: notSelected,
           })}
           onClick={() => handleSelectContent('product')}
         >
@@ -38,9 +39,9 @@ const ChangeContent = ({ youtubeData }: ChaneContentProps) => {
         <button
           className={combineStyle({
             isSelected: selectReviewContent,
-            base: contentButtonStyle.base,
-            selected: contentButtonStyle.selected,
-            notSelected: contentButtonStyle.notSelected,
+            base: base,
+            selected: selected,
+            notSelected: notSelected,
           })}
           onClick={() => handleSelectContent('review')}
         >

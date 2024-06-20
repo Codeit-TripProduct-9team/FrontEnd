@@ -18,7 +18,6 @@ interface ProductDescriptionProps {
 
 const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
   const [duration, setDuration] = useState(0);
-  const [isLoadingDirection, setIsLoadingDirection] = useState(true);
   const [hasCurrentLocation, setHasCurrentLocation] = useState(true);
   const [polylinePath, setPolylinePath] = useState<{ lat: number; lng: number }[]>([]);
   const [startPoint, setStartPoint] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
@@ -40,6 +39,10 @@ const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
   const isValidCoordinate = startPoint && startPoint.lat !== 0 && startPoint.lng !== 0;
 
   useEffect(() => {
+    if (!isValidCoordinate) {
+      return;
+    }
+
     const getDestinationDirection = async () => {
       const hasStartPoint = startPoint && startPoint.lat !== null && startPoint.lng !== null;
       if (hasStartPoint) {
@@ -48,15 +51,12 @@ const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
           destination: `${placeData.position.lng},${placeData.position.lat}`,
         });
 
-        const requestUrl = `${BASED_URL.KAKKAO_DIRECTION}?${queryParams}`;
-
         try {
-          const response = await instance.get(requestUrl, {
+          const response = await instance.get(`${BASED_URL.KAKKAO_DIRECTION}?${queryParams}`, {
             headers: {
               Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_CLIENT_ID_KAKAO_REST}`,
             },
           });
-
           const elapsedTime = response.data.routes[0].summary.duration;
           const path = extractPath(response.data);
           setPolylinePath(path);
@@ -64,15 +64,11 @@ const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
         } catch (error) {
           setPolylinePath([]);
           setDuration(0);
-        } finally {
-          setIsLoadingDirection(false);
         }
       }
     };
 
-    if (isValidCoordinate) {
-      getDestinationDirection();
-    }
+    getDestinationDirection();
   }, [isValidCoordinate, startPoint]);
 
   return (
@@ -91,7 +87,6 @@ const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
               destinationName={placeData.title}
               elapsedTime={convertTime(duration)}
               setStartPoint={setStartPoint}
-              isLoadingDirection={isLoadingDirection}
             />
           )}
           <ProductMap

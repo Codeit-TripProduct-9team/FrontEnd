@@ -5,10 +5,10 @@ import { useRouter } from 'next/router';
 import FindPageInput from './FindPageInput';
 import SearchContent from './SearchContent';
 
+import instance from '@/src/api/axios';
 import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 import useDebounce from '@/src/hooks/useDebounce';
 import { videoListProps } from '@/src/lib/types';
-import mainPageRequestInstance from '@/src/api/mainPageRequest';
 
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
@@ -22,8 +22,9 @@ const SearchBar = () => {
   useEffect(() => {
     const getVideoList = async () => {
       try {
-        const result = await mainPageRequestInstance.getCardList();
-        setSearchVideoList(result);
+        const response = await instance.get('/video');
+        const reslut = response.data.data;
+        setSearchVideoList(reslut);
       } catch (error) {
         console.error(error);
       }

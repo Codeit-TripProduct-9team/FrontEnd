@@ -5,10 +5,9 @@ import SearchIcon from '@/public/assets/icon/search.png';
 interface LocationInputProps {
   location: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
 }
 
-const LocationInput = ({ location, onChange, onClick }: LocationInputProps) => {
+const LocationInput = ({ location, onChange }: LocationInputProps) => {
   return (
     <div className="relative p-10 rounded-s bg-white z-10">
       <input
@@ -17,9 +16,7 @@ const LocationInput = ({ location, onChange, onClick }: LocationInputProps) => {
         value={location}
         onChange={onChange}
       />
-      <button onClick={onClick}>
-        <Image className="absolute top-10 right-20" src={SearchIcon} width={22} height={22} alt="search" />
-      </button>
+      <Image className="absolute top-10 right-20" src={SearchIcon} width={22} height={22} alt="search" />
     </div>
   );
 };

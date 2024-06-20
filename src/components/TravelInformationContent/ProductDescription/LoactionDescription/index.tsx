@@ -17,7 +17,7 @@ interface PlaceDataProps {
 const LocationDescription = ({ placeData, youtubeData }: PlaceDataProps) => {
   return (
     <>
-      <Image
+      {/* <Image
         className="w-full h-455 object-cover"
         width={1440}
         height={455}
@@ -25,7 +25,7 @@ const LocationDescription = ({ placeData, youtubeData }: PlaceDataProps) => {
         alt="defalut"
         quality={100}
         priority
-      />
+      /> */}
       <h2 className="mt-20 text-20 font-bold">{placeData.title}</h2>
       <p className="text-center ml-284 mr-314 min-w-800">{placeData.description}</p>
     </>
