@@ -1,4 +1,5 @@
-import { CourseStore, Place } from './useCourseStore';
+import { CourseStore } from './useCourseStore';
+import { Place } from '@/src/lib/types';
 
 interface AddPlaceProps {
   (state: CourseStore, day: number, newPlace: Place): CourseStore;

@@ -4,7 +4,7 @@
 import { ChangeEvent, useState } from 'react';
 import Link from 'next/link';
 import Button from '../common/button';
-import SearchMyCard from './SearchMyCard';
+// import SearchMyCard from './SearchMyCard';
 
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');

@@ -9,10 +9,10 @@ import search from '@/public/assets/icon/search.png';
 import Image from 'next/image';
 // import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
-import mainPageRequestInstance from '@/src/api/mainPageRequest';
+// import mainPageRequestInstance from '@/src/api/mainPageRequest';
 
 const ListSearchSection = () => {
-  const [cardData, setCardData] = useState([]);
+  // const [cardData, setCardData] = useState([]);
   const [ref, inView] = useInView({ threshold: 0 });
   const inputRef = useRef<HTMLDivElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -34,8 +34,8 @@ const ListSearchSection = () => {
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {
-        const cardList = await mainPageRequestInstance.getCardList();
-        setCardData(cardList);
+        // const cardList = await mainPageRequestInstance.getCardList();
+        // setCardData(cardList);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
