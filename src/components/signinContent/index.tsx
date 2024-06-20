@@ -14,6 +14,7 @@ import { MODAL_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
 import { openToast } from '@/src/utils/openToast';
 import { useRouter } from 'next/router';
 import { setCookie } from '@/src/utils/cookie';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface InputForm {
   text?: string;
@@ -36,6 +37,8 @@ const SigninContent = () => {
     clearErrors,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
+  const { setUserData } = userDataStore();
+
   const router = useRouter();
 
   //모달 사용
@@ -53,6 +56,14 @@ const SigninContent = () => {
       const body = { email: data.email, password: data.password };
       const response = await instance.post('/auth/login', body);
       if (response.status === 200) {
+        const userData = response.data.data;
+
+        setUserData({
+          id: userData.id,
+          nickname: userData.nickname,
+          email: userData.email,
+        });
+
         const accessToken = response.data.data.token.accessToken;
         openToast.success(TOAST_MESSAGE.LOGIN);
         setCookie('accessToken', accessToken, {

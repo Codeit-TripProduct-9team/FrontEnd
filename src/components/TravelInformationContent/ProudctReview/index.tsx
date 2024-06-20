@@ -1,20 +1,21 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
+
 import { useRouter } from 'next/router';
 
 import SortToolbar from './SortToolbar';
 import CreateReview from './CreateReview';
 import ReviewList from './ReviewList';
-import NoReivewData from './SortToolbar/NoReviewData';
+import EmptyReview from './EmptyReview';
 import ScrollButton from './ScrollButton';
 
 import instance from '@/src/api/axios';
 import { ReviewDataItem } from '@/src/lib/types';
 
 const ProductReview = () => {
-  const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
   const [queryNumber, setQueryNumber] = useState(0);
-  const [countScrollEvent, setCountScrollEvnet] = useState(0);
   const [sortType, setSortType] = useState('latest');
+  const [scrollControlEvent, setScrollControlEvent] = useState(0);
+  const [reviewList, setReviewList] = useState<ReviewDataItem[]>([]);
 
   const router = useRouter();
   const videoId = router.query.id as string;
@@ -25,12 +26,13 @@ const ProductReview = () => {
     try {
       const response = await instance.get(`/video/${videoId}/reviews?sort=${sortType}&page=${queryNumber}`);
       const currentFetchingReviewList = response.data.data.content;
-      const countScrollEvent = response.data.data.pageInfo.totalPages;
+      const scrollControlEvent = response.data.data.pageInfo.totalPages;
       if (response.status === 200) {
+        const firstPage = queryNumber === 0;
         setReviewList((prevReviewList) =>
-          queryNumber === 0 ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
+          firstPage ? currentFetchingReviewList : [...prevReviewList, ...currentFetchingReviewList],
         );
-        setCountScrollEvnet(countScrollEvent);
+        setScrollControlEvent(scrollControlEvent);
       }
     } catch (error) {
       console.error(error);
@@ -48,7 +50,7 @@ const ProductReview = () => {
 
     const handleInfinityScroll = (entries: IntersectionObserverEntry[]) => {
       const targetPosition = entries[0];
-      if (targetPosition.isIntersecting && queryNumber < countScrollEvent - 1) {
+      if (targetPosition.isIntersecting && queryNumber < scrollControlEvent - 1) {
         setQueryNumber((prevqueryNumber) => prevqueryNumber + 1);
       }
     };
@@ -68,7 +70,7 @@ const ProductReview = () => {
         observer.unobserve(currentObserverRef);
       }
     };
-  }, [queryNumber, countScrollEvent]);
+  }, [queryNumber, scrollControlEvent]);
 
   useEffect(() => {
     setReviewList([]);
@@ -78,17 +80,17 @@ const ProductReview = () => {
   const emptyReveiwData = reviewList.length === 0;
 
   return (
-    <div className="flex flex-col w-full pt-65 px-110 bg-white">
+    <section className="flex flex-col w-full pt-65 px-110 bg-white">
       <CreateReview videoId={videoId} renderReveiwList={getReviewList} />
       <SortToolbar sortType={sortType} setSortType={setSortType} />
       {emptyReveiwData ? (
-        <NoReivewData />
+        <EmptyReview />
       ) : (
         <ReviewList reviewList={reviewList} renderReviewList={getReviewList} videoId={videoId} />
       )}
-      <div ref={observerRef} className="h-10"></div>
+      <div ref={observerRef} className="h-10" />
       <ScrollButton targetId={'top'} />
-    </div>
+    </section>
   );
 };
 

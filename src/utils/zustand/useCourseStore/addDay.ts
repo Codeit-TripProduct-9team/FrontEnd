@@ -1,4 +1,5 @@
-import { CourseStore, Plan } from './useCourseStore';
+import { CourseStore } from './useCourseStore';
+import { Plan } from '@/src/lib/types';
 
 interface AddDayProps {
   (state: CourseStore, newDay: Plan): CourseStore;

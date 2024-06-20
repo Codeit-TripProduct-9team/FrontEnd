@@ -12,7 +12,6 @@ export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string
       const decomposedTitle = decomposedSearchValue(item.title);
       const decomposedDescription = decomposedSearchValue(item.description);
       // const decomposedTag = JSON.parse(item.tag).map((t: string) => decomposedSearchValue(t));
-
       return filteredValues.every(
         (filteredValue) => decomposedTitle.includes(filteredValue) || decomposedDescription.includes(filteredValue),
         // ||

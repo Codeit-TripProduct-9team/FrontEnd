@@ -1,13 +1,13 @@
 interface ReviewEditButtonProsp {
   onClickEdit: () => void;
   onClickDelete: () => void;
-  isEdit: boolean;
+  isReveiwEditStatus: boolean;
 }
 
-const ReviewEditButton = ({ onClickEdit, onClickDelete, isEdit }: ReviewEditButtonProsp) => {
+const ReviewEditButton = ({ onClickEdit, onClickDelete, isReveiwEditStatus }: ReviewEditButtonProsp) => {
   return (
     <div className="absolute flex bottom-10 right-20">
-      {!isEdit && (
+      {!isReveiwEditStatus && (
         <button className="p-5 text-gray-80 hover:text-blue" onClick={onClickEdit}>
           수정
         </button>

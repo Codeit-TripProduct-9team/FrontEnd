@@ -1,6 +1,6 @@
-import { CourseData } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import { Course } from '@/src/lib/types';
 
-export const mockMyCourse: CourseData = {
+export const mockMyCourse: Course = {
   name: 'My Course',
   plan: [
     {
