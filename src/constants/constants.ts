@@ -43,4 +43,6 @@ export const TOAST_MESSAGE = {
   FAILED_DELETE_REVIEW: '리뷰 삭제에 실패했습니다.',
   FAILED_CREATE_REVIEW: '로그인 후 작성 가능합니다.',
   FAILED_MY_PLACE: '로그인 후 진행해주세요.',
+  SUCCESS_MY_PLCAE: '나의 코스에 등록되었습니다!',
+  DELETE_MY_PLACE: '나의 코스에서 삭제되었습니다',
 };

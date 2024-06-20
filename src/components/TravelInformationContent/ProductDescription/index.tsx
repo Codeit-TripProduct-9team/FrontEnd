@@ -44,7 +44,7 @@ const ProductDescription = ({ youtubeData }: ProductDescriptionProps) => {
     }
 
     const getDestinationDirection = async () => {
-      const hasStartPoint = startPoint && startPoint.lat !== null && startPoint.lng !== null;
+      const hasStartPoint = startPoint.lat !== null && startPoint.lng !== null;
       if (hasStartPoint) {
         const queryParams = new URLSearchParams({
           origin: `${startPoint.lng},${startPoint.lat}`,
