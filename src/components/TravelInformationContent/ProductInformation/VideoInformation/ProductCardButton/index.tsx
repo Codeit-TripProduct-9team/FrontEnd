@@ -97,7 +97,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
       await handleRegistMyPlace();
     }
     setTimeout(() => {
-      route.push('/my-route');
+      route.push(`/my-course`);
     }, 500);
   };
 

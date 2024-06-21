@@ -29,8 +29,8 @@ const ProductDescription = () => {
   const videoId = route.query.id as string;
 
   useEffect(() => {
-    if (videoId) {
-      const getVideoDescription = async (videoId: string) => {
+    if (videoId !== undefined) {
+      const getVideoDescription = async () => {
         try {
           const response = await instance.get(`/course/${videoId}`);
           setVideoPlaceData(response.data.data.course[0]);
@@ -38,7 +38,7 @@ const ProductDescription = () => {
           console.error(error);
         }
       };
-      getVideoDescription(videoId);
+      getVideoDescription();
     }
   }, [videoId]);
 
@@ -65,7 +65,7 @@ const ProductDescription = () => {
       if (hasStartPoint) {
         const queryParams = new URLSearchParams({
           origin: `${startPoint.lng},${startPoint.lat}`,
-          destination: `${videoPlaceData.posX},${videoPlaceData.posY}`,
+          destination: `${videoPlaceData.posY},${videoPlaceData.posX}`,
         });
 
         try {
@@ -87,6 +87,8 @@ const ProductDescription = () => {
 
     getDestinationDirection();
   }, [isValidCoordinate, startPoint, videoPlaceData.posX, videoPlaceData.posY]);
+
+  const hasPlaceData = videoPlaceData.posY !== undefined && videoPlaceData.posX !== undefined;
 
   return (
     <section className="flex flex-col justify-center items-center gap-30">
@@ -110,13 +112,14 @@ const ProductDescription = () => {
               setStartPoint={setStartPoint}
             />
           )}
-          <ProductMap
-            startPoint={startPoint}
-            lat={videoPlaceData.posX}
-            lng={videoPlaceData.posY}
-            polylinePath={polylinePath}
-            place={videoPlaceData.name}
-          />
+          {hasPlaceData && (
+            <ProductMap
+              startPoint={startPoint}
+              position={{ lat: videoPlaceData.posX, lng: videoPlaceData.posY }}
+              polylinePath={polylinePath}
+              place={videoPlaceData.name}
+            />
+          )}
         </div>
       </div>
     </section>
