@@ -9,11 +9,18 @@ import trash from '@/public/assets/icon/trashIcon.png';
 import pencil from '@/public/assets/icon/pencilIcon.png';
 import { useRouter } from 'next/router';
 import DeleteCourseModal from '../DeleteCourseModal';
+import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 
 const CourseItem = ({ id, name, plan }: Course) => {
+  const { setData } = useCourseStore();
   const router = useRouter();
   const handleRouteChange = () => {
-    router.push(`/my-route/${id}`);
+    const courseData = {
+      name: name,
+      plan: plan,
+    };
+    setData(courseData);
+    router.push(`/course/${id}`);
   };
   const planData = consolidatePlans(plan);
   const firstThreePlaces = planData.slice(0, 3);
