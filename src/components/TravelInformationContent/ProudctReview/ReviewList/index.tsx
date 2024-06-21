@@ -10,7 +10,6 @@ import ReviewTextArea from '../CreateReview/ReveiwTextarea';
 import ReviewScore from '../CreateReview/ReviewScore';
 
 import { TOAST_MESSAGE } from '@/src/constants/constants';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import convertDate from '@/src/utils/convertDate';
 import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
@@ -32,7 +31,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
 
   const hasToken = getCookie('accessToken');
 
-  const { userData } = userDataStore();
+  const hasLoggedInNickname = getCookie('nickname');
 
   const deleteReviewOverlay = useOverlay();
   const deleteReviewModal = (reviewId: number) => {
@@ -54,7 +53,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const handleChangeReview = async (reviewId: number) => {
     const body = {
       title: editReviewTitle,
-      nickname: userData.nickname,
+      nickname: hasLoggedInNickname,
       content: editReviewContent,
       score: editReveiwScore,
     };
@@ -122,7 +121,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
               ) : (
                 <div className="flex flex-col gap-20">
                   <ReviewListContent content={content} score={score} title={title} />
-                  {userData.nickname === nickname && (
+                  {hasLoggedInNickname === nickname && (
                     <ReviewEditButton
                       onClickEdit={() => handleReviewEditData(id, content, score, title)}
                       onClickDelete={() => deleteReviewModal(id)}

@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import TextEditor from './TextEditor';
 
 import Button from '@/src/components/common/button';
-import useAutoFocus from '@/src/hooks/useAtuoFocus';
+import useAutoFocus from '@/src/hooks/useAutoFocus';
 import deleteTag from '@/src/utils/deleteTage';
 
 interface ReviewTextAreaProps {

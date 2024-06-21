@@ -13,9 +13,9 @@ import shareIcon from '@/public/assets/icon/share.svg';
 import Modal from '@/src/components/common/modal';
 import Button from '@/src/components/common/button';
 import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/utils/socialShare';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 import informationPageRequestInstance from '@/src/api/InformationPageRequest';
+import { getCookie } from '@/src/utils/cookie';
 
 interface ProductButtonProps {
   title: string | undefined;
@@ -29,8 +29,8 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   const route = useRouter();
   const videoId = route.query.id as string;
 
-  const { userData } = userDataStore();
-  const userId = userData.id;
+  const hasLoggeInUserId = getCookie('userId');
+  const userId = hasLoggeInUserId;
   const isLoggedIn = userId !== 0;
 
   const sharedOverlay = useOverlay();
