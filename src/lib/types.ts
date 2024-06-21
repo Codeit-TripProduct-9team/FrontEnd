@@ -10,7 +10,7 @@ export interface CardDataItem {
   posX?: number;
   posY?: number;
   img?: string;
-  name: string;
+  name?: string;
 }
 
 export interface MockData {

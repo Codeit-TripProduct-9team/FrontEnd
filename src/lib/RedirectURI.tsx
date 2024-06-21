@@ -35,6 +35,8 @@ const RedirectURI = () => {
             email: userData.email,
           });
           const accessToken = response.data.data.accessToken;
+          console.log(userData);
+          console.log(accessToken);
 
           setCookie('userId', userData.id);
           setCookie('nickname', userData.nickname);
@@ -48,7 +50,7 @@ const RedirectURI = () => {
       }
     };
     handleSignin();
-  }, [router]);
+  }, [router, setUserData]);
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Toaster position="bottom-center" />

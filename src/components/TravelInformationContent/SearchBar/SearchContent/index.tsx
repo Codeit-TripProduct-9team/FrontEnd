@@ -8,10 +8,10 @@ import InformationSearchSkeleton from '@/src/components/common/skeleton/Informat
 import { BASED_URL } from '@/src/constants/constants';
 
 import instance from '@/src/api/axios';
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 
 interface SearchContentProps {
-  searchResult: MockDataItem[];
+  searchResult: CardDataItem[];
   onClick: (videoId: number) => void;
 }
 
