@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 
 const RedirectURI = () => {
   const { setUserData, userData } = userDataStore();
+  console.log(userData);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,14 +26,14 @@ const RedirectURI = () => {
         }
         const response = await instance.post(url, body);
         if (response.status === 200) {
-          const userData = response.data.data;
+          const userData = response.data;
           openToast.success(TOAST_MESSAGE.LOGIN);
           setUserData({
             id: userData.id,
             nickname: userData.nickname,
             email: userData.email,
           });
-          const accessToken = response.data.data.accessToken;
+          const accessToken = response.data.accessToken;
           console.log(userData);
           console.log(accessToken);
           setCookie('userId', userData.id);
