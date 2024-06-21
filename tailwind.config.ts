@@ -4,7 +4,7 @@ import { tailwindLineClampUtility } from './src/utils/tailwindLineClamp';
 
 const rem0_10 = { ...Array.from(Array(11)).map((_, i) => `${i / 10}rem`) };
 const rem0_100 = { ...Array.from(Array(101)).map((_, i) => `${i / 10}rem`) };
-const rem0_1200 = { ...Array.from(Array(1201)).map((_, i) => `${i / 10}rem`) };
+const rem0_1300 = { ...Array.from(Array(1301)).map((_, i) => `${i / 10}rem`) };
 
 module.exports = {
   content: [
@@ -32,13 +32,14 @@ module.exports = {
       animation: {
         bounceOnce: 'bounceOnce 3s ease-in-out infinite',
       },
+
       borderWidth: rem0_10,
       borderRadius: rem0_100,
       fontSize: rem0_100,
       lineHeight: rem0_100,
-      minWidth: rem0_1200,
-      minHeight: rem0_1200,
-      spacing: rem0_1200,
+      minWidth: rem0_1300,
+      minHeight: rem0_1300,
+      spacing: rem0_1300,
       colors: {
         blue: {
           DEFAULT: '#0094FF',

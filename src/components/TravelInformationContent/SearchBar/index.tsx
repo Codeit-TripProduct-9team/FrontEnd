@@ -5,26 +5,27 @@ import { useRouter } from 'next/router';
 import FindPageInput from './FindPageInput';
 import SearchContent from './SearchContent';
 
-import instance from '@/src/api/axios';
 import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 import useDebounce from '@/src/hooks/useDebounce';
 import { videoListProps } from '@/src/lib/types';
+import { decomposedSearchValue } from '@/src/utils/decomposedSearchValue';
+import informationPageRequestInstance from '@/src/api/InformationPageRequest';
 
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [searchVideoList, setSearchVideoList] = useState<videoListProps[]>([]);
 
   const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
-  const debounceKeyword = useDebounce(searchKeyword);
+  const debounceKeyword = useDebounce(searchKeyword, 300);
+  const autoSearchKeyword = decomposedSearchValue(debounceKeyword);
 
   const router = useRouter();
 
   useEffect(() => {
     const getVideoList = async () => {
       try {
-        const response = await instance.get('/video');
-        const reslut = response.data.data;
-        setSearchVideoList(reslut);
+        const cardList = await informationPageRequestInstance.getVideoList();
+        setSearchVideoList(cardList);
       } catch (error) {
         console.error(error);
       }
@@ -32,9 +33,14 @@ const SearchBar = () => {
     getVideoList();
   }, []);
 
-  const filteredList = searchVideoList.filter(
-    ({ title, tag }) => title.includes(debounceKeyword) || tag?.some((content) => content.includes(debounceKeyword)),
-  );
+  const filteredList = searchVideoList.filter(({ title, tag }) => {
+    const autoSearchTitle = decomposedSearchValue(title);
+    const autoSearchTag = tag?.map((tag) => decomposedSearchValue(tag));
+    return (
+      autoSearchTitle.includes(autoSearchKeyword) ||
+      autoSearchTag?.every((content) => content.includes(autoSearchKeyword))
+    );
+  });
 
   const handleRouteContentPage = (videoId: number) => {
     const contentLink = `/travel-information/${videoId}`;
