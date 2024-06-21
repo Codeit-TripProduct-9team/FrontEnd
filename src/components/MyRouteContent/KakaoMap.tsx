@@ -30,7 +30,7 @@ const KakaoMap = ({ courseData }: KakaoMapProps) => {
 
   // memeoize the positions array so that it doesn't get recalculated on every render
   const positions = useMemo(() => {
-    if (courseData.length > 0) {
+    if (courseData && courseData.some((plan) => plan.place.length > 0)) {
       return courseData.flatMap((plan) =>
         plan.place.map((place) => ({
           title: place.name,
