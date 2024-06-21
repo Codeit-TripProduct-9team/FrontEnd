@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import instance from '../api/axios';
 import { openToast } from '../utils/openToast';
 import { setCookie } from '../utils/cookie';
