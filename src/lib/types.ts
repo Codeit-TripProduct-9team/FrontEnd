@@ -1,12 +1,16 @@
 export interface MockDataItem {
   id: number;
-  thumbnail: string;
-  likes: number;
+  thumbnail?: string;
+  likes?: number;
   title: string;
   description: string;
   content: string;
-  tags: [];
+  tags: string[];
   videoUrl: string;
+  posX?: number;
+  posY?: number;
+  img?: string;
+  name: string;
 }
 
 export interface MockData {
@@ -111,10 +115,10 @@ export interface MyCourseApiResponse {
 
 export interface MyPlace {
   name: string;
-  img: string;
+  img?: string;
   description: string;
-  posX: number;
-  posY: number;
+  posX?: number;
+  posY?: number;
   content: string;
   id: number;
   videoUrl: string;
