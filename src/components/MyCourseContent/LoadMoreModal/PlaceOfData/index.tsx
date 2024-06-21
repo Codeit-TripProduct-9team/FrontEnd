@@ -10,7 +10,7 @@ const PlaceOfData = ({ data }: PlaceOfDataProps) => {
       <p className="p-10 ">
         {data.index}. {data.name}
       </p>
-      <ConditionalImage img={data.img} width={154} height={130} />
+      <ConditionalImage img={data.img} className="w-154 h-120" />
     </div>
   );
 };
