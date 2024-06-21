@@ -63,6 +63,20 @@ export interface videoListProps {
   videoUrl: string;
 }
 
+export interface LocationCoordinate {
+  address_name: string;
+  lat: number;
+  lng: number;
+}
+
+export interface PlaceDataProps {
+  img?: string;
+  name?: string;
+  description?: string;
+  posY?: number;
+  posX?: number;
+}
+
 //my course list 데이터
 export interface Place {
   id?: number;
