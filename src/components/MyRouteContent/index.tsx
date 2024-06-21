@@ -134,17 +134,31 @@ const MyRouteContent = () => {
 
   const handleSaveCourse = async () => {
     openToast.success(TOAST_MESSAGE.SAVE);
-    try {
-      const updatedCourseData = { ...courseData, name: newCourseName };
-      const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
-        headers: {
-          Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-      });
+    const updatedCourseData = { ...courseData, name: newCourseName };
+    if (Number(courseId) > 0) {
+      try {
+        const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
+          headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+          },
+        });
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await instance.post(`/course`, updatedCourseData, {
+          headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+          },
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
