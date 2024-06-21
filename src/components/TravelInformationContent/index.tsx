@@ -9,7 +9,7 @@ import ChangeContent from './ChangeContent';
 import TravelInformationMeta from '../common/meta/TravelInformationMeta';
 
 import { VideoInformationProps } from '@/src/lib/types';
-import instance from '@/src/api/axios';
+import informationPageRequestInstance from '@/src/api/InformationPageRequest';
 
 const TravelInformation = () => {
   const [youtubeData, setYoutubeData] = useState<VideoInformationProps | null>(null);
@@ -22,8 +22,7 @@ const TravelInformation = () => {
     if (videoId !== undefined) {
       const getVideoInformation = async () => {
         try {
-          const response = await instance.get(`/video/${videoId}`);
-          const result = response.data.data;
+          const result = await informationPageRequestInstance.getVideoData(videoId);
           setYoutubeData(result);
         } catch (error) {
           console.error(error);
@@ -40,7 +39,7 @@ const TravelInformation = () => {
       <TravelInformationMeta youtubeData={youtubeData} />
       <SearchBar />
       <ProductInformation youtubeData={youtubeData} loading={youtubeDataLoading} />
-      <ChangeContent youtubeData={youtubeData} />
+      <ChangeContent />
     </main>
   );
 };

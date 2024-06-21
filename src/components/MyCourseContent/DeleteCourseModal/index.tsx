@@ -25,7 +25,7 @@ const DeleteCourseModal = ({ courseId, courseName, close }: DeleteCourseModalPro
   return (
     <div className="flex flex-col justify-center items-center p-20">
       <strong className="text-24">
-        {courseName}를 <span className="text-red">삭제</span>하시겠습니까?
+        {courseName}을(를) <span className="text-red">삭제</span>하시겠습니까?
       </strong>
       <p>삭제된 코스는 복구할 수 없습니다</p>
       <div className="flex items-center gap-10 text-center mt-30">

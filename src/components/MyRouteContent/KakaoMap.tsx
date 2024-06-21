@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import instance from '@/src/api/axios';
 import { useState } from 'react';
 import { Plan } from '@/src/lib/types';
+import { twMerge } from 'tailwind-merge';
 
 interface Guide {
   x: number;
@@ -23,9 +24,11 @@ interface ResponseData {
 
 interface KakaoMapProps {
   courseData: Plan[];
+  className?: string;
 }
 
-const KakaoMap = ({ courseData }: KakaoMapProps) => {
+const KakaoMap = ({ courseData, className }: KakaoMapProps) => {
+  const mapStyle = twMerge('w-460 h-288 rounded-8 shadow-md z-0', className);
   const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
 
   // memeoize the positions array so that it doesn't get recalculated on every render
@@ -108,7 +111,7 @@ const KakaoMap = ({ courseData }: KakaoMapProps) => {
 
   return (
     <>
-      <Map center={positions[0].latlng} level={10} className="w-460 h-288 rounded-8 shadow-md z-0">
+      <Map center={positions[0].latlng} level={10} className={`${mapStyle}`}>
         {positions.map((position, index) => (
           <React.Fragment key={`${index}-${position.title}`}>
             <MapMarker

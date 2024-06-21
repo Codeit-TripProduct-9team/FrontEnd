@@ -25,6 +25,8 @@ const Dropdown = ({ setDropDown }: { setDropDown: React.Dispatch<React.SetStateA
 
   const handleLogout = () => {
     removeCookie('accessToken');
+    removeCookie('userId');
+    removeCookie('nickname');
   };
 
   return (

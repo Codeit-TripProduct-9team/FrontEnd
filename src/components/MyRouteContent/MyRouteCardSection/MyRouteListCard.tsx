@@ -1,4 +1,5 @@
 import { CardDataItem } from '@/src/lib/types';
+
 import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 import { openToast } from '@/src/utils/openToast';
@@ -8,6 +9,7 @@ import truncateText from '@/src/utils/truncateText';
 
 interface ListCardProps {
   data: CardDataItem;
+
 }
 
 const MyRouteListCard = ({ data }: ListCardProps) => {
@@ -66,7 +68,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
                   <div>
                     <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{name}</h2>
                   </div>
-                  <p className="text-12">{truncateText(description, 70)}</p>
+                  <p className="text-12">{truncateText(description, 65)}</p>
                 </div>
               </div>
             </div>
