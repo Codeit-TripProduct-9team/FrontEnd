@@ -23,9 +23,7 @@ const RedirectURI = () => {
         if (code.length <= 30) {
           url = '/auth/naver/login';
         }
-
         const response = await instance.post(url, body);
-
         if (response.status === 200) {
           const userData = response.data.data;
           openToast.success(TOAST_MESSAGE.LOGIN);
@@ -37,7 +35,6 @@ const RedirectURI = () => {
           const accessToken = response.data.data.accessToken;
           console.log(userData);
           console.log(accessToken);
-
           setCookie('userId', userData.id);
           setCookie('nickname', userData.nickname);
           setCookie('accessToken', accessToken, {
