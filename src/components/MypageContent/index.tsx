@@ -1,17 +1,14 @@
 // import CardSection from '../mainContent/CardSection';
 // import { MockDataItem } from '@/src/lib/types';
 // import { useFilteredData } from '@/src/hooks/useFilteredData';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Button from '../common/button';
-// import SearchMyCard from './SearchMyCard';
+import SearchMyCard from './SearchMyCard';
 
 const MypageContent = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   // const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
-  const handleInputChange = (event: ChangeEvent) => {
-    setSearchValue((event.target as HTMLInputElement).value); // 입력값을 상태에 설정
-  };
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
@@ -24,7 +21,8 @@ const MypageContent = () => {
           </p>
           <div className="flex flex-row gap-20">
             <Button className="w-150 h-40 font-bold hover:bg-blue-500">
-              <Link href="/my-route">지금 코스짜기</Link>
+              {/* 코스 생성 버튼 */}
+              <Link href="/course/new">지금 코스짜기</Link>
             </Button>
             <Button className="w-150 h-40 font-bold hover:bg-blue-500">
               <Link href="/my-course">저장된 코스 보기</Link>
@@ -33,12 +31,13 @@ const MypageContent = () => {
         </div>
       </section>
       <hr className="mx-110" />
-
-      <section className="py-20 flex flex-col relative">
-        <p>저장된 리뷰 목록</p>
-        <input className="absolute right-110" value={searchValue} onChange={handleInputChange} placeholder="검색하기" />
-        <div className="flex flex-col items-center">
+      <section className="flex flex-col relative items-center gap-10 mb-80">
+        <p className="mt-10 mr-1160 text-gray-60 ">저장된 리뷰 목록</p>
+        <div className="flex flex-col items-center relative w-1280">
           {/* <CardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
+          <div className="absolute right-5 -top-10 w-500">
+            <SearchMyCard searchValue={searchValue} setSearchValue={setSearchValue} />
+          </div>
         </div>
       </section>
     </>
