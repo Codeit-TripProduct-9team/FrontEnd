@@ -1,11 +1,5 @@
 import { create } from 'zustand';
-
-interface MyPlace {
-  id: number;
-  title: string;
-  url: string;
-  tag: string[];
-}
+import { MyPlace } from '@/src/lib/types';
 
 type MyPlaceStore = {
   data: MyPlace[];

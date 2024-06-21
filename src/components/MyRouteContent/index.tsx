@@ -2,16 +2,7 @@ import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useEffect, useState } from 'react';
-// import { MockDataItem } from '@/src/lib/types';
-// import { MockMyRouteItem } from './mockMyRoute';
-// import { mockMyRoute } from './mockMyRoute';
-// import { mock } from '../mainContent/mock';
-// import { useFilteredData } from '@/src/hooks/useFilteredData';
-import mainPageRequestInstance from '@/src/api/mainPageRequest';
-// import NoSearchData from '../mainContent/CardSection/NoSearchData';
-// import { Draggable } from '@hello-pangea/dnd';
-// import CardSection from '../mainContent/CardSection';
-// import MyRouteCardSection from './MyRouteCardSection';
+import MyRouteCardSection from './MyRouteCardSection';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';
 import AddPlaceModal from './AddPlaceModal.tsx';
@@ -24,6 +15,9 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStor
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
+import { userDataStore } from '@/src/utils/zustand/userDataStore';
+import { useRouter } from 'next/router';
+// import { useFilteredData } from '@/src/hooks/useFilteredData';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -33,15 +27,16 @@ const MyRouteContent = () => {
   const myPlaceData = useMyPlaceStore((state) => state.data);
   const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
-
-  // const GRID_ROW = Math.ceil(mock.data.length / 4);
-  // const mockSliced = mock.data.slice(0, 9);
-
-  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
+  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceCourseData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
   const { movePlace, addPlace } = useCourseStore();
+  const { userData } = userDataStore();
+  const userId = userData.id;
+  const router = useRouter();
+  const { courseId } = router.query;
+  const [newCourseName, setNewCourseName] = useState<string>('');
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -50,25 +45,47 @@ const MyRouteContent = () => {
     }
   };
 
-  console.log(courseData);
-
   useEffect(() => {
-    const fetchAndLogCardList = async () => {
+    const fetchMyPlace = async () => {
       try {
-        const cardList = await mainPageRequestInstance.getCardList();
-        setMyPlaceData(cardList);
+        const videoData = await instance.get(`/user/${userId}/video`);
+        const modifiedVideoData = videoData.data.data.map((item) => ({
+          content: item.content,
+          id: item.id,
+          videoUrl: item.videoUrl,
+          tags: item.tags,
+          title: item.title,
+        }));
+
+        const videoId = videoData.data.data.map((item) => item.id);
+        Promise.all(videoId.map((id) => instance.get(`/course/${id}`))).then((responses) => {
+          // responses is an array of responses for each request
+          const combinedData = responses.map((response, index) => {
+            const courseData = response.data.data.course[0];
+            return {
+              content: modifiedVideoData[index].content,
+              id: modifiedVideoData[index].id,
+              videoUrl: modifiedVideoData[index].videoUrl,
+              tags: modifiedVideoData[index].tags,
+              title: modifiedVideoData[index].title,
+              name: courseData.name,
+              img: courseData.img,
+              description: courseData.description,
+              posX: courseData.posX,
+              posY: courseData.posY,
+            };
+          });
+          setMyPlaceData(combinedData);
+        });
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
     };
-    fetchAndLogCardList();
-  }, [setMyPlaceData]);
-
-  // const coursId = 1;
+    fetchMyPlace();
+  }, [setMyPlaceData, userId]);
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
-    console.log(draggableId);
     if (!destination) {
       return;
     }
@@ -76,25 +93,23 @@ const MyRouteContent = () => {
     if (destination) {
       const fromIndex = source.index;
       const toIndex = destination.index;
-      console.log(fromIndex, toIndex, source.droppableId, destination.droppableId);
       movePlace(parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
     if (destination && source.droppableId === 'myPlace') {
-      const card = myPlaceData.find((card) => card.title === draggableId);
-      const hasDuplicate = flatCourseData.some((place) => place.name === card.title);
+      const card = myPlaceData.find((card) => card.name === draggableId);
+      const hasDuplicate = flatCourseData.some((place) => place.name === card.name);
       if (hasDuplicate) {
         openToast.error('중복된 장소는 추가할 수 없습니다.');
         return;
       } else {
-        //마이플레이스 데이터 나오면 수정 필요
         addPlace(parseInt(destination.droppableId), {
-          index: card.id,
-          name: card.title,
-          description: '',
-          img: '',
-          posX: 0,
-          posY: 0,
+          index: 1,
+          name: card.name,
+          description: card.description,
+          img: card.img,
+          posX: card.posX,
+          posY: card.posY,
         });
       }
     }
@@ -119,16 +134,31 @@ const MyRouteContent = () => {
 
   const handleSaveCourse = async () => {
     openToast.success(TOAST_MESSAGE.SAVE);
-    try {
-      const response = await instance.post('/course', courseData, {
-        headers: {
-          Authorization: `Bearer ${getCookie('accessToken')}`,
-        },
-      });
+    const updatedCourseData = { ...courseData, name: newCourseName };
+    if (Number(courseId) > 0) {
+      try {
+        const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
+          headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+          },
+        });
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await instance.post(`/course`, updatedCourseData, {
+          headers: {
+            Authorization: `Bearer ${getCookie('accessToken')}`,
+          },
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -138,7 +168,7 @@ const MyRouteContent = () => {
         <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
           <div className="flex gap-12">
             <input
-              // value={titleValue}
+              onChange={(e) => setNewCourseName(e.target.value)}
               className="rounded-s w-full h-42 px-20 bg-gray-10 font-bold placeholder-gray-40"
               placeholder={`${courseName ? courseName : '여행지의 제목을 입력해주세요'}`}
             />
@@ -176,7 +206,7 @@ const MyRouteContent = () => {
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {/* <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
+                <MyRouteCardSection filteredData={myPlaceData} setSearchValue={setSearchValue} />
 
                 {provided.placeholder}
               </div>

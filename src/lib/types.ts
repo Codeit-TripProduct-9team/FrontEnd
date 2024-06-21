@@ -107,3 +107,16 @@ export interface MyCourseApiResponse {
   message: string;
   data: CourseData;
 }
+
+export interface MyPlace {
+  name: string;
+  img: string;
+  description: string;
+  posX: number;
+  posY: number;
+  content: string;
+  id: number;
+  videoUrl: string;
+  tags: string[];
+  title: string;
+}
