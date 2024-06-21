@@ -19,21 +19,21 @@ const RedirectURI = () => {
       const code = new URL(window.location.href).searchParams.get('code');
       try {
         const body = { code: code };
-        console.log(code);
         let url = '/auth/kakao/login';
         if (code.length <= 30) {
           url = '/auth/naver/login';
         }
         const response = await instance.post(url, body);
+        console.log(response);
         if (response.status === 200) {
-          const userData = response.data;
+          const userData = response.data.data;
           openToast.success(TOAST_MESSAGE.LOGIN);
           setUserData({
             id: userData.id,
             nickname: userData.nickname,
             email: userData.email,
           });
-          const accessToken = response.data.accessToken;
+          const accessToken = response.data.data.accessToken;
           console.log(userData);
           console.log(accessToken);
           setCookie('userId', userData.id);
