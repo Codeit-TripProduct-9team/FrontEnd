@@ -1,4 +1,4 @@
-export interface MockDataItem {
+export interface CardDataItem {
   id: number;
   thumbnail?: string;
   likes?: number;
@@ -10,11 +10,11 @@ export interface MockDataItem {
   posX?: number;
   posY?: number;
   img?: string;
-  name: string;
+  name?: string;
 }
 
 export interface MockData {
-  data: MockDataItem[];
+  data: CardDataItem[];
 }
 
 export interface relatedListItem {
@@ -114,7 +114,7 @@ export interface MyCourseApiResponse {
 }
 
 export interface MyPlace {
-  name: string;
+  name?: string;
   img?: string;
   description: string;
   posX?: number;

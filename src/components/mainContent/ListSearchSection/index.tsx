@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import { useInView } from 'react-intersection-observer';
 
 import search from '@/public/assets/icon/search.png';
@@ -17,7 +17,7 @@ const ListSearchSection = () => {
   const inputRef = useRef<HTMLDivElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
-  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);

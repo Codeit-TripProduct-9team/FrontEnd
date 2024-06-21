@@ -7,6 +7,7 @@ import { TOAST_MESSAGE } from '@/src/constants/constants';
 import { userDataStore } from '../utils/zustand/userDataStore';
 import Image from 'next/image';
 import loginLogo from '@/public/assets/icon/loginLogo.png';
+import { Toaster } from 'react-hot-toast';
 
 const RedirectURI = () => {
   const { setUserData, userData } = userDataStore();
@@ -17,22 +18,25 @@ const RedirectURI = () => {
       const code = new URL(window.location.href).searchParams.get('code');
       try {
         const body = { code: code };
+        console.log(code);
         let url = '/auth/kakao/login';
         if (code.length <= 30) {
           url = '/auth/naver/login';
         }
-
         const response = await instance.post(url, body);
-
         if (response.status === 200) {
           const userData = response.data.data;
+          openToast.success(TOAST_MESSAGE.LOGIN);
           setUserData({
             id: userData.id,
             nickname: userData.nickname,
             email: userData.email,
           });
           const accessToken = response.data.data.accessToken;
-          openToast.success(TOAST_MESSAGE.LOGIN);
+          console.log(userData);
+          console.log(accessToken);
+          setCookie('userId', userData.id);
+          setCookie('nickname', userData.nickname);
           setCookie('accessToken', accessToken, {
             path: '/',
           });
@@ -40,16 +44,13 @@ const RedirectURI = () => {
         }
       } catch (error: any) {
         console.log(error);
-        // if (error.response.status === 400 || error.response.status === 404) {
-        //   // setErrorText(error.response.data.message);
-        //   OnModal(error.response.data.message);
-        // }
       }
     };
     handleSignin();
-  }, [router]);
+  }, [router, setUserData]);
   return (
     <div className="flex items-center justify-center min-h-screen">
+      <Toaster position="bottom-center" />
       <div className="flex items-center flex-col gap-20">
         <div className="mb-20">
           <Image src={loginLogo} width={150} height={150} alt="로그인로고" />

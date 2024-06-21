@@ -1,10 +1,10 @@
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import ListCard from '../../common/ListCard';
 import { useState } from 'react';
 import NoSearchData from './NoSearchData';
 
 interface filteredDataProps {
-  filteredData: MockDataItem[];
+  filteredData: CardDataItem[];
   setSearchValue: (value: string) => void;
 }
 

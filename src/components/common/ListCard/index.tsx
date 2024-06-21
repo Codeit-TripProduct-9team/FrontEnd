@@ -1,12 +1,12 @@
 import useYouTubeData from '@/src/hooks/useYouTubeData';
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 // import instance from '@/src/api/axios';
 
 interface ListCardProps {
-  data: MockDataItem;
+  data: CardDataItem;
 }
 
 const ListCard = ({ data }: ListCardProps) => {

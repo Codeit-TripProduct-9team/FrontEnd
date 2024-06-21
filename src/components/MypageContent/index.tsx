@@ -1,7 +1,8 @@
 import CardSection from '../mainContent/CardSection';
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import Link from 'next/link';
 import Button from '../common/button';
 import SearchMyCard from './SearchMyCard';
@@ -10,7 +11,7 @@ import mainPageRequestInstance from '@/src/api/mainPageRequest';
 const MypageContent = () => {
   const [cardData, setCardData] = useState([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {
