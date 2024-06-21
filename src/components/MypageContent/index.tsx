@@ -2,13 +2,27 @@
 // import { CardDataItem } from '@/src/lib/types';
 // import { useFilteredData } from '@/src/hooks/useFilteredData';
 import { useState } from 'react';
+
 import Link from 'next/link';
 import Button from '../common/button';
 import SearchMyCard from './SearchMyCard';
+import mainPageRequestInstance from '@/src/api/mainPageRequest';
 
 const MypageContent = () => {
+  const [cardData, setCardData] = useState([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  // const filteredData: MockDataItem[] = useFilteredData({ data: mock.data }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  useEffect(() => {
+    const fetchAndLogCardList = async () => {
+      try {
+        const cardList = await mainPageRequestInstance.getCardList();
+        setCardData(cardList);
+      } catch (error) {
+        console.error('Error fetching card list:', error);
+      }
+    };
+    fetchAndLogCardList();
+  }, []);
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
@@ -34,7 +48,7 @@ const MypageContent = () => {
       <section className="flex flex-col relative items-center gap-10 mb-80">
         <p className="mt-10 mr-1160 text-gray-60 ">저장된 리뷰 목록</p>
         <div className="flex flex-col items-center relative w-1280">
-          {/* <CardSection filteredData={filteredData} setSearchValue={setSearchValue} /> */}
+          <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
           <div className="absolute right-5 -top-10 w-500">
             <SearchMyCard searchValue={searchValue} setSearchValue={setSearchValue} />
           </div>

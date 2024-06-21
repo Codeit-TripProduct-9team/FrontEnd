@@ -7,6 +7,10 @@ export interface CardDataItem {
   content: string;
   tags: string[];
   videoUrl: string;
+  posX?: number;
+  posY?: number;
+  img?: string;
+  name: string;
 }
 
 export interface MockData {
@@ -51,7 +55,7 @@ export interface VideoInformationProps {
   title?: string;
   content?: string;
   videoUrl?: string;
-  tag?: string[];
+  tags?: string[];
   likeCount?: number;
   imageUrl?: string;
 }
@@ -61,6 +65,20 @@ export interface videoListProps {
   tag: string[];
   title: string;
   videoUrl: string;
+}
+
+export interface LocationCoordinate {
+  address_name: string;
+  lat: number;
+  lng: number;
+}
+
+export interface PlaceDataProps {
+  img?: string;
+  name?: string;
+  description?: string;
+  posY?: number;
+  posX?: number;
 }
 
 //my course list 데이터

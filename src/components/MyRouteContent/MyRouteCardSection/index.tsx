@@ -17,10 +17,10 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
   // const GRID_ROW = Math.ceil(filteredData.length / 4);
   const handleClickSortMenu = (menus: string) => {
     setSort(menus);
-    if (menus === '인기순' || menus === '최신순') {
+    if (menus === '인기순') {
       setSearchValue('');
     } else {
-      setSearchValue(menus);
+      menus.length <= 4 ? setSearchValue(menus.slice(0, -2)) : setSearchValue(menus.slice(0, -8));
     }
   };
   // 리팩토링시 커스텀 훅으로 뺄것?

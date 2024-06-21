@@ -7,7 +7,6 @@ import ReviewScore from './ReviewScore';
 import instance from '@/src/api/axios';
 import { getCookie } from '@/src/utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 
 interface CreateReviewProps {
   videoId: string;
@@ -20,13 +19,12 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
   const [content, setContent] = useState('');
 
   const hasToken = getCookie('accessToken');
-
-  const { userData } = userDataStore();
+  const hasLoggedInNickname = getCookie('nickname');
 
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
 
-    if (userData.nickname === '') {
+    if (hasLoggedInNickname === '') {
       toast.error(TOAST_MESSAGE.FAILED_CREATE_REVIEW);
       return;
     }
@@ -37,7 +35,7 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
     }
 
     if (hasScore) {
-      const body = { title: title, nickname: userData.nickname, content: content, score: score };
+      const body = { title: title, nickname: hasLoggedInNickname, content: content, score: score };
       try {
         const headers = {
           Authorization: `Bearer ${hasToken}`,

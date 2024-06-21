@@ -17,7 +17,8 @@ import { getCookie } from '@/src/utils/cookie';
 import instance from '@/src/api/axios';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
-// import { useFilteredData } from '@/src/hooks/useFilteredData';
+import { useFilteredData } from '@/src/hooks/useFilteredData';
+import { MockDataItem } from '@/src/lib/types';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -27,7 +28,7 @@ const MyRouteContent = () => {
   const myPlaceData = useMyPlaceStore((state) => state.data);
   const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
-  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceCourseData }, searchValue);
+  const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
@@ -48,6 +49,7 @@ const MyRouteContent = () => {
   useEffect(() => {
     const fetchMyPlace = async () => {
       try {
+        if (!userId) return;
         const videoData = await instance.get(`/user/${userId}/video`);
         const modifiedVideoData = videoData.data.data.map((item) => ({
           content: item.content,
@@ -206,7 +208,7 @@ const MyRouteContent = () => {
           <Droppable droppableId="myPlace">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <MyRouteCardSection filteredData={myPlaceData} setSearchValue={setSearchValue} />
+                <MyRouteCardSection filteredData={filteredData} setSearchValue={setSearchValue} />
 
                 {provided.placeholder}
               </div>

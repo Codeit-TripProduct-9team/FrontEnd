@@ -10,7 +10,8 @@ export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string
     const filteredValues = decomposedSearchValue(searchValue).split(' ');
     return data?.filter((item) => {
       const decomposedTitle = decomposedSearchValue(item.title);
-      const decomposedDescription = decomposedSearchValue(item.description);
+      const decomposedDescription = decomposedSearchValue(item.content);
+
       const decomposedTag = item.tags.map((t: string) => decomposedSearchValue(t));
       return filteredValues.every(
         (filteredValue) =>
