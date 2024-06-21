@@ -7,13 +7,14 @@ import SearchContent from './SearchContent';
 
 import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 import useDebounce from '@/src/hooks/useDebounce';
-import { videoListProps } from '@/src/lib/types';
+
 import { decomposedSearchValue } from '@/src/utils/decomposedSearchValue';
 import informationPageRequestInstance from '@/src/api/InformationPageRequest';
+import { useFilteredData } from '@/src/hooks/useFilteredData';
 
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  const [searchVideoList, setSearchVideoList] = useState<videoListProps[]>([]);
+  const [searchVideoList, setSearchVideoList] = useState([]);
 
   const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
   const debounceKeyword = useDebounce(searchKeyword, 300);
@@ -33,14 +34,7 @@ const SearchBar = () => {
     getVideoList();
   }, []);
 
-  const filteredList = searchVideoList.filter(({ title, tag }) => {
-    const autoSearchTitle = decomposedSearchValue(title);
-    const autoSearchTag = tag?.map((tag) => decomposedSearchValue(tag));
-    return (
-      autoSearchTitle.includes(autoSearchKeyword) ||
-      autoSearchTag?.every((content) => content.includes(autoSearchKeyword))
-    );
-  });
+  const filteredList = useFilteredData({ data: searchVideoList }, autoSearchKeyword);
 
   const handleRouteContentPage = (videoId: number) => {
     const contentLink = `/travel-information/${videoId}`;

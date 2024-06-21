@@ -30,8 +30,9 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   const videoId = route.query.id as string;
 
   const hasLoggeInUserId = getCookie('userId');
+  const hasToken = getCookie('accessToken');
   const userId = hasLoggeInUserId;
-  const isLoggedIn = userId !== 0;
+  const isLoggedIn = hasToken !== null;
 
   const sharedOverlay = useOverlay();
   const sharedOnModal = () => {
@@ -48,6 +49,9 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   };
 
   useEffect(() => {
+    if (userId === undefined) {
+      return;
+    }
     const checkUserRegisterPlace = async () => {
       try {
         const checkRegisterdPlace = await informationPageRequestInstance.getRegisteredPlace(userId);
@@ -89,7 +93,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   };
 
   const handleRouteCustomCourse = async () => {
-    if (!isLoggedIn) {
+    if (!hasToken) {
       route.push('/signin');
       return;
     }
@@ -106,7 +110,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
       <Button className="bg-blue w-134 h-39 text-18 font-bold" textColor={'white'} onClick={handleRouteCustomCourse}>
         지금 코스짜기
       </Button>
-      {isLoggedIn &&
+      {hasToken &&
         (myPlcaeRegisterd ? (
           <Button className="bg-red w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleDeleteMyPlace}>
             마이플레이스 삭제

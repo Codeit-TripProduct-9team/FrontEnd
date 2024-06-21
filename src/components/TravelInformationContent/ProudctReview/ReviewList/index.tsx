@@ -30,7 +30,6 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   const [editReviewContent, setEditReviewContent] = useState('');
 
   const hasToken = getCookie('accessToken');
-
   const hasLoggedInNickname = getCookie('nickname');
 
   const deleteReviewOverlay = useOverlay();
@@ -121,7 +120,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
               ) : (
                 <div className="flex flex-col gap-20">
                   <ReviewListContent content={content} score={score} title={title} />
-                  {hasLoggedInNickname === nickname && (
+                  {hasToken && hasLoggedInNickname === nickname && (
                     <ReviewEditButton
                       onClickEdit={() => handleReviewEditData(id, content, score, title)}
                       onClickDelete={() => deleteReviewModal(id)}

@@ -18,8 +18,8 @@ const YoutubeData = ({ youtubeData, youtubeId }: YoutubeDataProps) => {
         <p className="text-20 text-gray-50">{youtubeData?.content}</p>
         <p>{`조회수 ${viewCount}회 · 저장수 ${youtubeData?.likeCount}회 · ${updatedAt}`}</p>
         <ul className="flex gap-10">
-          {youtubeData?.tag &&
-            youtubeData.tag.map((tag: string, index: number) => (
+          {youtubeData?.tags &&
+            youtubeData.tags.map((tag: string, index: number) => (
               <li className="flex rounded-s font-bold bg-gray-10 py-8 px-30  text-16" key={index}>
                 {tag}
               </li>

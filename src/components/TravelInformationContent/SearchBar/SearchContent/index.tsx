@@ -6,11 +6,12 @@ import SearchInformation from './SearchInformation';
 
 import InformationSearchSkeleton from '@/src/components/common/skeleton/InformationSearchSkeleton';
 import { BASED_URL } from '@/src/constants/constants';
-import { videoListProps } from '@/src/lib/types';
+
 import instance from '@/src/api/axios';
+import { MockDataItem } from '@/src/lib/types';
 
 interface SearchContentProps {
-  searchResult: videoListProps[];
+  searchResult: MockDataItem[];
   onClick: (videoId: number) => void;
 }
 
@@ -52,7 +53,7 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
 
   return (
     <ul className="absolute flex flex-col left-120 top-65 w-625 h-280 bg-gray-20 border-2 border-gray-50 overflow-y-scroll">
-      {searchResult.map(({ id, title, tag }) => (
+      {searchResult.map(({ id, title, tags }) => (
         <li
           key={id}
           className="flex w-full gap-24 px-24 py-12 text-18 text-gray-50 cursor-pointer border border-b-1 hover:bg-gray-30"
@@ -67,7 +68,7 @@ const SearchContent = ({ searchResult, onClick }: SearchContentProps) => {
                 width={87}
                 height={87}
               />
-              <SearchInformation title={title} tag={tag} />
+              <SearchInformation title={title} tag={tags} />
             </>
           ) : (
             <InformationSearchSkeleton />
