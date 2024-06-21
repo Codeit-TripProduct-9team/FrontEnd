@@ -2,7 +2,7 @@ import KakaoMap from './KakaoMap';
 import PlaceList from './PlaceList';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { ChangeEvent, useEffect, useState } from 'react';
-// import { MockDataItem } from '@/src/lib/types';
+// import { CardDataItem } from '@/src/lib/types';
 // import { MockMyRouteItem } from './mockMyRoute';
 // import { mockMyRoute } from './mockMyRoute';
 // import { mock } from '../mainContent/mock';
@@ -37,7 +37,7 @@ const MyRouteContent = () => {
   // const GRID_ROW = Math.ceil(mock.data.length / 4);
   // const mockSliced = mock.data.slice(0, 9);
 
-  // const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
+  // const filteredData: CardDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);

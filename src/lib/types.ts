@@ -1,4 +1,4 @@
-export interface MockDataItem {
+export interface CardDataItem {
   id: number;
   thumbnail: string;
   likes: number;
@@ -10,7 +10,7 @@ export interface MockDataItem {
 }
 
 export interface MockData {
-  data: MockDataItem[];
+  data: CardDataItem[];
 }
 
 export interface relatedListItem {

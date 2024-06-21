@@ -1,4 +1,4 @@
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Draggable } from '@hello-pangea/dnd';
@@ -7,7 +7,7 @@ import { TOAST_MESSAGE } from '@/src/constants/constants';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface ListCardProps {
-  data: MockDataItem;
+  data: CardDataItem;
 }
 
 const MyRouteListCard = ({ data }: ListCardProps) => {
