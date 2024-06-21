@@ -21,7 +21,8 @@ const MypageContent = () => {
           </p>
           <div className="flex flex-row gap-20">
             <Button className="w-150 h-40 font-bold hover:bg-blue-500">
-              <Link href="/my-route">지금 코스짜기</Link>
+              {/* 코스 생성 버튼 */}
+              <Link href="/course/new">지금 코스짜기</Link>
             </Button>
             <Button className="w-150 h-40 font-bold hover:bg-blue-500">
               <Link href="/my-course">저장된 코스 보기</Link>

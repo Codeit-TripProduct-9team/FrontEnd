@@ -35,7 +35,8 @@ const MyCourseContent = () => {
             <div className="flex flex-col items-center gap-10">
               <strong className="text-20">저장된 코스 목록이 존재하지 않습니다.</strong>
               <Button className="w-150 h-40 font-bold hover:bg-blue-500">
-                <Link href="/my-route">지금 코스짜기</Link>
+                {/* 코스 생성 버튼 */}
+                <Link href="/course/new">지금 코스짜기</Link>
               </Button>
             </div>
           )}

@@ -67,6 +67,7 @@ const SigninContent = () => {
         const accessToken = response.data.data.token.accessToken;
         openToast.success(TOAST_MESSAGE.LOGIN);
         setCookie('userId', userData.id);
+        setCookie('nickname', userData.nickname);
         setCookie('accessToken', accessToken, {
           path: '/',
         });

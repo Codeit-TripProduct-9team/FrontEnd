@@ -62,7 +62,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
           {firstThreePlaces.map((place, id) => (
             <div key={id} className={`flex ${id === 0 ? 'w-301' : 'w-315'}`}>
               <p className="font-bold whitespace-nowrap overflow-hidden text-ellipsis pr-10 w-150">
-                {id + 1} <span className="font-normal">{place.name}</span>
+                {place.id} <span className="font-normal">{place.name}</span>
               </p>
               {place.id !== planData.length && planData.length !== 3 && (
                 <div className="flex items-center gap-2 w-full max-w-200">
