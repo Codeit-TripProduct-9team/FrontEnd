@@ -32,7 +32,7 @@ const ListCard = ({ data }: ListCardProps) => {
   return (
     <div>
       <Link href={`/travel-information/${data.id}`}>
-        <div className="flex flex-col overflow-hidden bg-white  w-290 h-290 rounded-30  transition-transform duration-300 transform hover:scale-105 cursor-pointer">
+        <div className="flex flex-col overflow-hidden bg-white  w-290 h-270 rounded-30  transition-transform duration-300 transform hover:scale-105 cursor-pointer">
           <div className="relative  border-1 w-290 h-160">
             {thumbnail && <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-center" />}
           </div>
@@ -42,7 +42,7 @@ const ListCard = ({ data }: ListCardProps) => {
             </div>
             <div className="flex justify-between">
               <div className="flex gap-5">
-                {data.tag.slice(0, 2).map((tag: string, index: number) => (
+                {data.tags?.slice(0, 2).map((tag: string, index: number) => (
                   <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
                     {tag}
                   </div>
