@@ -79,6 +79,7 @@ export interface PlaceDataProps {
 
 //my course list 데이터
 export interface Place {
+  id?: number;
   index: number;
   name: string;
   img: string;
