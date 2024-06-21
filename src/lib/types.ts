@@ -1,11 +1,11 @@
 export interface CardDataItem {
   id: number;
-  thumbnail: string;
-  likes: number;
+  thumbnail?: string;
+  likes?: number;
   title: string;
   description: string;
   content: string;
-  tags: [];
+  tags: string[];
   videoUrl: string;
 }
 
@@ -96,11 +96,11 @@ export interface MyCourseApiResponse {
 }
 
 export interface MyPlace {
-  name: string;
-  img: string;
+  name?: string;
+  img?: string;
   description: string;
-  posX: number;
-  posY: number;
+  posX?: number;
+  posY?: number;
   content: string;
   id: number;
   videoUrl: string;
