@@ -10,12 +10,13 @@ export const useFilteredData = ({ data }: FilteredDataProps, searchValue: string
     const filteredValues = decomposedSearchValue(searchValue).split(' ');
     return data?.filter((item) => {
       const decomposedTitle = decomposedSearchValue(item.title);
-      const decomposedDescription = decomposedSearchValue(item.description);
-      // const decomposedTag = JSON.parse(item.tag).map((t: string) => decomposedSearchValue(t));
+      const decomposedDescription = decomposedSearchValue(item.content);
+      const decomposedTag = item.tags.map((t: string) => decomposedSearchValue(t));
       return filteredValues.every(
-        (filteredValue) => decomposedTitle.includes(filteredValue) || decomposedDescription.includes(filteredValue),
-        // ||
-        // decomposedTag.some((tag: string) => tag.includes(filteredValue)),
+        (filteredValue) =>
+          decomposedTitle.includes(filteredValue) ||
+          decomposedDescription.includes(filteredValue) ||
+          decomposedTag.some((tag: string) => tag.includes(filteredValue)),
       );
     });
   }
