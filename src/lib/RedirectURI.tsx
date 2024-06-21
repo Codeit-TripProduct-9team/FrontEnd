@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import instance from '../api/axios';
 import { openToast } from '../utils/openToast';
 import { setCookie } from '../utils/cookie';
@@ -26,14 +26,14 @@ const RedirectURI = () => {
         }
         const response = await instance.post(url, body);
         if (response.status === 200) {
-          const userData = response.data.data;
+          const userData = response.data;
           openToast.success(TOAST_MESSAGE.LOGIN);
           setUserData({
             id: userData.id,
             nickname: userData.nickname,
             email: userData.email,
           });
-          const accessToken = response.data.data.accessToken;
+          const accessToken = response.data.accessToken;
           console.log(userData);
           console.log(accessToken);
           setCookie('userId', userData.id);
