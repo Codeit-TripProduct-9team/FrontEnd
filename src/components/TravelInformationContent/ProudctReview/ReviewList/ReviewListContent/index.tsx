@@ -4,11 +4,10 @@ import { useOverlay } from '@toss/use-overlay';
 import DOMPurify from 'dompurify';
 
 import ImageReviewModal from './ImageReviewModal';
+import ModalLayout from './ImageReviewModal/ModalLayout';
 
 import star from '@/public/assets/icon/star.svg';
 import emptyStar from '@/public/assets/icon/star-black.svg';
-
-import Modal from '@/src/components/common/modal';
 
 const sanitizer = DOMPurify.sanitize;
 
@@ -22,9 +21,9 @@ const ReviewListContent = ({ content, score, title }: ReviewListContentProps) =>
   const imageReviewOverlay = useOverlay();
   const openImageReviewModal = (content: string) => {
     imageReviewOverlay.open(({ isOpen, close }) => (
-      <Modal isOpen={isOpen} close={close}>
+      <ModalLayout isOpen={isOpen} close={close}>
         <ImageReviewModal content={content} title={title} />
-      </Modal>
+      </ModalLayout>
     ));
   };
   const hasImage = content.includes('<img');

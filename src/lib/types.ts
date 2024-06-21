@@ -69,6 +69,14 @@ export interface LocationCoordinate {
   lng: number;
 }
 
+export interface PlaceDataProps {
+  img?: string;
+  name?: string;
+  description?: string;
+  posY?: number;
+  posX?: number;
+}
+
 //my course list 데이터
 export interface Place {
   index: number;

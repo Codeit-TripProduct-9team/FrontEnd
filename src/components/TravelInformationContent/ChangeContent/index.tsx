@@ -3,7 +3,6 @@ import ProductReview from '../ProudctReview';
 
 import combineStyle from '@/src/utils/combineStyle';
 import useSelectContent from '@/src/hooks/useSelectContent';
-import { VideoInformationProps } from '@/src/lib/types';
 
 const contentButtonStyle = {
   base: 'w-334 pt-25 pb-28 h-full text-22',
@@ -11,11 +10,7 @@ const contentButtonStyle = {
   notSelected: 'border-b-gray-200',
 };
 
-interface ChaneContentProps {
-  youtubeData: VideoInformationProps | null;
-}
-
-const ChangeContent = ({ youtubeData }: ChaneContentProps) => {
+const ChangeContent = () => {
   const { content, handleSelectContent } = useSelectContent('product');
   const { base, selected, notSelected } = contentButtonStyle;
 
@@ -48,7 +43,7 @@ const ChangeContent = ({ youtubeData }: ChaneContentProps) => {
           리뷰
         </button>
       </div>
-      {selectDescriptionContent && <ProductDescription youtubeData={youtubeData} />}
+      {selectDescriptionContent && <ProductDescription />}
       {selectReviewContent && <ProductReview />}
     </>
   );

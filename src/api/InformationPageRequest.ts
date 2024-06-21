@@ -12,6 +12,14 @@ class informationPageRequest {
     ).data.documents;
   }
 
+  async getVideoList() {
+    return (await instance.get(`/video`)).data.data;
+  }
+
+  async getVideoData(videoId: string) {
+    return (await instance.get(`/video/${videoId}`)).data.data;
+  }
+
   async getRegisteredPlace(userId: number) {
     return (await instance.get(`/user/${userId}/video`)).data.data;
   }

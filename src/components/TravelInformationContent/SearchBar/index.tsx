@@ -5,11 +5,11 @@ import { useRouter } from 'next/router';
 import FindPageInput from './FindPageInput';
 import SearchContent from './SearchContent';
 
-import instance from '@/src/api/axios';
 import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 import useDebounce from '@/src/hooks/useDebounce';
 import { videoListProps } from '@/src/lib/types';
 import { decomposedSearchValue } from '@/src/utils/decomposedSearchValue';
+import informationPageRequestInstance from '@/src/api/InformationPageRequest';
 
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
@@ -24,9 +24,8 @@ const SearchBar = () => {
   useEffect(() => {
     const getVideoList = async () => {
       try {
-        const response = await instance.get('/video');
-        const reslut = response.data.data;
-        setSearchVideoList(reslut);
+        const cardList = await informationPageRequestInstance.getVideoList();
+        setSearchVideoList(cardList);
       } catch (error) {
         console.error(error);
       }
