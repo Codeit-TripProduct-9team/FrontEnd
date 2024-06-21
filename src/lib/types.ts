@@ -51,7 +51,7 @@ export interface VideoInformationProps {
   title?: string;
   content?: string;
   videoUrl?: string;
-  tag?: string[];
+  tags?: string[];
   likeCount?: number;
   imageUrl?: string;
 }
