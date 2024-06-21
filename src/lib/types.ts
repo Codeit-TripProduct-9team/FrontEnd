@@ -5,7 +5,7 @@ export interface MockDataItem {
   title: string;
   description: string;
   content: string;
-  tag: [];
+  tags: [];
   videoUrl: string;
 }
 

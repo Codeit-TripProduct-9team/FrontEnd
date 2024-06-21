@@ -32,6 +32,7 @@ module.exports = {
       animation: {
         bounceOnce: 'bounceOnce 3s ease-in-out infinite',
       },
+
       borderWidth: rem0_10,
       borderRadius: rem0_100,
       fontSize: rem0_100,

@@ -4,24 +4,39 @@ import instance from '../api/axios';
 import { openToast } from '../utils/openToast';
 import { setCookie } from '../utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
+import { userDataStore } from '../utils/zustand/userDataStore';
+import Image from 'next/image';
+import loginLogo from '@/public/assets/icon/loginLogo.png';
 
 const RedirectURI = () => {
+  const { setUserData, userData } = userDataStore();
   const router = useRouter();
+
   useEffect(() => {
     const handleSignin = async () => {
       const code = new URL(window.location.href).searchParams.get('code');
       try {
         const body = { code: code };
-        console.log(body);
-        const response = await instance.post('/auth/kakao/login', body);
-        console.log(response);
+        let url = '/auth/kakao/login';
+        if (code.length <= 30) {
+          url = '/auth/naver/login';
+        }
+
+        const response = await instance.post(url, body);
+
         if (response.status === 200) {
+          const userData = response.data.data;
+          setUserData({
+            id: userData.id,
+            nickname: userData.nickname,
+            email: userData.email,
+          });
           const accessToken = response.data.data.accessToken;
           openToast.success(TOAST_MESSAGE.LOGIN);
           setCookie('accessToken', accessToken, {
             path: '/',
           });
-          router.push('/');
+          setTimeout(() => router.push('/'), 3000);
         }
       } catch (error: any) {
         console.log(error);
@@ -33,7 +48,26 @@ const RedirectURI = () => {
     };
     handleSignin();
   }, [router]);
-  return <div>ㅇㅇ</div>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center flex-col gap-20">
+        <div className="mb-20">
+          <Image src={loginLogo} width={150} height={150} alt="로그인로고" />
+        </div>
+        <h1 className="text-50 text-center">
+          안녕하세요 <span className="font-bold text-blue">{userData.nickname}</span>님!
+        </h1>
+        <div className="flex text-60 items-center justify-center gap-10 ">
+          <h1 className="mt-20">유트립에 오신것을 환영해요!</h1>
+        </div>
+        <div className="flex gap-20 mt-30">
+          <div className="w-20 h-20 bg-blue rounded-full animate-bounceOnce" style={{ animationDelay: '0s' }}></div>
+          <div className="w-20 h-20 bg-blue rounded-full animate-bounceOnce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-20 h-20 bg-blue rounded-full animate-bounceOnce" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default RedirectURI;
