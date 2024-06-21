@@ -65,6 +65,7 @@ export interface videoListProps {
 
 //my course list 데이터
 export interface Place {
+  id?: number;
   index: number;
   name: string;
   img: string;
@@ -92,4 +93,17 @@ export interface MyCourseApiResponse {
   status: string;
   message: string;
   data: CourseData;
+}
+
+export interface MyPlace {
+  name: string;
+  img: string;
+  description: string;
+  posX: number;
+  posY: number;
+  content: string;
+  id: number;
+  videoUrl: string;
+  tags: string[];
+  title: string;
 }

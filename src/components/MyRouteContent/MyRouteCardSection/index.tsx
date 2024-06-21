@@ -4,6 +4,7 @@ import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
 import NoSearchData from '../../mainContent/CardSection/NoSearchData';
 import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
+import { MyPlace } from '@/src/lib/types';
 
 interface filteredDataProps {
   filteredData: CardDataItem[];
