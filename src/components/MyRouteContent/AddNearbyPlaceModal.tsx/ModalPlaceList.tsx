@@ -19,9 +19,14 @@ interface ModalPlaceListData {
 
 const ModalPlaceList = ({ data, onClick, selectedPlace, hasAddPlace, close, className }: ModalPlaceListData) => {
   const customStyle = twMerge('flex flex-col gap-10 overflow-y-auto h-230', className);
-  const { addPlace } = useCourseStore();
+  const { addPlace, addDay } = useCourseStore();
+  const courseData = useCourseStore((state) => state.data.plan);
 
   const handleAddPlace = (place) => {
+    if (courseData.length === 0) {
+      const newDay = { day: 1, place: [] };
+      addDay(newDay);
+    }
     const newPlace = {
       name: place.name,
       index: 1,
