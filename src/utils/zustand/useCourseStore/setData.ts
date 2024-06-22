@@ -10,7 +10,8 @@ const setData: SetDataProps = (state, data) => {
   const newPlan = [...data.plan];
 
   reorderIndex(newPlan);
-  return { ...state, data: { ...state.data, plan: newPlan } };
+
+  return { ...state, data: { ...state.data, name: data.name, plan: newPlan } };
 };
 
 export default setData;
