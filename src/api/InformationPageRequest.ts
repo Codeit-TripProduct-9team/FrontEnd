@@ -1,4 +1,4 @@
-import instance from './axios';
+import { instance } from './axios';
 
 import { BASED_URL } from '../constants/constants';
 import { getCookie } from '../utils/cookie';

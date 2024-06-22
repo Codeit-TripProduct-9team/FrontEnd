@@ -1,6 +1,6 @@
 import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import React, { useEffect, useMemo } from 'react';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { useState } from 'react';
 import { Plan } from '@/src/lib/types';
 import { twMerge } from 'tailwind-merge';

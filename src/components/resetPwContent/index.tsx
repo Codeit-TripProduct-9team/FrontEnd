@@ -9,7 +9,7 @@ import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
 import { useState } from 'react';
 
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { REGEX } from '@/src/utils/regex';
 import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';

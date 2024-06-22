@@ -5,7 +5,7 @@ import Input from '@/src/components/common/input';
 import Link from 'next/link';
 import KakaoSignin from './KakaoSignin';
 import NaverSignin from './NaverSignin';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 // import { useState } from 'react';
 import { useOverlay } from '@toss/use-overlay';
 import Modal from '../common/modal';

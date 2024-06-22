@@ -2,7 +2,7 @@ import { ComponentProps, useMemo, useRef } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 
 import 'react-quill/dist/quill.snow.css';
 

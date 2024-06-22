@@ -7,7 +7,7 @@ import SearchInformation from './SearchInformation';
 import InformationSearchSkeleton from '@/src/components/common/skeleton/InformationSearchSkeleton';
 import { BASED_URL } from '@/src/constants/constants';
 
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { CardDataItem } from '@/src/lib/types';
 
 interface SearchContentProps {

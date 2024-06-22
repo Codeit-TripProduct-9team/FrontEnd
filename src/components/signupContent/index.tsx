@@ -21,7 +21,7 @@ import { ERROR_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
 
 import checkDuplicate from '@/src/utils/checkDuplicate';
 import { REGEX } from '@/src/utils/regex';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { InputForm } from '@/src/lib/types';
 // import VerifyButton from './VerifyButton';
 
