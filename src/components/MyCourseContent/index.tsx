@@ -1,5 +1,5 @@
 import CourseItem from './CourseItem';
-import myCoursePageRequestInstance from '@/src/api/mycoursePageRequest';
+import myCoursePageRequestInstance from '@/src/api/myPageRequest';
 import { CourseData } from '@/src/lib/types';
 import { useEffect, useState } from 'react';
 import Button from '../common/button';
