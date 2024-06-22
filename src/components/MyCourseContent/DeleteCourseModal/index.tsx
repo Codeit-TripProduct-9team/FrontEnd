@@ -1,6 +1,6 @@
 import { getCookie } from '@/src/utils/cookie';
 import Button from '../../common/button';
-import myCoursePageRequestInstance from '@/src/api/mycoursePageRequest';
+import myCoursePageRequestInstance from '@/src/api/myPageRequest';
 import { useRouter } from 'next/router';
 
 type DeleteCourseModalProps = {

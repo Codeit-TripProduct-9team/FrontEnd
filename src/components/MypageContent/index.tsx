@@ -5,23 +5,25 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Button from '../common/button';
 import SearchMyCard from './SearchMyCard';
-import mainPageRequestInstance from '@/src/api/mainPageRequest';
+import myCoursePageRequestInstance from '@/src/api/myPageRequest';
+import { getCookie } from '@/src/utils/cookie';
 
 const MypageContent = () => {
   const [cardData, setCardData] = useState([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const filteredData: MockDataItem[] = useFilteredData({ data: cardData }, searchValue);
+  const userId = getCookie('userId');
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {
-        const cardList = await mainPageRequestInstance.getCardList();
+        const cardList = await myCoursePageRequestInstance.getCourseData(userId);
         setCardData(cardList);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
     };
     fetchAndLogCardList();
-  }, []);
+  }, [userId]);
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
