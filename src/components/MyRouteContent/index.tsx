@@ -34,7 +34,8 @@ const MyRouteContent = () => {
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
   const { movePlace, addPlace } = useCourseStore();
   const { userData } = userDataStore();
-  const userId = userData.id;
+
+  const userId = getCookie('userId');
   const router = useRouter();
   const { courseId } = router.query;
   const [newCourseName, setNewCourseName] = useState<string>('');
@@ -71,7 +72,7 @@ const MyRouteContent = () => {
               tags: modifiedVideoData[index].tags,
               title: modifiedVideoData[index].title,
               name: courseData.name,
-              img: courseData.img,
+              img: courseData.img.replace(/'/g, ''),
               description: courseData.description,
               posX: courseData.posX,
               posY: courseData.posY,
