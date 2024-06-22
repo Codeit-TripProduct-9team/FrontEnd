@@ -50,6 +50,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   };
 
   const handleChangeReview = async (reviewId: number) => {
+    if (editReveiwScore === 0) {
+      toast.error(TOAST_MESSAGE.EMPTY_SCORE);
+      return;
+    }
+
     const body = {
       title: editReviewTitle,
       nickname: hasLoggedInNickname,
