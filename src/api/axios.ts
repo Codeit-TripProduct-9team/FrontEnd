@@ -5,7 +5,7 @@ export const instance = axios.create({
 });
 
 export const adminInstance = axios.create({
-  baseURL: 'https://utriptest.shop/admin',
+  baseURL: process.env.NEXT_PUBLIC_UTRIP_API_ADMIN_BASE_URL,
 });
 
 export default instance;
