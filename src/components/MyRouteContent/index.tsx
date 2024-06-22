@@ -130,25 +130,21 @@ const MyRouteContent = () => {
 
     if (Number(courseId) > 0) {
       try {
-        const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
+        await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
           headers: {
             Authorization: `Bearer ${getCookie('accessToken')}`,
           },
         });
-
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        const response = await instance.post(`/course`, updatedCourseData, {
+        await instance.post(`/course`, updatedCourseData, {
           headers: {
             Authorization: `Bearer ${getCookie('accessToken')}`,
           },
         });
-
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -158,7 +154,7 @@ const MyRouteContent = () => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
+        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main max-h-954">
           <div className="flex gap-12">
             <input
               onChange={(e) => setNewCourseName(e.target.value)}
@@ -193,7 +189,7 @@ const MyRouteContent = () => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white rounded-20 px-40 py-32">
+        <div className="flex flex-col bg-white rounded-20 px-40 py-32 relative">
           <SearchBar searchValue={searchValue} onChange={handleSearchInputChange} setSearchValue={setSearchValue} />
 
           <Droppable droppableId="myPlace">
