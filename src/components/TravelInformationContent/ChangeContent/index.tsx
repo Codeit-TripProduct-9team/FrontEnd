@@ -29,6 +29,24 @@ const ChangeContent = () => {
     }
   }, [selectedContent]);
 
+  const handleSelectProduct = () => {
+    router.push({ pathname: router.pathname, query: { ...router.query, content: 'product' } });
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSelectReview = () => {
+    router.push({ pathname: router.pathname, query: { ...router.query, content: 'review' } });
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  if (!query.content) {
+    handleSelectProduct();
+  }
+
   return (
     <>
       <div ref={topRef} id="top" className="flex justify-center w-full items-center bg-white">
@@ -39,7 +57,7 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => router.push({ pathname: router.pathname, query: { ...router.query, content: 'product' } })}
+          onClick={handleSelectProduct}
         >
           상품설명
         </button>
@@ -50,7 +68,7 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => router.push({ pathname: router.pathname, query: { ...router.query, content: 'review' } })}
+          onClick={handleSelectReview}
         >
           리뷰
         </button>
