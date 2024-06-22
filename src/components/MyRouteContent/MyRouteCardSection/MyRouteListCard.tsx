@@ -15,7 +15,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   const MAXIMUM_DESCRIPTION_LENGTH = 65;
 
   return (
-    <Draggable draggableId={`${name}`} index={id}>
+    <Draggable draggableId={name} index={id}>
       {(provided) => (
         <div
           ref={provided.innerRef}

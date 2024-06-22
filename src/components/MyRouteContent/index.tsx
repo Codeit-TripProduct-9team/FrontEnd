@@ -154,7 +154,7 @@ const MyRouteContent = () => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <main className="flex gap-30 m-30">
-        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main">
+        <div className="bg-white py-32 pl-37 pr-55 flex flex-col gap-10 rounded-20 shadow-main max-h-954">
           <div className="flex gap-12">
             <input
               onChange={(e) => setNewCourseName(e.target.value)}
