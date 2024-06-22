@@ -18,7 +18,7 @@ import instance from '@/src/api/axios';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -28,7 +28,7 @@ const MyRouteContent = () => {
   const myPlaceData = useMyPlaceStore((state) => state.data);
   const setMyPlaceData = useMyPlaceStore((state) => state.setData);
   // const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
-  const filteredData: MockDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
+  const filteredData: CardDataItem[] = useFilteredData({ data: myPlaceData }, searchValue);
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);

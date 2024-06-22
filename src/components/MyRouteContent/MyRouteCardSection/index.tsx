@@ -1,13 +1,12 @@
 // import { MockMyRouteItem } from '../mockMyRoute';
-// import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
 import NoSearchData from '../../mainContent/CardSection/NoSearchData';
 import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
-import { MyPlace } from '@/src/lib/types';
 
 interface filteredDataProps {
-  filteredData: MyPlace[];
+  filteredData: CardDataItem[];
   setSearchValue: (value: string) => void;
 }
 

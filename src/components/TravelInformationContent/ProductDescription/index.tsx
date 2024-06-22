@@ -29,17 +29,19 @@ const ProductDescription = () => {
   const videoId = route.query.id as string;
 
   useEffect(() => {
-    if (videoId !== undefined) {
-      const getVideoDescription = async () => {
-        try {
-          const response = await instance.get(`/course/${videoId}`);
-          setVideoPlaceData(response.data.data.course[0]);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      getVideoDescription();
+    if (videoId === undefined) {
+      return;
     }
+
+    const getVideoDescription = async () => {
+      try {
+        const response = await instance.get(`/course/${videoId}`);
+        setVideoPlaceData(response.data.data.course[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getVideoDescription();
   }, [videoId]);
 
   useEffect(() => {
