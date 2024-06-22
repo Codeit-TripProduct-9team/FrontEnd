@@ -14,6 +14,8 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStor
 const CourseItem = ({ id, name, plan }: Course) => {
   const { setData } = useCourseStore();
   const router = useRouter();
+  const loadMoreOverlay = useOverlay();
+
   const handleRouteChange = () => {
     const courseData = {
       name: name,
@@ -27,7 +29,6 @@ const CourseItem = ({ id, name, plan }: Course) => {
   const fourthPlace = planData[3];
   const remainingCount = planData.length - 3;
 
-  const loadMoreOverlay = useOverlay();
   const handleLoadMoreClick = () => {
     loadMoreOverlay.open(({ isOpen, close }) => (
       <Modal
@@ -52,6 +53,16 @@ const CourseItem = ({ id, name, plan }: Course) => {
         <DeleteCourseModal courseId={id} courseName={name} close={close} />
       </Modal>
     ));
+  };
+
+  const getValidImageUrl = (url: string) => {
+    try {
+      const parsedUrl = new URL(url);
+      return parsedUrl.href;
+    } catch (e) {
+      console.error('Invalid image URL', url);
+      return 'img';
+    }
   };
 
   return (
@@ -98,13 +109,19 @@ const CourseItem = ({ id, name, plan }: Course) => {
       </div>
       <div className="flex gap-10 mb-40">
         {firstThreePlaces.map((place, id) => (
-          <ConditionalImage key={id} img={place.img} />
+          <ConditionalImage key={id} img={getValidImageUrl(place.img)} />
         ))}
         {fourthPlace && (
           <div onClick={handleLoadMoreClick} className="relative w-321 h-180 rounded-s overflow-hidden cursor-pointer">
             <div className="absolute bg-black opacity-50 w-full h-full"></div>
             <p className="absolute top-80 left-130 text-white">+ {remainingCount} more</p>
-            <Image key={fourthPlace.index} src={fourthPlace.img} alt="place" width={321} height={207} />
+            <Image
+              key={fourthPlace.index}
+              src={getValidImageUrl(fourthPlace.img)}
+              alt="place"
+              width={321}
+              height={207}
+            />
           </div>
         )}
       </div>
