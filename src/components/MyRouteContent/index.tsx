@@ -15,7 +15,6 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStor
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 import { getCookie } from '@/src/utils/cookie';
 import { instance } from '@/src/api/axios';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import { CardDataItem } from '@/src/lib/types';
