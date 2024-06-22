@@ -8,6 +8,9 @@ interface LocationDescriptionProps {
 }
 
 const LocationDescription = ({ image, title, description }: LocationDescriptionProps) => {
+  if (!image) {
+    return null;
+  }
   return (
     <>
       <Image
