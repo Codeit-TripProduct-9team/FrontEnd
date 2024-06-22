@@ -1,5 +1,4 @@
 import { CardDataItem } from '@/src/lib/types';
-
 import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
