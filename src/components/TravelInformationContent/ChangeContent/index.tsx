@@ -31,7 +31,7 @@ const ChangeContent = () => {
   const selectDescriptionContent = content === 'product';
   const selectReviewContent = content === 'review';
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: string) => {
     const newUrl =
       tab === 'product'
         ? `/travel-information/${videoId}?content=product`
