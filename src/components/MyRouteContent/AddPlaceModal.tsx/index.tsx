@@ -8,10 +8,14 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 import ModalPlaceList from '../AddNearbyPlaceModal.tsx/ModalPlaceList';
 import truncateText from '@/src/utils/truncateText';
 
-const AddPlaceModal = () => {
+interface AddPlaceModalProps {
+  close: () => void;
+}
+
+const AddPlaceModal = ({ close }: AddPlaceModalProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [placeData, setPlaceData] = useState<MyPlace[]>([]);
-  const MAXIMUM_DESCRIPTION_LENGTH = 100;
+  const MAXIMUM_DESCRIPTION_LENGTH = 95;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,9 +28,11 @@ const AddPlaceModal = () => {
 
   const modifiedData = filteredData.map((item) => ({
     id: item.id,
-    mainImg: item.img,
+    img: item.img,
     name: item.name,
     description: truncateText(item.description, MAXIMUM_DESCRIPTION_LENGTH),
+    posX: item.posX,
+    posY: item.posY,
   }));
 
   const handleSearchInputChange = (e: ChangeEvent) => {
@@ -41,7 +47,7 @@ const AddPlaceModal = () => {
         setSearchValue={setSearchValue}
         className="w-full mb-10"
       />
-      <ModalPlaceList data={modifiedData} />
+      <ModalPlaceList data={modifiedData} close={close} hasAddPlace />
     </div>
   );
 };

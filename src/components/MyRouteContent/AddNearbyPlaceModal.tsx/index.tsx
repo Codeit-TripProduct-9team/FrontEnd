@@ -40,14 +40,14 @@ const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) =>
       ? courseData.flatMap((course) => {
           return course.place.map((place) => {
             const { index, name, img, posX, posY } = place;
-            return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
+            return { id: index, name, img: img, position: { lat: posX, lng: posY } };
           });
         })
       : [
           {
             id: 1,
             name: '을지로입구역',
-            mainImg: '',
+            img: '',
             position: { lat: 37.5661, lng: 126.9827 },
           },
         ];

@@ -105,7 +105,7 @@ const MyRouteContent = () => {
   const handleAddPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-345">
-        <AddPlaceModal />
+        <AddPlaceModal close={close} />
       </Modal>
     ));
   };
