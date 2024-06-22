@@ -13,6 +13,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   const { description, img, name, id, tags, title, videoUrl } = data;
   const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
+  const MAXIMUM_DESCRIPTION_LENGTH = 65;
 
   return (
     <Draggable draggableId={`${name}`} index={id}>
@@ -55,7 +56,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
                   <div>
                     <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{name}</h2>
                   </div>
-                  <p className="text-12">{truncateText(description, 65)}</p>
+                  <p className="text-12">{truncateText(description, MAXIMUM_DESCRIPTION_LENGTH)}</p>
                 </div>
               </div>
             </div>
