@@ -23,6 +23,7 @@ interface InputProps {
   divCheckStyle?: string;
   divErrorFixStyle?: string;
   clearError: UseFormClearErrors<PasswordInputForm>;
+  disabled?: boolean;
 }
 
 const PasswordInput = ({
@@ -35,6 +36,7 @@ const PasswordInput = ({
   error,
   divCheckStyle,
   divErrorFixStyle,
+  disabled,
   clearError,
 }: InputProps) => {
   const [openEye, setOpenEye] = useState(false);
@@ -44,11 +46,11 @@ const PasswordInput = ({
   };
 
   const divStyle = twMerge(
-    `flex flex-row bg-white justify-between w-full h-60 py-15 px-16 rounded-s focus:outline-none  focus-within:border-blue`,
+    `flex flex-row bg-white justify-between w-full h-60 py-15 px-16 rounded-s focus:outline-none focus-within:border-blue`,
     divCheckStyle,
   );
   const divErrorStyle = twMerge(
-    `flex flex-row justify-between w-full h-60 py-15 px-16 border-1 rounded-s border-red`,
+    `flex flex-row justify-between w-full h-60 py-15 px-16 border-1 rounded-s border-red bg-white`,
     divErrorFixStyle,
   );
   return (
@@ -65,6 +67,7 @@ const PasswordInput = ({
           placeholder={inputContent}
           id={labelId}
           autoComplete="new-password"
+          disabled={disabled}
           onFocus={() => {
             switch (focusType) {
               case 'password':

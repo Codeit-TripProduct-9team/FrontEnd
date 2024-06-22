@@ -16,6 +16,7 @@ export const MODAL_MESSAGE = {
   SUCCESS_SIGNUP: '회원가입이 완료되었습니다.',
   CERTIFIED_EMAIL: '인증되었습니다.',
   SEND_CODE: '인증 코드가 발송되었습니다.',
+  CHANGE_PASSWORD: '비밀번호가 변경되었습니다.',
   CONFIRM_DELETE: {
     header: '일차를 삭제할까요?',
     text: '일차에 모든 일정이 삭제됩니다.',
@@ -33,6 +34,7 @@ export const TOAST_MESSAGE = {
   SAVE: '저장되었습니다.',
   LOGIN: '로그인 되었습니다.',
   VERIFY: '인증되었습니다.',
+  FAILED_VERIFY: '인증에 실패하였습니다.',
   CHECK_DUPLICATE: '사용 가능한 이메일 입니다.',
   SUCCESS_REVIEW: '리뷰가 생성되었습니다.',
   EMPTY_SCORE: '별점을 등록해 주세요',
