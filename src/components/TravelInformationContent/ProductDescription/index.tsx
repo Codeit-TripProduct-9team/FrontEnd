@@ -29,21 +29,24 @@ const ProductDescription = () => {
   const videoId = route.query.id as string;
 
   useEffect(() => {
-    if (videoId !== undefined) {
-      const getVideoDescription = async () => {
-        try {
-          const response = await instance.get(`/course/${videoId}`);
-          setVideoPlaceData(response.data.data.course[0]);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      getVideoDescription();
+    if (videoId === undefined) {
+      return;
     }
+
+    const getVideoDescription = async () => {
+      try {
+        const response = await instance.get(`/course/${videoId}`);
+        setVideoPlaceData(response.data.data.course[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getVideoDescription();
   }, [videoId]);
 
   useEffect(() => {
     const position = { lat: currentLocation.latitude, lng: currentLocation.longitude };
+
     if (accessLocation) {
       setHasCurrentLocation(true);
       setStartPoint(position);
@@ -62,6 +65,13 @@ const ProductDescription = () => {
 
     const getDestinationDirection = async () => {
       const hasStartPoint = startPoint.lat !== null && startPoint.lng !== null;
+
+      const hasDesination = videoPlaceData.posX !== undefined || videoPlaceData.posY !== undefined;
+
+      if (!hasDesination) {
+        return;
+      }
+
       if (hasStartPoint) {
         const queryParams = new URLSearchParams({
           origin: `${startPoint.lng},${startPoint.lat}`,

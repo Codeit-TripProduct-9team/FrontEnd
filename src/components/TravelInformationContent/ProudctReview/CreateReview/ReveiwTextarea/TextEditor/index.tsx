@@ -51,7 +51,7 @@ const TextEditor = ({ content, handleChangeTextArea }: TextEditorProps) => {
           quillRef.current.getEditor().setSelection(range.index + 1);
           document.body.querySelector(':scope > input').remove();
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     });

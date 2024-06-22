@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import ReviewTextArea from './ReveiwTextarea';
@@ -7,6 +7,11 @@ import ReviewScore from './ReviewScore';
 import instance from '@/src/api/axios';
 import { getCookie } from '@/src/utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
+import { useOverlay } from '@toss/use-overlay';
+import Modal from '@/src/components/common/modal';
+import LoginModal from './LoginModal';
+import { useRouter } from 'next/router';
+import { useRedirectStore } from '@/src/utils/zustand/useRedirectStore';
 
 interface CreateReviewProps {
   videoId: string;
@@ -20,12 +25,46 @@ const CreateReview = ({ videoId, renderReveiwList }: CreateReviewProps) => {
 
   const hasToken = getCookie('accessToken');
   const hasLoggedInNickname = getCookie('nickname');
+  const { setRedirectUrl } = useRedirectStore();
+  const route = useRouter();
+
+  const loginOverlay = useOverlay();
+  const loginModal = () => {
+    loginOverlay.open(({ isOpen, close }) => (
+      <Modal isOpen={isOpen} close={close}>
+        <LoginModal handleRouteLogin={handleRouteLogin} />
+      </Modal>
+    ));
+  };
+
+  const handleRouteLogin = () => {
+    setRedirectUrl(window.location.href);
+    localStorage.setItem('reviewTitle', title);
+    localStorage.setItem('reviewContent', content);
+    localStorage.setItem('reviewScore', score.toString());
+    route.push('/signin');
+  };
+
+  useEffect(() => {
+    const savedTitle = localStorage.getItem('reviewTitle');
+    const savedContent = localStorage.getItem('reviewContent');
+    const savedScore = localStorage.getItem('reviewScore');
+
+    if (savedTitle) setTitle(savedTitle);
+    if (savedContent) setContent(savedContent);
+    if (savedScore) setScore(Number(savedScore));
+
+    localStorage.removeItem('reviewTitle');
+    localStorage.removeItem('reviewContent');
+    localStorage.removeItem('reviewScore');
+  }, []);
 
   const handleCreateReview = async () => {
     const hasScore = score !== 0;
 
-    if (hasLoggedInNickname === '') {
+    if (hasLoggedInNickname === undefined) {
       toast.error(TOAST_MESSAGE.FAILED_CREATE_REVIEW);
+      loginModal();
       return;
     }
 

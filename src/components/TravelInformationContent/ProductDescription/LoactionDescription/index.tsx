@@ -1,3 +1,4 @@
+import { formattedImageSource } from '@/src/utils/convertImage';
 import Image from 'next/image';
 
 interface LocationDescriptionProps {
@@ -7,14 +8,17 @@ interface LocationDescriptionProps {
 }
 
 const LocationDescription = ({ image, title, description }: LocationDescriptionProps) => {
+  if (!image) {
+    return null;
+  }
   return (
     <>
       <Image
         className="w-full h-455 object-cover"
         width={1440}
         height={455}
-        src={image}
-        alt="defalut"
+        src={formattedImageSource(image)}
+        alt={title}
         quality={100}
         priority
       />

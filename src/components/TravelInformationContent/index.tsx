@@ -19,19 +19,21 @@ const TravelInformation = () => {
   const videoId = route.query.id as string;
 
   useEffect(() => {
-    if (videoId !== undefined) {
-      const getVideoInformation = async () => {
-        try {
-          const result = await informationPageRequestInstance.getVideoData(videoId);
-          setYoutubeData(result);
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setYoutubeDataLoading(false);
-        }
-      };
-      getVideoInformation();
+    if (videoId === undefined) {
+      return;
     }
+
+    const getVideoInformation = async () => {
+      try {
+        const result = await informationPageRequestInstance.getVideoData(videoId);
+        setYoutubeData(result);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setYoutubeDataLoading(false);
+      }
+    };
+    getVideoInformation();
   }, [videoId]);
 
   return (

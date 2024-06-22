@@ -1,11 +1,11 @@
-import { MockDataItem } from '@/src/lib/types';
+import { CardDataItem } from '@/src/lib/types';
 import React from 'react';
 import Link from 'next/link';
 import YoutubePlayer from '../../TravelInformationContent/ProductInformation/YoutubePlyaer';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 
 interface CarouselCardProps {
-  data: MockDataItem;
+  data: CardDataItem;
 }
 
 const CarouselCard = ({ data }: CarouselCardProps) => {
