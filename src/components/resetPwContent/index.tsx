@@ -13,7 +13,6 @@ import { FieldError, useForm } from 'react-hook-form';
 import { useOverlay } from '@toss/use-overlay';
 import { useState } from 'react';
 
-import { instance } from '@/src/api/axios';
 import { REGEX } from '@/src/utils/regex';
 // import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';
