@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import FindPageInput from './FindPageInput';
@@ -7,7 +6,6 @@ import SearchContent from './SearchContent';
 
 import useFocusOutClose from '@/src/hooks/useFocusOutClose';
 import useDebounce from '@/src/hooks/useDebounce';
-
 import { decomposedSearchValue } from '@/src/utils/decomposedSearchValue';
 import informationPageRequestInstance from '@/src/api/InformationPageRequest';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
@@ -15,24 +13,30 @@ import { useFilteredData } from '@/src/hooks/useFilteredData';
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [searchVideoList, setSearchVideoList] = useState([]);
+  const [hasVideoListData, setHasVideoListData] = useState(false);
 
   const { isFocused, handleFocus, handleBlur } = useFocusOutClose();
+
   const debounceKeyword = useDebounce(searchKeyword, 300);
   const autoSearchKeyword = decomposedSearchValue(debounceKeyword);
 
   const router = useRouter();
 
-  useEffect(() => {
-    const getVideoList = async () => {
-      try {
-        const cardList = await informationPageRequestInstance.getVideoList();
-        setSearchVideoList(cardList);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getVideoList();
-  }, []);
+  const getSearchPageData = async () => {
+    try {
+      const cardList = await informationPageRequestInstance.getVideoList();
+      setSearchVideoList(cardList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFocusWithFetch = () => {
+    handleFocus();
+    if (!hasVideoListData) {
+      getSearchPageData().then(() => setHasVideoListData(true));
+    }
+  };
 
   const filteredList = useFilteredData({ data: searchVideoList }, autoSearchKeyword);
 
@@ -58,7 +62,7 @@ const SearchBar = () => {
       <FindPageInput
         searchKeyword={searchKeyword}
         onChange={handleChangeKeyword}
-        onFocus={handleFocus}
+        onFocus={handleFocusWithFetch}
         onBlur={handleBlur}
       />
       {showSerachContent && <SearchContent searchResult={searchResult} onClick={handleRouteContentPage} />}

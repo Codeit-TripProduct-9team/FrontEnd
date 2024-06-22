@@ -71,7 +71,11 @@ const CustomLocation = ({ destinationName, elapsedTime, setStartPoint }: CustomL
         <RelatedLocation relatedLocation={relatedLocation} handleSelectLocation={handleSelectLocation} />
       )}
       {showMessage && (
-        <p className="p-10 rounded-s bg-white">{`${customLocation}에서 ${destinationName}까지 ${`${elapsedTime.hours} 시간 ${elapsedTime.minutes} 분`} 걸려요💨 `}</p>
+        <p className="p-10 rounded-s bg-white">
+          {`${customLocation}에서 ${destinationName}까지 ${elapsedTime.hours > 0 ? `${elapsedTime.hours} 시간 ` : ''}${
+            elapsedTime.minutes
+          } 분 걸려요💨 `}
+        </p>
       )}
     </div>
   );
