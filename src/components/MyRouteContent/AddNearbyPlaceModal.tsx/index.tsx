@@ -1,7 +1,7 @@
 import ModalPlaceList from '../AddPlaceModal.tsx/ModalPlaceList';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import CategoryButton from './CategoryButton';
 import DistanceButton from './DistanceButton';

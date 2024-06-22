@@ -1,4 +1,4 @@
-import instance from '../api/axios';
+import { instance } from '../api/axios';
 
 const checkDuplicate = async (endpoint: string, body: Record<string, any>) => {
   try {
