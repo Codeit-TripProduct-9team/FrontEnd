@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import ProductDescription from '../ProductDescription';
 import ProductReview from '../ProudctReview';
-
 import combineStyle from '@/src/utils/combineStyle';
 import useSelectContent from '@/src/hooks/useSelectContent';
 
@@ -11,11 +12,33 @@ const contentButtonStyle = {
 };
 
 const ChangeContent = () => {
+  const route = useRouter();
   const { content, handleSelectContent } = useSelectContent('product');
   const { base, selected, notSelected } = contentButtonStyle;
 
+  const videoId = route.query.id as string;
+
+  useEffect(() => {
+    const queryContent = route.query.content;
+    if (queryContent === 'review') {
+      handleSelectContent('review');
+    }
+    if (queryContent === 'product') {
+      handleSelectContent('product');
+    }
+  }, [route.query.content, handleSelectContent]);
+
   const selectDescriptionContent = content === 'product';
   const selectReviewContent = content === 'review';
+
+  const handleTabClick = (tab) => {
+    const newUrl =
+      tab === 'product'
+        ? `/travel-information/${videoId}?content=product`
+        : `/travel-information/${videoId}?content=review`;
+    route.push(newUrl, undefined, { shallow: true });
+    handleSelectContent(tab);
+  };
 
   return (
     <>
@@ -27,7 +50,7 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => handleSelectContent('product')}
+          onClick={() => handleTabClick('product')}
         >
           상품설명
         </button>
@@ -38,7 +61,7 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => handleSelectContent('review')}
+          onClick={() => handleTabClick('review')}
         >
           리뷰
         </button>
