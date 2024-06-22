@@ -28,7 +28,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               <div className="flip-card-front">
                 <div className="relative border-1 w-225 h-120">
                   {thumbnail && (
-                    <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-cetner" />
+                    <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-center" />
                   )}
                 </div>
 
@@ -49,7 +49,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               </div>
               <div className="flip-card-back">
                 <div className="relative border-1 w-225 h-120">
-                  {img && <Image src={img} fill alt="장소" priority className="object-cover object-cetner" />}
+                  {img && <Image src={img} fill alt="장소" priority className="object-cover object-center" />}
                 </div>
                 <div className="flex flex-col p-10 h-110">
                   <div>
