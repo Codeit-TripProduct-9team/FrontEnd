@@ -27,12 +27,13 @@ const Dropdown = ({ setDropDown }: { setDropDown: React.Dispatch<React.SetStateA
     removeCookie('accessToken');
     removeCookie('userId');
     removeCookie('nickname');
+    removeCookie('refreshToken');
   };
 
   return (
     <nav ref={ref} className="absolute top-35 right-0 w-100 bg-white rounded-s shadow-main z-10">
       <ul className=" text-black">
-        <DropdownItem href="/course/new">코스 짜기</DropdownItem>
+        <DropdownItem href="/course/new">코스 짜보기</DropdownItem>
         <DropdownItem href="/my-course">저장된 코스</DropdownItem>
         <DropdownItem href="/signin" onClick={handleLogout}>
           로그아웃

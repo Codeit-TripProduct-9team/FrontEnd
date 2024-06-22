@@ -1,9 +1,6 @@
 import { CardDataItem } from '@/src/lib/types';
-
 import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
-import { openToast } from '@/src/utils/openToast';
-import { TOAST_MESSAGE } from '@/src/constants/constants';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 import truncateText from '@/src/utils/truncateText';
 
@@ -15,10 +12,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   const { description, img, name, id, tags, title, videoUrl } = data;
   const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
-
-  const handleDeleteMyPlace = () => {
-    openToast.success(TOAST_MESSAGE.DELETE);
-  };
+  const MAXIMUM_DESCRIPTION_LENGTH = 65;
 
   return (
     <Draggable draggableId={`${name}`} index={id}>
@@ -34,7 +28,7 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
               <div className="flip-card-front">
                 <div className="relative border-1 w-225 h-120">
                   {thumbnail && (
-                    <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-cetner" />
+                    <Image src={thumbnail} fill alt="썸네일" priority className="object-cover object-center" />
                   )}
                 </div>
 
@@ -50,24 +44,18 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
                         </div>
                       ))}
                     </div>
-                    <div
-                      className="transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-8"
-                      onClick={handleDeleteMyPlace}
-                    >
-                      마이플레이스 삭제
-                    </div>
                   </div>
                 </div>
               </div>
               <div className="flip-card-back">
                 <div className="relative border-1 w-225 h-120">
-                  {img && <Image src={img} fill alt="장소" priority className="object-cover object-cetner" />}
+                  {img && <Image src={img} fill alt="장소" priority className="object-cover object-center" />}
                 </div>
                 <div className="flex flex-col p-10 h-110">
                   <div>
                     <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{name}</h2>
                   </div>
-                  <p className="text-12">{truncateText(description, 65)}</p>
+                  <p className="text-12">{truncateText(description, MAXIMUM_DESCRIPTION_LENGTH)}</p>
                 </div>
               </div>
             </div>
