@@ -1,10 +1,9 @@
 import instance from './axios';
 
-// fetch my place data and use its video id to fetch course data and combine them to create new data
-const combineVideoPlace = async (userId: number) => {
+const combineVideoPlace = async (userId?: number) => {
   try {
-    if (!userId) return;
-    const videoData = await instance.get(`/user/${userId}/video`);
+    const url = userId ? `/user/${userId}/video` : '/video';
+    const videoData = await instance.get(`${url}`);
     const modifiedVideoData = videoData.data.data.map((item) => ({
       content: item.content,
       id: item.id,
@@ -32,7 +31,6 @@ const combineVideoPlace = async (userId: number) => {
           posY: courseData.posY,
         };
       });
-      console.log('combinedData:', combinedData);
       return combinedData;
     });
   } catch (error) {

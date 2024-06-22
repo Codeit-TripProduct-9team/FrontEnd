@@ -54,6 +54,7 @@ const MyRouteContent = () => {
 
   // fetch my place data and use its video id to fetch course data and combine them to create new data
   useEffect(() => {
+    if (!userId) return;
     const fetchData = async () => {
       await combineVideoPlace(userId).then((data) => setMyPlaceData(data));
     };
