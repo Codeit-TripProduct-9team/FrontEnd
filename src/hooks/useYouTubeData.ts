@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { BASED_URL } from '@/src/constants/constants';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import convertDate from '@/src/utils/convertDate';
 import convertViewCount from '@/src/utils/convertViewCount';
 

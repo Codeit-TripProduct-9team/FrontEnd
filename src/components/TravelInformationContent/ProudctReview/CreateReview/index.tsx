@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import ReviewTextArea from './ReveiwTextarea';
 import ReviewScore from './ReviewScore';
 
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { getCookie } from '@/src/utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 import { useOverlay } from '@toss/use-overlay';

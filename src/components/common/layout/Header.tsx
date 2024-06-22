@@ -14,6 +14,7 @@ const Header = () => {
   const handleDropdown = () => {
     setDropDown((prev) => !prev);
   };
+  const nickname = getCookie('nickname');
 
   useEffect(() => {
     const accessToken = getCookie('accessToken');
@@ -30,6 +31,11 @@ const Header = () => {
         <Image src={logo} alt="홈으로 가기" width={78} height={39} />
       </Link>
       <nav className="flex items-center gap-16">
+        {nickname === 'utripadmin' && (
+          <Link href="/admin" className="px-16 py-6 bg-gray-70 text-white rounded-s">
+            관리자페이지
+          </Link>
+        )}
         {hasToken ? (
           <Link href="/my-page" className="px-16 py-6 bg-gray-70 text-white rounded-s">
             마이페이지

@@ -12,7 +12,7 @@ import LocationDescription from './LoactionDescription';
 import convertTime from '@/src/utils/convertTime';
 import extractPath from '@/src/utils/extractPath';
 import { BASED_URL } from '@/src/constants/constants';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { PlaceDataProps } from '@/src/lib/types';
 
 const ProductDescription = () => {
@@ -46,6 +46,7 @@ const ProductDescription = () => {
 
   useEffect(() => {
     const position = { lat: currentLocation.latitude, lng: currentLocation.longitude };
+
     if (accessLocation) {
       setHasCurrentLocation(true);
       setStartPoint(position);
@@ -64,6 +65,13 @@ const ProductDescription = () => {
 
     const getDestinationDirection = async () => {
       const hasStartPoint = startPoint.lat !== null && startPoint.lng !== null;
+
+      const hasDesination = videoPlaceData.posX !== undefined || videoPlaceData.posY !== undefined;
+
+      if (!hasDesination) {
+        return;
+      }
+
       if (hasStartPoint) {
         const queryParams = new URLSearchParams({
           origin: `${startPoint.lng},${startPoint.lat}`,

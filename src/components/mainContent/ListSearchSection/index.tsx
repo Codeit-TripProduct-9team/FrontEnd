@@ -19,6 +19,7 @@ const ListSearchSection = () => {
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
   const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
@@ -36,7 +37,6 @@ const ListSearchSection = () => {
       try {
         const cardList = await mainPageRequestInstance.getCardList();
         setCardData(cardList);
-        console.log(cardList);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
