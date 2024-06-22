@@ -66,6 +66,19 @@
   src: url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap') format('css2');
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
 .swiper {
   width: 1450px;
   height: 450px;

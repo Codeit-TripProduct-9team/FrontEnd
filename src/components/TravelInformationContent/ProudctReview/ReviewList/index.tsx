@@ -14,7 +14,7 @@ import convertDate from '@/src/utils/convertDate';
 import Modal from '@/src/components/common/modal';
 import { ReviewDataItem } from '@/src/lib/types';
 import { getCookie } from '@/src/utils/cookie';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 
 interface ReviewDataProps {
   reviewList: ReviewDataItem[];

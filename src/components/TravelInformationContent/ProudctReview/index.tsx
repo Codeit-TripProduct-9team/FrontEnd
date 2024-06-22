@@ -8,7 +8,7 @@ import ReviewList from './ReviewList';
 import EmptyReview from './EmptyReview';
 import ScrollButton from './ScrollButton';
 
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { ReviewDataItem } from '@/src/lib/types';
 
 const ProductReview = () => {

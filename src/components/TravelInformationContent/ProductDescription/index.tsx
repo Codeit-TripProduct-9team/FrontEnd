@@ -12,7 +12,7 @@ import LocationDescription from './LoactionDescription';
 import convertTime from '@/src/utils/convertTime';
 import extractPath from '@/src/utils/extractPath';
 import { BASED_URL } from '@/src/constants/constants';
-import instance from '@/src/api/axios';
+import { instance } from '@/src/api/axios';
 import { PlaceDataProps } from '@/src/lib/types';
 
 const ProductDescription = () => {

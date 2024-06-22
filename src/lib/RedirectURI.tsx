@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import instance from '../api/axios';
+import { instance } from '../api/axios';
 import { openToast } from '../utils/openToast';
 import { setCookie } from '../utils/cookie';
 import { TOAST_MESSAGE } from '@/src/constants/constants';
