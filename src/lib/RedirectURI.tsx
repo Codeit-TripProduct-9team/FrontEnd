@@ -35,9 +35,7 @@ const RedirectURI = () => {
           const accessToken = response.data.data.token.accessToken;
           setCookie('userId', userData.id);
           setCookie('nickname', userData.nickname);
-          setCookie('accessToken', accessToken, {
-            path: '/',
-          });
+          setCookie('accessToken', accessToken);
           setTimeout(() => router.push('/'), 3000);
         }
       } catch (error: any) {

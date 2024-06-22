@@ -46,4 +46,5 @@ export const TOAST_MESSAGE = {
   SUCCESS_MY_PLCAE: '나의 코스에 등록되었습니다!',
   DELETE_MY_PLACE: '나의 코스에서 삭제되었습니다',
   EMPTY_COURSE: '일정에 장소를 추가해주세요',
+  RELOGIN: '다시 로그인 해주세요',
 };

@@ -5,13 +5,24 @@ import { useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import Dropdown from './Dropdown';
 import { getCookie } from '@/src/utils/cookie';
+import { useEffect } from 'react';
 
 const Header = () => {
   const [dropDown, setDropDown] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
+
   const handleDropdown = () => {
     setDropDown((prev) => !prev);
   };
-  const hasToken = getCookie('accessToken');
+
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken === undefined) {
+      setHasToken(false);
+    } else {
+      setHasToken(true);
+    }
+  }, []);
 
   return (
     <header className="flex justify-between items-center py-16 px-120 bg-gray-10">

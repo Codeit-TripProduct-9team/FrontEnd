@@ -27,6 +27,7 @@ const Dropdown = ({ setDropDown }: { setDropDown: React.Dispatch<React.SetStateA
     removeCookie('accessToken');
     removeCookie('userId');
     removeCookie('nickname');
+    removeCookie('refreshToken');
   };
 
   return (
