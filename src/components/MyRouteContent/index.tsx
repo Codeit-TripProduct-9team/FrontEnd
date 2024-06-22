@@ -120,8 +120,14 @@ const MyRouteContent = () => {
 
   // save course data either by updating or creating new course
   const handleSaveCourse = async () => {
+    if (courseData.plan.length === 0 || flatCourseData.length === 0) {
+      openToast.error(TOAST_MESSAGE.EMPTY_COURSE);
+      return;
+    }
+
     openToast.success(TOAST_MESSAGE.SAVE);
     const updatedCourseData = { ...courseData, name: newCourseName || courseName };
+
     if (Number(courseId) > 0) {
       try {
         const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {
