@@ -50,11 +50,8 @@ const KakaoMap = ({ courseData, className }: KakaoMapProps) => {
     }
   }, [courseData]);
 
-  console.log(courseData);
-  console.log(positions);
-
   useEffect(() => {
-    if (positions.length === 0) return;
+    if (positions.length === 1) return;
 
     const data = {
       origin: {

@@ -12,7 +12,6 @@ const Header = () => {
     setDropDown((prev) => !prev);
   };
   const hasToken = getCookie('accessToken');
-  console.log(hasToken);
 
   return (
     <header className="flex justify-between items-center py-16 px-120 bg-gray-10">

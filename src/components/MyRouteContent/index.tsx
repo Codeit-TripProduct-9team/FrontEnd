@@ -31,7 +31,7 @@ const MyRouteContent = () => {
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
-  const { movePlace, addPlace } = useCourseStore();
+  const { movePlace, addPlace, setData } = useCourseStore();
   const userId = getCookie('userId');
   const router = useRouter();
   const { courseId } = router.query;
@@ -43,6 +43,13 @@ const MyRouteContent = () => {
       setSectionVisible(true);
     }
   };
+
+  // if creating new course, set data to empty
+  useEffect(() => {
+    if (courseId === undefined) {
+      setData({ name: '', plan: [] });
+    }
+  }, []);
 
   // fetch my place data and use its video id to fetch course data and combine them to create new data
   useEffect(() => {
