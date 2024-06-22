@@ -1,8 +1,10 @@
+import { useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 import ProductDescription from '../ProductDescription';
 import ProductReview from '../ProudctReview';
 
 import combineStyle from '@/src/utils/combineStyle';
-import useSelectContent from '@/src/hooks/useSelectContent';
 
 const contentButtonStyle = {
   base: 'w-334 pt-25 pb-28 h-full text-22',
@@ -11,15 +13,25 @@ const contentButtonStyle = {
 };
 
 const ChangeContent = () => {
-  const { content, handleSelectContent } = useSelectContent('product');
+  const topRef = useRef(null);
+  const router = useRouter();
   const { base, selected, notSelected } = contentButtonStyle;
 
-  const selectDescriptionContent = content === 'product';
-  const selectReviewContent = content === 'review';
+  const { query } = router;
+  const selectedContent = typeof query.content === 'string' ? query.content : 'product';
+
+  const selectDescriptionContent = selectedContent === 'product';
+  const selectReviewContent = selectedContent === 'review';
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedContent]);
 
   return (
     <>
-      <div id="top" className="flex justify-center w-full items-center bg-white">
+      <div ref={topRef} id="top" className="flex justify-center w-full items-center bg-white">
         <button
           className={combineStyle({
             isSelected: selectDescriptionContent,
@@ -27,7 +39,7 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => handleSelectContent('product')}
+          onClick={() => router.push({ pathname: router.pathname, query: { ...router.query, content: 'product' } })}
         >
           상품설명
         </button>
@@ -38,13 +50,21 @@ const ChangeContent = () => {
             selected: selected,
             notSelected: notSelected,
           })}
-          onClick={() => handleSelectContent('review')}
+          onClick={() => router.push({ pathname: router.pathname, query: { ...router.query, content: 'review' } })}
         >
           리뷰
         </button>
       </div>
-      {selectDescriptionContent && <ProductDescription />}
-      {selectReviewContent && <ProductReview />}
+      {selectDescriptionContent && (
+        <div ref={topRef}>
+          <ProductDescription />
+        </div>
+      )}
+      {selectReviewContent && (
+        <div className="w-full" ref={topRef}>
+          <ProductReview />
+        </div>
+      )}
     </>
   );
 };
