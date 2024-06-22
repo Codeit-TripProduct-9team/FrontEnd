@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import SearchIcon from '@/public/assets/icon/search.png';
+import SearchIcon from '@/public/assets/icon/search.svg';
 
 interface LocationInputProps {
   location: string;

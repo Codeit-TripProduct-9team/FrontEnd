@@ -50,6 +50,11 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
   };
 
   const handleChangeReview = async (reviewId: number) => {
+    if (editReveiwScore === 0) {
+      toast.error(TOAST_MESSAGE.EMPTY_SCORE);
+      return;
+    }
+
     const body = {
       title: editReviewTitle,
       nickname: hasLoggedInNickname,
@@ -100,7 +105,7 @@ const ReviewList = ({ reviewList, renderReviewList, videoId }: ReviewDataProps) 
             <li key={id} className="relative pb-32 border-b-1 border-gray-50">
               <div className="flex items-end gap-8 pb-8">
                 <h2 className="text-18 font-bold">{title}</h2>
-                <div className="text-12 text-gray-50">{nickname}</div>
+                <div className="text-14 text-gray-50">{nickname}</div>
                 <div className="text-12 text-gray-50">{convertDate(createdAt)}</div>
               </div>
               {editReviewId === id ? (

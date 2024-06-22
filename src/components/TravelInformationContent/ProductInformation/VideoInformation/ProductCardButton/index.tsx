@@ -16,6 +16,7 @@ import { currentPageUrl, shareFacebook, shareKakao, shareTwitter } from '@/src/u
 import { TOAST_MESSAGE } from '@/src/constants/constants';
 import informationPageRequestInstance from '@/src/api/InformationPageRequest';
 import { getCookie } from '@/src/utils/cookie';
+import { useRedirectStore } from '@/src/utils/zustand/useRedirectStore';
 
 interface ProductButtonProps {
   title: string | undefined;
@@ -30,9 +31,9 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   const videoId = route.query.id as string;
 
   const hasLoggeInUserId = getCookie('userId');
-  const hasToken = getCookie('accessToken');
   const userId = hasLoggeInUserId;
-  const isLoggedIn = hasToken !== null;
+
+  const { setRedirectUrl } = useRedirectStore();
 
   const sharedOverlay = useOverlay();
   const sharedOnModal = () => {
@@ -65,10 +66,6 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   }, [title, userId]);
 
   const handleRegistMyPlace = async () => {
-    if (!isLoggedIn) {
-      toast.error(TOAST_MESSAGE.FAILED_MY_PLACE);
-      return;
-    }
     try {
       const response = await informationPageRequestInstance.registerMyPlace(videoId);
       if (response.status === 200) {
@@ -84,7 +81,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
     try {
       const response = await informationPageRequestInstance.deleteMyPlace(videoId, userId);
       if (response.status === 200) {
-        toast.success(TOAST_MESSAGE.DELETE_MY_PLACE);
+        toast.error(TOAST_MESSAGE.DELETE_MY_PLACE);
         setMyPlaceRegistered(false);
       }
     } catch (error) {
@@ -93,7 +90,8 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
   };
 
   const handleRouteCustomCourse = async () => {
-    if (!hasToken) {
+    if (userId === undefined) {
+      setRedirectUrl(window.location.href);
       route.push('/signin');
       return;
     }
@@ -110,7 +108,7 @@ const ProductCardButton = ({ title, description, thumbnail }: ProductButtonProps
       <Button className="bg-blue w-134 h-39 text-18 font-bold" textColor={'white'} onClick={handleRouteCustomCourse}>
         지금 코스짜기
       </Button>
-      {hasToken &&
+      {userId &&
         (myPlcaeRegisterd ? (
           <Button className="bg-red w-161 h-39 text-18 font-bold" textColor={'white'} onClick={handleDeleteMyPlace}>
             마이플레이스 삭제

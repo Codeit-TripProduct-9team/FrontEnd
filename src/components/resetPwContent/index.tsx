@@ -1,22 +1,27 @@
-import { useOverlay } from '@toss/use-overlay';
 import ModalContent from '../common/modal/ModalContent';
 import Modal from '../common/modal';
-import { ERROR_MESSAGE, MODAL_MESSAGE } from '../../constants/constants';
+import { ERROR_MESSAGE, MODAL_MESSAGE, TOAST_MESSAGE } from '../../constants/constants';
 import Button from '../common/button';
-import { FieldError, useForm } from 'react-hook-form';
 import { InputForm } from '@/src/lib/types';
 import EmailInput from '../common/input';
 import VerifyInput from '../common/input';
+import PasswordInput from '../common/input/passwordInput';
+import PasswordCheckInput from '../common/input/passwordInput';
+import signPageRequestInstance from '@/src/api/signPageRequest';
+
+import { FieldError, useForm } from 'react-hook-form';
+import { useOverlay } from '@toss/use-overlay';
 import { useState } from 'react';
 
 import { instance } from '@/src/api/axios';
 import { REGEX } from '@/src/utils/regex';
-import SendEmail from '../common/Sendemail';
+// import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 
 const ResetPwContent = () => {
   const [isVerified, setIsVerified] = useState(false);
-  const [isValidateEmail, setIsValidateEmail] = useState(false);
+  // const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState<string | null>(null);
 
   const {
@@ -24,63 +29,69 @@ const ResetPwContent = () => {
     formState: { errors },
     getValues,
     clearErrors,
+    handleSubmit,
     watch,
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
-  //모달 사용
-  const certifiedOverlay = useOverlay();
-  const certifiedOnModal = () => {
-    return new Promise<boolean>((resolve) => {
-      certifiedOverlay.open(({ isOpen, close }) => (
-        <Modal
-          isOpen={isOpen}
-          close={() => {
-            resolve(true);
-            close();
-          }}
-        >
-          <ModalContent modalType={MODAL_MESSAGE.CERTIFIED_EMAIL} emoji={'💌'} />
-        </Modal>
-      ));
-    });
-  };
+
   const route = useRouter();
-  const emailValue = watch('email');
-  const isEmailvalid = !errors.email && isValidateEmail;
+  const overlay = useOverlay();
 
-  const checkDuplicate = async (emailValue: string) => {
+  const successChangeModal = () => {
+    overlay.open(({ isOpen, close }) => (
+      <Modal
+        isOpen={isOpen}
+        close={() => {
+          close();
+          setTimeout(() => {
+            route.push('/signin');
+          }, 100);
+        }}
+      >
+        <ModalContent modalType={MODAL_MESSAGE.CHANGE_PASSWORD} emoji={'✔️'} />
+      </Modal>
+    ));
+  };
+
+  const emailValue = watch('email') || '';
+  const password = watch('password') || '';
+  const passwordCheck = watch('passwordcheck') || '';
+  // const isEmailvalid = !errors.email && isValidateEmail;
+  const isPwValid = password === passwordCheck && password.length > 0 && Object.keys(errors).length === 0;
+
+  const checkVerificationCode = async () => {
+    // const verifyValue = getValues('verify');
+    // const validCode = verifyValue === verificationCode;
+    // if (validCode) toast.success(TOAST_MESSAGE.VERIFY);
+    // else toast.error(TOAST_MESSAGE.FAILED_VERIFY);
     try {
-      //'/auth/check-emil'
-      const body = { email: emailValue };
-      const response = await instance.post('https://bootcamp-api.codeit.kr/api/linkbrary/v1/users/check-email', body);
-      if (response.status === 200) {
-        setIsValidateEmail(true);
+      if (Object.keys(errors).length !== 0) {
+        const response = await signPageRequestInstance.overlapEmail(emailValue);
+        if (response.status === 200) {
+          toast.error(TOAST_MESSAGE.FAILED_VERIFY);
+          //아래 코드 삭제할 것
+          setVerificationCode('11');
+        }
       }
-
-      return response.status !== 409;
-    } catch (error: any) {
-      console.error(error);
-      if (error.response.status === 409) {
-        console.log(ERROR_MESSAGE.DUPLICATE_EMAIL);
-      }
+    } catch (e) {
+      toast.success(TOAST_MESSAGE.VERIFY);
+      setIsVerified(true);
     }
   };
-  const checkVerificationCode = async () => {
-    const verifyValue = getValues('verify');
-    const validCode = verifyValue === verificationCode;
-    if (validCode) {
-      setIsVerified(true);
-      const move = await certifiedOnModal(); //모달
-      if (move) {
-        console.log('move');
-        route.push('/reset-password/change-password');
-      }
+
+  const handleChangePassword = async () => {
+    console.log(emailValue, password, passwordCheck);
+    try {
+      const response = await signPageRequestInstance.changePassword(emailValue, password, passwordCheck);
+      if (response.status === 200) successChangeModal();
+    } catch (e) {
+      console.error(e);
     }
   };
 
   return (
     <section className=" flex flex-col w-408">
       <h1 className="text-24 font-bold ">비밀번호 찾기</h1>
-      <form className=" flex flex-col">
+      <form className=" flex flex-col" onSubmit={handleSubmit(handleChangePassword)}>
         <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <EmailInput
@@ -93,10 +104,6 @@ const ResetPwContent = () => {
                   value: REGEX.EMAIL,
                   message: ERROR_MESSAGE.INVALID_EMAIL_FORMAT,
                 },
-                validate: async (emailValue) => {
-                  const isDuplicate = await checkDuplicate(emailValue);
-                  return isDuplicate || ERROR_MESSAGE.DUPLICATE_EMAIL;
-                },
               })}
               type="email"
               clearError={clearErrors}
@@ -108,13 +115,13 @@ const ResetPwContent = () => {
               disabled={isVerified}
             />
           </div>
-          <SendEmail
+          {/* <SendEmail
             isVerified={isVerified}
             userEmail={emailValue}
             disabled={!isEmailvalid}
             setVerificationCode={setVerificationCode}
             error={errors.email?.message}
-          />
+          /> */}
         </div>
         <div className="flex items-center w-full gap-10">
           <div className="w-full">
@@ -133,19 +140,68 @@ const ResetPwContent = () => {
               inputContent="인증코드"
               labelId="verify"
               focusType="verify"
-              disabled={!isEmailvalid || isVerified}
+              // disabled={!isEmailvalid || isVerified}
               isSuccess={isVerified}
             />
           </div>
           <Button
             type="button"
             className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`}
-            disabled={!isEmailvalid}
+            // disabled={!isEmailvalid}
             onClick={checkVerificationCode}
           >
             인증 요청
           </Button>
         </div>
+        <div>
+          <PasswordInput
+            register={register('password', {
+              required: {
+                value: true,
+                message: ERROR_MESSAGE.EMPTY_PASSWORD,
+              },
+              pattern: {
+                value: REGEX.PASSWORD,
+                message: ERROR_MESSAGE.INVALID_PASSWORD_FORMAT,
+              },
+            })}
+            type="password"
+            clearError={clearErrors}
+            error={errors.password as FieldError}
+            inputName="password"
+            inputContent="비밀번호"
+            labelId="password"
+            focusType="password"
+            disabled={!isVerified}
+            divCheckStyle={!isVerified ? 'bg-gray-20' : 'bg-white'}
+          />
+          <PasswordCheckInput
+            register={register('passwordcheck', {
+              required: {
+                value: true,
+                message: ERROR_MESSAGE.EMPTY_PASSWORD,
+              },
+              validate: (value) => value === getValues('password') || ERROR_MESSAGE.PASSWORDS_DO_NOT_MATCH,
+            })}
+            type="password"
+            clearError={clearErrors}
+            error={errors.passwordcheck as FieldError}
+            inputName="passwordcheck"
+            inputContent="비밀번호 확인"
+            labelId="passwordcheck"
+            focusType="passwordcheck"
+            disabled={!isVerified}
+            divCheckStyle={!isVerified ? 'bg-gray-20' : 'bg-white'}
+          />
+        </div>
+        <Button
+          type="submit"
+          className={`w-full mt-20 ${isPwValid ? 'cursor-pointer' : 'bg-gray-50 cursor-auto'}`}
+          disabled={!isPwValid}
+          onClick={handleChangePassword}
+        >
+          변경하기
+        </Button>
       </form>
     </section>
   );

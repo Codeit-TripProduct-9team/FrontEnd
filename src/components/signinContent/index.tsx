@@ -15,6 +15,7 @@ import { openToast } from '@/src/utils/openToast';
 import { useRouter } from 'next/router';
 import { setCookie } from '@/src/utils/cookie';
 import { userDataStore } from '@/src/utils/zustand/userDataStore';
+import { useRedirectStore } from '@/src/utils/zustand/useRedirectStore';
 
 interface InputForm {
   text?: string;
@@ -38,6 +39,7 @@ const SigninContent = () => {
   } = useForm<InputForm>({ mode: 'onBlur', reValidateMode: 'onBlur' });
 
   const { setUserData } = userDataStore();
+  const { redirectUrl, clearRedirectUrl } = useRedirectStore();
 
   const router = useRouter();
 
@@ -71,7 +73,13 @@ const SigninContent = () => {
         setCookie('accessToken', accessToken, {
           path: '/',
         });
-        router.push('/');
+        if (redirectUrl) {
+          router.push(redirectUrl);
+          clearRedirectUrl();
+        }
+        if (!redirectUrl) {
+          router.push('/');
+        }
       }
     } catch (error: any) {
       console.log(error);

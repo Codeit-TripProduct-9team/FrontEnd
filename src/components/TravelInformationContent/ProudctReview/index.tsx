@@ -35,7 +35,7 @@ const ProductReview = () => {
         setScrollControlEvent(scrollControlEvent);
       }
     } catch (error) {
-      console.error(error);
+      setReviewList([]);
     }
   }, [sortType, videoId, queryNumber]);
 

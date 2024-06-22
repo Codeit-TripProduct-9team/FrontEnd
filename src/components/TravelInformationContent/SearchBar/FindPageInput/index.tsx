@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import SearchIcon from '@/public/assets/icon/search-header.svg';
+import SearchIcon from '@/public/assets/icon/search.svg';
 
 interface SearchPageProps {
   searchKeyword: string;
