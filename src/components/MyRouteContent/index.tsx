@@ -15,10 +15,10 @@ import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStor
 import { useMyPlaceStore } from '@/src/utils/zustand/useMyPlaceStore';
 import { getCookie } from '@/src/utils/cookie';
 import { instance } from '@/src/api/axios';
-import { userDataStore } from '@/src/utils/zustand/userDataStore';
 import { useRouter } from 'next/router';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import { CardDataItem } from '@/src/lib/types';
+import combineVideoPlace from '@/src/api/combineVideoPlace';
 // import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 // import RelatedSearchInfo from '../mainContent/ListSearchSection/RelatedSearchInfo';
 
@@ -32,9 +32,8 @@ const MyRouteContent = () => {
   const courseName = useCourseStore((state) => state.data.name);
   const courseData = useCourseStore((state) => state.data);
   const flatCourseData = courseData.plan.flatMap((data) => data.place);
-  const { movePlace, addPlace } = useCourseStore();
-  const { userData } = userDataStore();
-  const userId = userData.id;
+  const { movePlace, addPlace, setData } = useCourseStore();
+  const userId = getCookie('userId');
   const router = useRouter();
   const { courseId } = router.query;
   const [newCourseName, setNewCourseName] = useState<string>('');
@@ -46,58 +45,43 @@ const MyRouteContent = () => {
     }
   };
 
+  // if creating new course, set data to empty
   useEffect(() => {
-    const fetchMyPlace = async () => {
-      try {
-        if (!userId) return;
-        const videoData = await instance.get(`/user/${userId}/video`);
-        const modifiedVideoData = videoData.data.data.map((item) => ({
-          content: item.content,
-          id: item.id,
-          videoUrl: item.videoUrl,
-          tags: item.tags,
-          title: item.title,
-        }));
+    if (courseId === undefined) {
+      setData({ name: '', plan: [] });
+    }
+  }, [courseId, setData]);
 
-        const videoId = videoData.data.data.map((item) => item.id);
-        Promise.all(videoId.map((id) => instance.get(`/course/${id}`))).then((responses) => {
-          // responses is an array of responses for each request
-          const combinedData = responses.map((response, index) => {
-            const courseData = response.data.data.course[0];
-            return {
-              content: modifiedVideoData[index].content,
-              id: modifiedVideoData[index].id,
-              videoUrl: modifiedVideoData[index].videoUrl,
-              tags: modifiedVideoData[index].tags,
-              title: modifiedVideoData[index].title,
-              name: courseData.name,
-              img: courseData.img,
-              description: courseData.description,
-              posX: courseData.posX,
-              posY: courseData.posY,
-            };
-          });
-          setMyPlaceData(combinedData);
-        });
-      } catch (error) {
-        console.error('Error fetching card list:', error);
-      }
+  // fetch my place data and use its video id to fetch course data and combine them to create new data
+  useEffect(() => {
+    if (!userId) return;
+    const fetchData = async () => {
+      await combineVideoPlace(userId).then((data) => setMyPlaceData(data));
     };
-    fetchMyPlace();
+    fetchData();
   }, [setMyPlaceData, userId]);
 
+  // call when dnd ends
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
+    // if there is no destination, do nothing
     if (!destination) {
       return;
     }
 
-    if (destination) {
+    // if the destination is my place, do nothing
+    if (destination.droppableId === 'myPlace') {
+      return;
+    }
+
+    // if place element is moved inside course, move the place
+    if (destination && source.droppableId !== 'myPlace') {
       const fromIndex = source.index;
       const toIndex = destination.index;
       movePlace(parseInt(source.droppableId), fromIndex, parseInt(destination.droppableId), toIndex);
     }
 
+    // if place element is moved from my place to course, add the place
     if (destination && source.droppableId === 'myPlace') {
       const card = myPlaceData.find((card) => card.name === draggableId);
       const hasDuplicate = flatCourseData.some((place) => place.name === card.name);
@@ -121,7 +105,7 @@ const MyRouteContent = () => {
   const handleAddPlaceModal = () => {
     overlay.open(({ isOpen, close }) => (
       <Modal isOpen={isOpen} close={close} noClose={true} className="w-600 px-19 py-15 h-345">
-        <AddPlaceModal />
+        <AddPlaceModal close={close} />
       </Modal>
     ));
   };
@@ -134,9 +118,16 @@ const MyRouteContent = () => {
     ));
   };
 
+  // save course data either by updating or creating new course
   const handleSaveCourse = async () => {
+    if (courseData.plan.length === 0 || flatCourseData.length === 0) {
+      openToast.error(TOAST_MESSAGE.EMPTY_COURSE);
+      return;
+    }
+
     openToast.success(TOAST_MESSAGE.SAVE);
-    const updatedCourseData = { ...courseData, name: newCourseName };
+    const updatedCourseData = { ...courseData, name: newCourseName || courseName };
+
     if (Number(courseId) > 0) {
       try {
         const response = await instance.post(`/user/${userId}/course/${courseId}`, updatedCourseData, {

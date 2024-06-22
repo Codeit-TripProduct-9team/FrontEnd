@@ -1,4 +1,5 @@
 import { CourseStore } from './useCourseStore';
+import reorderIndex from '../../reorderIndex';
 
 interface MovePlaceProps {
   (state: CourseStore, fromDay: number, fromIndex: number, toDay: number, toIndex: number): CourseStore;
@@ -24,13 +25,7 @@ const movePlace: MovePlaceProps = (state, fromDay, fromIndex, toDay, toIndex) =>
       // Add place to the new day at the target index
       newPlan[toPlanIndex].place.splice(toPlaceIndex, 0, placeToMove);
 
-      // Reassign index values in ascending order
-      let globalIndex = 1;
-      for (let j = 0; j < newPlan.length; j++) {
-        for (let i = 0; i < newPlan[j].place.length; i++) {
-          newPlan[j].place[i].index = globalIndex++;
-        }
-      }
+      reorderIndex(newPlan);
       return { ...state, data: { ...state.data, plan: newPlan } };
     }
   }

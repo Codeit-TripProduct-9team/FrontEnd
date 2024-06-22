@@ -1,4 +1,4 @@
-import ModalPlaceList from '../AddPlaceModal.tsx/ModalPlaceList';
+import ModalPlaceList from './ModalPlaceList';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { instance } from '@/src/api/axios';
@@ -40,14 +40,14 @@ const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) =>
       ? courseData.flatMap((course) => {
           return course.place.map((place) => {
             const { index, name, img, posX, posY } = place;
-            return { id: index, name, mainImg: img, position: { lat: posX, lng: posY } };
+            return { id: index, name, img: img, position: { lat: posX, lng: posY } };
           });
         })
       : [
           {
             id: 1,
             name: '을지로입구역',
-            mainImg: '',
+            img: '',
             position: { lat: 37.5661, lng: 126.9827 },
           },
         ];
@@ -127,6 +127,7 @@ const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) =>
             key={`${marker.name}-${index}`}
             position={marker.position}
             onClick={() => setSelectedMarker(marker)}
+            zIndex={1}
             image={{
               src: 'https://cdn4.iconfinder.com/data/icons/essentials-72/24/025_-_Location-1024.png',
               size: {
@@ -136,7 +137,7 @@ const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) =>
             }}
           />
         ))}
-        <CustomOverlayMap position={selectedPlace.position} yAnchor={2}>
+        <CustomOverlayMap position={selectedPlace.position} yAnchor={2} zIndex={2}>
           <div className="relative px-6 py-3 text-white bg-blue rounded-l shadow-sub">
             <p>{selectedPlace.name}</p>
             <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-t-8 border-t-blue border-l-8 border-l-transparent border-r-8 border-r-transparent" />
@@ -144,7 +145,7 @@ const AddNearbyPlaceModal = ({ close, courseData }: AddNearbyPlaceModalProps) =>
         </CustomOverlayMap>
 
         {selectedMarker && (
-          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.45} zIndex={2} clickable={true}>
+          <CustomOverlayMap position={selectedMarker.position} yAnchor={1.45} zIndex={3} clickable={true}>
             <div className="relative rounded-s flex flex-col gap-4 bg-white w-300">
               <div className="bg-blue text-white font-bold p-6 rounded-t-s flex justify-between items-center">
                 <h1>{selectedMarker.name}</h1>

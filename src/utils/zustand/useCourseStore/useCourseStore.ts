@@ -4,8 +4,8 @@ import removeDay from './removeDay';
 import addPlace from './addPlace';
 import removePlace from './removePlace';
 import movePlace from './movePlace';
+import setData from './setData';
 import { Course, Place, Plan } from '@/src/lib/types';
-import { mockMyCourse } from '../../../components/MyRouteContent/mockMyRoute';
 
 export type CourseStore = {
   data: Course;
@@ -18,8 +18,8 @@ export type CourseStore = {
 };
 
 export const useCourseStore = create<CourseStore>((set) => ({
-  data: mockMyCourse,
-  setData: (data) => set((state) => ({ ...state, data })),
+  data: { name: '', plan: [] },
+  setData: (data) => set((state) => setData(state, data)),
   addDay: (newDay) => set((state) => addDay(state, newDay)),
   removeDay: (dayIndex) => set((state) => removeDay(state, dayIndex)),
   addPlace: (day, newPlace) => set((state) => addPlace(state, day, newPlace)),
