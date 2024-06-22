@@ -62,7 +62,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
               <MyRouteListCard key={index} data={data} />
             ))}
           </div>
-          {offset > 1 && (
+          {maxOffset > 1 && (
             <div className="absolute bottom-30 left-350">
               <MyRouteCardSectionPagination
                 offset={offset}
