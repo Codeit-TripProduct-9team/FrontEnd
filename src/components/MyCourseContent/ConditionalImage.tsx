@@ -15,7 +15,7 @@ const ConditionalImage = ({ img, className }: ConditionalImageProps) => {
         {img === 'img' ? (
           <Image src={noImage} alt="img" layout="fill" objectFit="cover" />
         ) : (
-          <Image src={img} alt="place" layout="fill" objectFit="cover" />
+          <Image src={img.replace(/'/g, '')} alt="place" layout="fill" objectFit="cover" />
         )}
       </span>
     </div>

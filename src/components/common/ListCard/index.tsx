@@ -87,7 +87,7 @@ const ListCard = ({ data }: ListCardProps) => {
       setMyPlace(checkRegister);
     };
     compareMyPlaceWithCardListId();
-  }, [userId]);
+  }, [userId, token]);
 
   if (!myPlace) return;
   return (

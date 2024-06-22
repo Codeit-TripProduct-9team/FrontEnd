@@ -1,3 +1,4 @@
+import reorderIndex from '../../reorderIndex';
 import { CourseStore } from './useCourseStore';
 import { Place } from '@/src/lib/types';
 
@@ -13,13 +14,8 @@ const addPlace: AddPlaceProps = (state, day, newPlace) => {
 
     newPlan[dayIndex].place = newPlaceList;
 
-    // Reassign index values in ascending order
-    let globalIndex = 1;
-    for (let j = 0; j < newPlan.length; j++) {
-      for (let i = 0; i < newPlan[j].place.length; i++) {
-        newPlan[j].place[i].index = globalIndex++;
-      }
-    }
+    reorderIndex(newPlan);
+
     return { ...state, data: { ...state.data, plan: newPlan } };
   }
 };
