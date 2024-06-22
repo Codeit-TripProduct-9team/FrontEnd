@@ -35,7 +35,7 @@ const ProductReview = () => {
         setScrollControlEvent(scrollControlEvent);
       }
     } catch (error) {
-      console.error(error);
+      setReviewList([]);
     }
   }, [sortType, videoId, queryNumber]);
 
@@ -78,6 +78,7 @@ const ProductReview = () => {
   }, [sortType]);
 
   const emptyReveiwData = reviewList.length === 0;
+  console.log(reviewList);
 
   return (
     <section className="flex flex-col w-full pt-65 px-110 bg-white">
