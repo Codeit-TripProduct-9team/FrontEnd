@@ -62,7 +62,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
       return parsedUrl.href;
     } catch (e) {
       console.error('Invalid image URL', url);
-      return 'img';
+      return '';
     }
   };
 
@@ -116,7 +116,13 @@ const CourseItem = ({ id, name, plan }: Course) => {
           <div onClick={handleLoadMoreClick} className="relative w-321 h-180 rounded-s overflow-hidden cursor-pointer">
             <div className="absolute bg-black opacity-50 w-full h-full"></div>
             <p className="absolute top-80 left-130 text-white">+ {remainingCount} more</p>
-            <Image key={fourthPlace.index} src={fourthPlace.img || noImage} alt="place" width={321} height={207} />
+            <Image
+              key={fourthPlace.index}
+              src={getValidImageUrl(fourthPlace.img) || noImage}
+              alt="place"
+              width={321}
+              height={207}
+            />
           </div>
         )}
       </div>
