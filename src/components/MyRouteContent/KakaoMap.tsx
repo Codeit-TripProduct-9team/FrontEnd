@@ -51,7 +51,10 @@ const KakaoMap = ({ courseData, className }: KakaoMapProps) => {
   }, [courseData]);
 
   useEffect(() => {
-    if (positions.length === 1) return;
+    if (positions.length === 1) {
+      setPath([]);
+      return;
+    }
 
     const data = {
       origin: {
