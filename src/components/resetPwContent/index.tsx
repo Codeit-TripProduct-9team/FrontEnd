@@ -13,7 +13,6 @@ import { FieldError, useForm } from 'react-hook-form';
 import { useOverlay } from '@toss/use-overlay';
 import { useState } from 'react';
 
-import { instance } from '@/src/api/axios';
 import { REGEX } from '@/src/utils/regex';
 // import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';
@@ -76,15 +75,15 @@ const ResetPwContent = () => {
       toast.success(TOAST_MESSAGE.VERIFY);
       setIsVerified(true);
     }
+    console.clear();
   };
 
   const handleChangePassword = async () => {
-    console.log(emailValue, password, passwordCheck);
     try {
       const response = await signPageRequestInstance.changePassword(emailValue, password, passwordCheck);
       if (response.status === 200) successChangeModal();
     } catch (e) {
-      console.error(e);
+      toast.error(TOAST_MESSAGE.FAILED_VERIFY);
     }
   };
 

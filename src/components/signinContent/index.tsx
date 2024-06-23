@@ -67,12 +67,12 @@ const SigninContent = () => {
         });
 
         const accessToken = response.data.data.token.accessToken;
+        const refreshToken = response.data.data.token.refreshToken;
         openToast.success(TOAST_MESSAGE.LOGIN);
         setCookie('userId', userData.id);
         setCookie('nickname', userData.nickname);
-        setCookie('accessToken', accessToken, {
-          path: '/',
-        });
+        setCookie('accessToken', accessToken);
+        setCookie('refreshToken', refreshToken);
         if (redirectUrl) {
           router.push(redirectUrl);
           clearRedirectUrl();

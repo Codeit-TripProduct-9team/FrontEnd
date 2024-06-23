@@ -1,20 +1,40 @@
 import SearchBar from '@/src/components/MyRouteContent/SearchBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChangeEvent } from 'react';
-// import { CardDataItem } from '@/src/lib/types';
-// import { useFilteredData } from '@/src/hooks/useFilteredData';
-// import { mock } from '@/src/components/mainContent/mock';
-// import ModalPlaceList from './ModalPlaceList';
+import { MyPlace } from '@/src/lib/types';
+import combineVideoPlace from '@/src/api/combineVideoPlace';
+import { CardDataItem } from '@/src/lib/types';
+import { useFilteredData } from '@/src/hooks/useFilteredData';
+import ModalPlaceList from '../AddNearbyPlaceModal.tsx/ModalPlaceList';
+import truncateText from '@/src/utils/truncateText';
 
-const AddPlaceModal = () => {
+interface AddPlaceModalProps {
+  close: () => void;
+}
+
+const AddPlaceModal = ({ close }: AddPlaceModalProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
-  // const filteredData: CardDataItem[] = useFilteredData({ data: mock.data }, searchValue);
-  // const modifiedData = filteredData.map((item) => ({
-  //   id: item.id,
-  //   mainImg: item.thumbnail,
-  //   name: item.title,
-  //   description: item.description,
-  // }));
+  const [placeData, setPlaceData] = useState<MyPlace[]>([]);
+  const MAXIMUM_DESCRIPTION_LENGTH = 95;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await combineVideoPlace().then((data) => setPlaceData(data));
+    };
+    fetchData();
+  }, []);
+
+  const filteredData: CardDataItem[] = useFilteredData({ data: placeData }, searchValue);
+
+  const modifiedData = filteredData.map((item) => ({
+    id: item.id,
+    img: item.img,
+    name: item.name,
+    description: truncateText(item.description, MAXIMUM_DESCRIPTION_LENGTH),
+    posX: item.posX,
+    posY: item.posY,
+  }));
+
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
   };
@@ -27,7 +47,7 @@ const AddPlaceModal = () => {
         setSearchValue={setSearchValue}
         className="w-full mb-10"
       />
-      {/* <ModalPlaceList data={modifiedData} /> */}
+      <ModalPlaceList data={modifiedData} close={close} hasAddPlace />
     </div>
   );
 };
