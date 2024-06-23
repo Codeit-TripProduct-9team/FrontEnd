@@ -56,7 +56,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
         <>
           <div className={`grid grid-cols-3 gap-12`}>
             {paginatedData.map((data, index) => (
-              <MyRouteListCard key={index} data={data} />
+              <MyRouteListCard key={index} data={data} offset={offset} />
             ))}
           </div>
           {maxOffset > 1 && (

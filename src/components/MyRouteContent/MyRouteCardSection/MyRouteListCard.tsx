@@ -8,9 +8,10 @@ import { useEffect, useState } from 'react';
 
 interface ListCardProps {
   data: CardDataItem;
+  offset: number;
 }
 
-const MyRouteListCard = ({ data }: ListCardProps) => {
+const MyRouteListCard = ({ data, offset }: ListCardProps) => {
   const { description, img, name, id, tags, title, videoUrl } = data;
   const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
@@ -18,10 +19,11 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
-  }, []);
+  }, [offset]);
 
   if (isLoading) {
     return <MyPlaceCardSkeleton />;
