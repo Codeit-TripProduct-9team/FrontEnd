@@ -3,7 +3,6 @@ import getCookieForServer from './utils/getCookieForServer';
 
 export function middleware(request: NextRequest) {
   const isAuthenticated = getCookieForServer('accessToken', request);
-  console.log('isAuthenticated', isAuthenticated);
 
   // If the user is authenticated, continue as normal
   if (isAuthenticated) {
