@@ -5,6 +5,7 @@ import Image from 'next/image';
 import SignStar from '@/public/assets/icon/star.svg';
 import UtripLogo from '@/public/assets/icon/logo-header.svg';
 import Link from 'next/link';
+import { Toaster } from 'react-hot-toast';
 
 const SignLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -19,15 +20,16 @@ const SignLayout = ({ children }: PropsWithChildren) => {
           <div className="flex gap-5">
             {[...Array(5)].map((_, i) => (
               <Image key={i} src={SignStar} width={25} height={25} alt="star" />
-            ))}{' '}
+            ))}
           </div>
           <p className="w-347 text-gray-80 mt-36 mb-16 mx-112 text-center">
             유튜브에서 본 멋진 여행지들을 직접 경험할 수 있어서 너무 좋았어요. 이 웹사이트는 단순히 여행지만 알려주는
-            것이 아니라, 구체적인 일정과 추천 장소까지 제공해줘서 여행 준비가 훨씬 쉬워졌어요.{' '}
+            것이 아니라, 구체적인 일정과 추천 장소까지 제공해줘서 여행 준비가 훨씬 쉬워졌어요.
           </p>
           <div className="text-12 text-gray-50 mb-24">김OO - 20대 대학생, 유튜브 팬</div>
         </div>
       </div>
+      <Toaster position="bottom-center" />
     </main>
   );
 };

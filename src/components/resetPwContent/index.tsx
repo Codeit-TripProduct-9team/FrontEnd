@@ -75,15 +75,15 @@ const ResetPwContent = () => {
       toast.success(TOAST_MESSAGE.VERIFY);
       setIsVerified(true);
     }
+    console.clear();
   };
 
   const handleChangePassword = async () => {
-    console.log(emailValue, password, passwordCheck);
     try {
       const response = await signPageRequestInstance.changePassword(emailValue, password, passwordCheck);
       if (response.status === 200) successChangeModal();
     } catch (e) {
-      console.error(e);
+      toast.error(TOAST_MESSAGE.FAILED_VERIFY);
     }
   };
 
