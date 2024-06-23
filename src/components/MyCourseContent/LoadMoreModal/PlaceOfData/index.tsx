@@ -5,12 +5,21 @@ type PlaceOfDataProps = {
   data: Place;
 };
 const PlaceOfData = ({ data }: PlaceOfDataProps) => {
+  const getValidImageUrl = (url: string) => {
+    try {
+      const parsedUrl = new URL(url);
+      return parsedUrl.href;
+    } catch (e) {
+      console.error('Invalid image URL', url);
+      return 'img';
+    }
+  };
   return (
     <div className="flex flex-row justify-between items-center mb-5">
       <p className="p-10 ">
         {data.index}. {data.name}
       </p>
-      <ConditionalImage img={data.img} className="w-154 h-120" />
+      <ConditionalImage img={getValidImageUrl(data.img)} className="w-154 h-120" />
     </div>
   );
 };
