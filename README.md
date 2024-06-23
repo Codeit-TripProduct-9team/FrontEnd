@@ -8,6 +8,12 @@
 
 ## 프로젝트 소개
 
+<ul>
+  <li> 유튜버의 검증된 코스 그대로 평소 좋아했던 유튜버의 여행을 그대로 따라 갈 수 있도록 정보를 제공하는 서비스 입니다.</li>
+  <li> 유튜버의 영상과 함께 장소에 대한 정보를 제공합니다. </li>
+  <li> 마이 플레이스 등록 후 간편하게 코스를 편집하는 기능을 지도와 함께 제공합니다.</li>
+</ul>
+
 <br>
 
 ## 팀원 소개
@@ -89,5 +95,62 @@
 
 ## 페이지별 기능
 
-### 1. 홈페이지
+### 1. 메인페이지
 
+<div align="center">
+  <b>메인페이지</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/af64751e-aa05-4bb6-b5f2-45cba2ab1bd0'>
+</div>
+
+### 2. 상세페이지
+
+<div align="center">
+  <b>유튜브영상(마이플레이스 등록)</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/3493be34-ab69-45e3-8382-f37cb7b7648a'>
+</div>
+<div align="center">
+  <b>위치(길찾기)</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/29102e65-1adc-4f6d-8202-3acab0b47e55'>
+</div>
+<div align="center">
+  <b>리뷰</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/1b05b8b4-b0f0-4655-839c-43656b94245a'>
+</div>
+
+### 3. 마이페이지
+
+<div align="center">
+  <b>마이페이지</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/b7305ff6-ca04-4157-9c60-269fd60ecd94'>
+</div>
+
+### 4. 마이루트
+
+<div align="center">
+  <b>코스 만들기</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/b0bea18c-fe61-487a-a50c-935df7a9e934'>
+</div>
+
+<div align="center">
+  <b>카드 및 근처 장소 추가</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/ae1c116d-6de9-438e-852d-b29753666909'>
+</div>
+
+### 5. 회원가입, 로그인, 비밀번호 찾기
+
+<div align="center">
+  <b>회원가입</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/8f822892-6b7c-4dcc-9418-d4156b7443f4'>
+</div>
+
+<div align="center">
+  <b>로그인</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/9f606331-cc1e-4ded-b7e0-29addd5a1bbb'>
+</div>
+
+<div align="center">
+  <b>비밀번호 찾기</b><br>
+  <img src='https://github.com/Codeit-TripProduct-9team/FrontEnd/assets/105029085/49db47f1-0d07-412d-b13d-e076227536a5'>
+</div>
+
+## 트러블슈팅
