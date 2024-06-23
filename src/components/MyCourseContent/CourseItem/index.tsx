@@ -10,6 +10,7 @@ import pencil from '@/public/assets/icon/pencilIcon.png';
 import { useRouter } from 'next/router';
 import DeleteCourseModal from '../DeleteCourseModal';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import noImage from '@/public/assets/image/noImage.png';
 
 const CourseItem = ({ id, name, plan }: Course) => {
   const { setData } = useCourseStore();
@@ -115,13 +116,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
           <div onClick={handleLoadMoreClick} className="relative w-321 h-180 rounded-s overflow-hidden cursor-pointer">
             <div className="absolute bg-black opacity-50 w-full h-full"></div>
             <p className="absolute top-80 left-130 text-white">+ {remainingCount} more</p>
-            <Image
-              key={fourthPlace.index}
-              src={getValidImageUrl(fourthPlace.img)}
-              alt="place"
-              width={321}
-              height={207}
-            />
+            <Image key={fourthPlace.index} src={fourthPlace.img || noImage} alt="place" width={321} height={207} />
           </div>
         )}
       </div>

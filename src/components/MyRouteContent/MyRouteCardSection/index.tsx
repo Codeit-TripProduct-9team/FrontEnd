@@ -1,8 +1,6 @@
-// import { MockMyRouteItem } from '../mockMyRoute';
 import { CardDataItem } from '@/src/lib/types';
 import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
-import NoSearchData from '../../mainContent/CardSection/NoSearchData';
 import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
 
 interface filteredDataProps {
@@ -16,6 +14,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
   const [sort, setSort] = useState<string>('인기순');
   const [offset, setOffset] = useState(1);
   const maxOffset = Math.ceil(filteredData.length / 9);
+  const paginatedData = filteredData.slice((offset - 1) * 9, offset * 9);
 
   const handleNextPage = () => {
     if (offset < maxOffset) {
@@ -38,8 +37,6 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
     }
   };
 
-  const paginatedData = filteredData.slice((offset - 1) * 9, offset * 9);
-
   return (
     <>
       <div className="flex mb-20 justify-between">
@@ -59,11 +56,11 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
         <>
           <div className={`grid grid-cols-3 gap-12`}>
             {paginatedData.map((data, index) => (
-              <MyRouteListCard key={index} data={data} />
+              <MyRouteListCard key={index} data={data} offset={offset} />
             ))}
           </div>
           {maxOffset > 1 && (
-            <div className="absolute bottom-30 left-350">
+            <div className="absolute bottom-30 transform left-1/2 -translate-x-1/2">
               <MyRouteCardSectionPagination
                 offset={offset}
                 setOffset={setOffset}
@@ -76,7 +73,9 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
         </>
       ) : (
         <div className="text-center">
-          <NoSearchData />
+          <div className="mt-350 text-20 font-bold">
+            <p>장소를 마이플레이스에 추가해주세요.</p>
+          </div>
         </div>
       )}
     </>
