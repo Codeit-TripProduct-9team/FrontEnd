@@ -10,6 +10,7 @@ import Image from 'next/image';
 import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
+import { useRerenderStore } from '@/src/utils/zustand/useRerenderStore';
 
 const ListSearchSection = () => {
   const [cardData, setCardData] = useState([]);
@@ -19,6 +20,7 @@ const ListSearchSection = () => {
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
   const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
+  const { reRender } = useRerenderStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -42,7 +44,7 @@ const ListSearchSection = () => {
       }
     };
     fetchAndLogCardList();
-  }, []);
+  }, [reRender]);
 
   return (
     <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">

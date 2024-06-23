@@ -9,6 +9,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import trashIcon from '@/public/assets/icon/trashIcon.png';
 import adminPageRequestInstance from '@/src/api/adminPageRequest';
+import { useRerenderStore } from '@/src/utils/zustand/useRerenderStore';
 
 interface ListCardProps {
   data: CardDataItem;
@@ -22,6 +23,7 @@ const ListCard = ({ data }: ListCardProps) => {
   const userNickname = getCookie('nickname');
   const [myPlace, setMyPlace] = useState<number[]>([]);
   const [isPending, setIsPending] = useState(false);
+  const { setRerender, reRender } = useRerenderStore();
 
   const handleClickMyPlace = async (e: MouseEvent) => {
     e.preventDefault();
@@ -71,7 +73,7 @@ const ListCard = ({ data }: ListCardProps) => {
       const response = await adminPageRequestInstance.deleteVideo(data.id);
       if (response.status === 200) {
         toast.success(TOAST_MESSAGE.DELETE_MY_PLACE);
-        setIsPending(false);
+        setRerender(!reRender);
       }
     } catch (error) {
       console.error(error);
