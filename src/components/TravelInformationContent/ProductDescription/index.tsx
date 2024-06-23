@@ -66,9 +66,9 @@ const ProductDescription = () => {
     const getDestinationDirection = async () => {
       const hasStartPoint = startPoint.lat !== null && startPoint.lng !== null;
 
-      const hasDesination = videoPlaceData.posX !== undefined || videoPlaceData.posY !== undefined;
+      const hasDestination = videoPlaceData.posX !== undefined || videoPlaceData.posY !== undefined;
 
-      if (!hasDesination) {
+      if (!hasDestination) {
         return;
       }
 
