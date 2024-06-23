@@ -2,7 +2,6 @@
 import { CardDataItem } from '@/src/lib/types';
 import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
-import NoSearchData from '../../mainContent/CardSection/NoSearchData';
 import MyRouteCardSectionPagination from './MyRouteCardSectionPagination';
 
 interface filteredDataProps {
@@ -55,7 +54,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
           />
         ))}
       </div>
-      {paginatedData.length !== 0 ? (
+      {paginatedData.length == 0 ? (
         <>
           <div className={`grid grid-cols-3 gap-12`}>
             {paginatedData.map((data, index) => (
@@ -76,7 +75,9 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
         </>
       ) : (
         <div className="text-center">
-          <NoSearchData />
+          <div className="mt-350 text-20 font-bold">
+            <p>장소를 마이플레이스에 추가해주세요.</p>
+          </div>
         </div>
       )}
     </>
