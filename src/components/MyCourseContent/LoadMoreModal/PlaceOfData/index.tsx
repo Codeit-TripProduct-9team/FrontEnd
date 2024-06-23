@@ -11,7 +11,7 @@ const PlaceOfData = ({ data }: PlaceOfDataProps) => {
       return parsedUrl.href;
     } catch (e) {
       console.error('Invalid image URL', url);
-      return 'img';
+      return '';
     }
   };
   return (
