@@ -34,9 +34,9 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
 
                 <div className="flex flex-col justify-between p-10 h-110">
                   <div>
-                    <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{title}</h2>
+                    <h2 className="font-bold text-13 overflow-ellipsis-2">{title}</h2>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between mb-15">
                     <div className="flex gap-5">
                       {tags?.slice(0, 2).map((tags: string, index: number) => (
                         <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
