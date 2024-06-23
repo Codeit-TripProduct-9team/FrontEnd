@@ -54,7 +54,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
           />
         ))}
       </div>
-      {paginatedData.length == 0 ? (
+      {paginatedData.length !== 0 ? (
         <>
           <div className={`grid grid-cols-3 gap-12`}>
             {paginatedData.map((data, index) => (
@@ -62,7 +62,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
             ))}
           </div>
           {maxOffset > 1 && (
-            <div className="absolute bottom-30 left-350">
+            <div className="absolute bottom-30 transform left-1/2 -translate-x-1/2">
               <MyRouteCardSectionPagination
                 offset={offset}
                 setOffset={setOffset}
