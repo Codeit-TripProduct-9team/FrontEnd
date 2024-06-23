@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 import truncateText from '@/src/utils/truncateText';
+import MyPlaceCardSkeleton from '../../common/skeleton/MyPlaceCardSkeleton';
+import { useEffect, useState } from 'react';
 
 interface ListCardProps {
   data: CardDataItem;
@@ -13,6 +15,17 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
   const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
   const MAXIMUM_DESCRIPTION_LENGTH = 65;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
+
+  if (isLoading) {
+    return <MyPlaceCardSkeleton />;
+  }
 
   return (
     <Draggable draggableId={name} index={id}>

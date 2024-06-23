@@ -1,4 +1,3 @@
-// import { MockMyRouteItem } from '../mockMyRoute';
 import { CardDataItem } from '@/src/lib/types';
 import MyRouteListCard from './MyRouteListCard';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
   const [sort, setSort] = useState<string>('인기순');
   const [offset, setOffset] = useState(1);
   const maxOffset = Math.ceil(filteredData.length / 9);
+  const paginatedData = filteredData.slice((offset - 1) * 9, offset * 9);
 
   const handleNextPage = () => {
     if (offset < maxOffset) {
@@ -36,8 +36,6 @@ const MyRouteCardSection = ({ filteredData, setSearchValue }: filteredDataProps)
       menus.length <= 4 ? setSearchValue(menus.slice(0, -2)) : setSearchValue(menus.slice(0, -8));
     }
   };
-
-  const paginatedData = filteredData.slice((offset - 1) * 9, offset * 9);
 
   return (
     <>
