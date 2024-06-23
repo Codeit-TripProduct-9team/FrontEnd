@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-// import { useState } from 'react';
+import { useState } from 'react';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,11 +9,11 @@ import { FieldError, useForm } from 'react-hook-form';
 import { useOverlay } from '@toss/use-overlay';
 
 import SuccessSignup from './SuccessSingupModal';
-// import SendEmail from '../common/Sendemail';
+import SendEmail from '../common/Sendemail';
 import Button from '../common/button';
 import NickNameInput from '../common/input';
 import EmailInput from '../common/input';
-// import VerifyInput from '../common/input';
+import VerifyInput from '../common/input';
 import PasswordInput from '../common/input/passwordInput';
 import PasswordCheckInput from '../common/input/passwordInput';
 import Modal from '../common/modal/index';
@@ -23,12 +23,12 @@ import checkDuplicate from '@/src/utils/checkDuplicate';
 import { REGEX } from '@/src/utils/regex';
 import { instance } from '@/src/api/axios';
 import { InputForm } from '@/src/lib/types';
-// import VerifyButton from './VerifyButton';
+import VerifyButton from './VerifyButton';
 
 const SingupContent = () => {
-  // const [isVerified, setIsVerified] = useState(false);
-  // const [isValidateEmail, setIsValidateEmail] = useState(false);
-  // const [verificationCode, setVerificationCode] = useState<string | null>(null);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isValidateEmail, setIsValidateEmail] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string | null>(null);
 
   const {
     register,
@@ -42,11 +42,11 @@ const SingupContent = () => {
 
   const route = useRouter();
 
-  // const emailValue = watch('email');
+  const emailValue = watch('email');
   const nicknameValue = watch('nickname');
 
   const isValid = Object.keys(errors).length !== 0;
-  // const isEmailvalid = !errors.email && isValidateEmail;
+  const isEmailvalid = !errors.email && isValidateEmail;
 
   const signupOverlay = useOverlay();
   const signupOnModal = () => {
@@ -74,20 +74,20 @@ const SingupContent = () => {
       email: emailValue,
     });
     if (isDuplicate) {
-      // setIsValidateEmail(true);
+      setIsValidateEmail(true);
       toast.success(TOAST_MESSAGE.CHECK_DUPLICATE);
     }
     return isDuplicate;
   };
 
-  // const checkVerificationCode = () => {
-  //   const verifyValue = getValues('verify');
-  //   const validCode = verifyValue === verificationCode;
-  //   if (validCode) {
-  //     setIsVerified(true);
-  //     toast.success(TOAST_MESSAGE.VERIFY);
-  //   }
-  // };
+  const checkVerificationCode = () => {
+    const verifyValue = getValues('verify');
+    const validCode = verifyValue === verificationCode;
+    if (validCode) {
+      setIsVerified(true);
+      toast.success(TOAST_MESSAGE.VERIFY);
+    }
+  };
 
   const onSubmit = async ({ nickname, email, password, passwordcheck }: InputForm) => {
     try {
@@ -147,18 +147,18 @@ const SingupContent = () => {
               inputContent="ID (이메일 형식)"
               labelId="email"
               focusType="email"
-              // disabled={isVerified}
+              disabled={isVerified}
             />
           </div>
-          {/* <SendEmail
+          <SendEmail
             isVerified={isVerified}
             userEmail={emailValue}
             disabled={!isEmailvalid}
             setVerificationCode={setVerificationCode}
             error={errors.email?.message}
-          /> */}
+          />
         </div>
-        {/* <div className="flex items-center w-full gap-10">
+        <div className="flex items-center w-full gap-10">
           <div className="w-full">
             <VerifyInput
               register={register('verify', {
@@ -185,7 +185,7 @@ const SingupContent = () => {
             isEmailValid={isEmailvalid}
             checkVerificationCode={checkVerificationCode}
           />
-        </div> */}
+        </div>
         <PasswordInput
           register={register('password', {
             required: {
