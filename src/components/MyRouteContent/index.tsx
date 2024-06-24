@@ -90,7 +90,7 @@ const MyRouteContent = () => {
         return;
       } else {
         addPlace(parseInt(destination.droppableId), {
-          index: 1,
+          index: destination.index,
           name: card.name,
           description: card.description,
           img: card.img,
