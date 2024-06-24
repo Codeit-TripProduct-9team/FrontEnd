@@ -9,7 +9,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import trashIcon from '@/public/assets/icon/trashIcon.png';
 import adminPageRequestInstance from '@/src/api/adminPageRequest';
-import { useMyPageRerenderStore, useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { useMyPageRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
 import { ListCardSkeleton } from '../skeleton/MainPageSkeleton';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -25,7 +25,6 @@ const ListCard = ({ data }: ListCardProps) => {
   const userNickname = getCookie('nickname');
   const [myPlace, setMyPlace] = useState<number[]>([]);
   const [isPending, setIsPending] = useState(false);
-  const { setRerender, reRender } = useRerenderStore();
   const { setMyPageRerender, myPageRerender } = useMyPageRerenderStore();
   const { skeleton } = useSkeletonStore();
   const queryClient = useQueryClient();
