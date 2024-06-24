@@ -52,7 +52,7 @@ const MypageContent = () => {
       </section>
       <hr className="mx-110" />
       <section className="flex flex-col relative items-center gap-10 mb-80">
-        <p className="mt-10 mr-1160 text-gray-60 ">저장된 리뷰 목록</p>
+        <p className="mt-10 mr-1160 text-gray-60 ">저장된 마이플레이스 목록</p>
         <div className="flex flex-col items-center relative w-1280">
           <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
           <div className="absolute right-5 -top-10 w-500">
