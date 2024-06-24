@@ -10,7 +10,7 @@ import Image from 'next/image';
 import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
-import { useRerenderStore } from '@/src/utils/zustand/useRerenderStore';
+import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
 
 const ListSearchSection = () => {
   const [cardData, setCardData] = useState([]);
@@ -21,6 +21,7 @@ const ListSearchSection = () => {
   const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
   const { reRender } = useRerenderStore();
+  const { setSkeleton } = useSkeletonStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -37,8 +38,10 @@ const ListSearchSection = () => {
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {
+        setSkeleton(true);
         const cardList = await mainPageRequestInstance.getCardList();
         setCardData(cardList);
+        setTimeout(() => setSkeleton(false), 2000);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }

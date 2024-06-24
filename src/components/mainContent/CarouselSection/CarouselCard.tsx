@@ -22,7 +22,7 @@ const CarouselCard = ({ data }: CarouselCardProps) => {
           <div className="flex flex-col justify-between max-w-670">
             <div className="flex flex-col gap-30">
               <h2 className="text-36 font-bold overflow-ellipsis-2">{data.title}</h2>
-              <p className="text-25 text-gray-60">{data.content}</p>
+              <p className="text-25 text-gray-60 overflow-ellipsis-3">{data.content}</p>
               <div className="text-20 flex gap-20 text-gray-70">
                 <p className="text-20 text-gray-70">조회수 : {viewCount}</p>{' '}
                 <p className="text-20 text-gray-70">영상생성일 : {updatedAt}</p>

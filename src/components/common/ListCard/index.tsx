@@ -9,7 +9,8 @@ import { MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import trashIcon from '@/public/assets/icon/trashIcon.png';
 import adminPageRequestInstance from '@/src/api/adminPageRequest';
-import { useRerenderStore } from '@/src/utils/zustand/useRerenderStore';
+import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { ListCardSkeleton } from '../skeleton/MainPageSkeleton';
 
 interface ListCardProps {
   data: CardDataItem;
@@ -24,6 +25,7 @@ const ListCard = ({ data }: ListCardProps) => {
   const [myPlace, setMyPlace] = useState<number[]>([]);
   const [isPending, setIsPending] = useState(false);
   const { setRerender, reRender } = useRerenderStore();
+  const { skeleton } = useSkeletonStore();
 
   const handleClickMyPlace = async (e: MouseEvent) => {
     e.preventDefault();
@@ -92,6 +94,11 @@ const ListCard = ({ data }: ListCardProps) => {
   }, [userId, token]);
 
   if (!myPlace) return;
+
+  if (skeleton) {
+    return <ListCardSkeleton />;
+  }
+
   return (
     <div>
       <Link href={`/travel-information/${data.id}`}>
