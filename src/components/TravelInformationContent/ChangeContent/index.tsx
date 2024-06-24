@@ -52,7 +52,7 @@ const ChangeContent = () => {
           })}
           onClick={() => handleTabClick('product')}
         >
-          상품설명
+          장소설명
         </button>
         <button
           className={combineStyle({
