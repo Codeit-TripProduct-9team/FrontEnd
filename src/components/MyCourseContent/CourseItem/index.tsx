@@ -12,11 +12,27 @@ import DeleteCourseModal from '../DeleteCourseModal';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
 import noImage from '@/public/assets/image/noImage.png';
 import getValidImageUrl from '@/src/utils/getValidImageUrl';
+import { useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import CourseItemSkeleton from '../../common/skeleton/MyCourseListSleleton';
+import { useEffect } from 'react';
 
 const CourseItem = ({ id, name, plan }: Course) => {
   const { setData } = useCourseStore();
   const router = useRouter();
   const loadMoreOverlay = useOverlay();
+  const { setSkeleton, skeleton } = useSkeletonStore();
+
+  useEffect(() => {
+    const fetchMyCourseList = async () => {
+      try {
+        setSkeleton(true);
+        setTimeout(() => setSkeleton(false), 1500);
+      } catch (error) {
+        console.error('Error fetching course list:', error);
+      }
+    };
+    fetchMyCourseList();
+  }, []);
 
   const handleRouteChange = () => {
     const courseData = {
@@ -56,6 +72,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
       </Modal>
     ));
   };
+  if (skeleton) return <CourseItemSkeleton />;
 
   const lastData = (id: number) => id + 1 === planData.length;
   return (

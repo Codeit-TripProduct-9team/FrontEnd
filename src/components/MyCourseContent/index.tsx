@@ -9,11 +9,9 @@ import { getCookie } from '@/src/utils/cookie';
 const MyCourseContent = () => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const hasToken = getCookie('userId');
-
   useEffect(() => {
     const fetchMyCourseList = async () => {
       try {
-        //user id 들어갈 예정
         const course = await myCoursePageRequestInstance.getCourseList(hasToken);
         setCourseData(course);
       } catch (error) {
