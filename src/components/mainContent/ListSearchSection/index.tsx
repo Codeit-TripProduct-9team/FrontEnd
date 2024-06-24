@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
@@ -11,6 +11,7 @@ import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
 import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { useQuery } from 'react-query';
 
 const ListSearchSection = () => {
   const [cardData, setCardData] = useState([]);
@@ -24,6 +25,7 @@ const ListSearchSection = () => {
   const { setSkeleton } = useSkeletonStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
+    console.log(reRender);
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
       setSectionVisible(true);
@@ -35,19 +37,19 @@ const ListSearchSection = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchAndLogCardList = async () => {
-      try {
-        setSkeleton(true);
-        const cardList = await mainPageRequestInstance.getCardList();
-        setCardData(cardList);
-        setTimeout(() => setSkeleton(false), 2000);
-      } catch (error) {
-        console.error('Error fetching card list:', error);
-      }
-    };
-    fetchAndLogCardList();
-  }, [reRender]);
+  const fetchCardList = async () => {
+    const cardList = await mainPageRequestInstance.getCardList();
+    return cardList;
+  };
+
+  useQuery(['cardList'], fetchCardList, {
+    onSuccess: (data) => {
+      setCardData(data), setTimeout(() => setSkeleton(false), 2000);
+    },
+    onError: (error) => {
+      console.error('Error fetching card list:', error);
+    },
+  });
 
   return (
     <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">

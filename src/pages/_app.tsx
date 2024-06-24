@@ -3,9 +3,12 @@ import type { AppProps } from 'next/app';
 import { OverlayProvider } from '@toss/use-overlay';
 import { CookiesProvider } from 'react-cookie';
 import { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [pageLoad, setPageLoad] = useState(false);
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     setPageLoad(true);
@@ -13,10 +16,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   if (!pageLoad) return;
   return (
-    <CookiesProvider>
-      <OverlayProvider>
-        <Component {...pageProps} />
-      </OverlayProvider>
-    </CookiesProvider>
+    <QueryClientProvider client={queryClient}>
+      <CookiesProvider>
+        <OverlayProvider>
+          <Component {...pageProps} />
+        </OverlayProvider>
+      </CookiesProvider>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }

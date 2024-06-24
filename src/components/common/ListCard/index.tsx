@@ -9,8 +9,9 @@ import { MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import trashIcon from '@/public/assets/icon/trashIcon.png';
 import adminPageRequestInstance from '@/src/api/adminPageRequest';
-import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { useMyPageRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
 import { ListCardSkeleton } from '../skeleton/MainPageSkeleton';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface ListCardProps {
   data: CardDataItem;
@@ -24,8 +25,9 @@ const ListCard = ({ data }: ListCardProps) => {
   const userNickname = getCookie('nickname');
   const [myPlace, setMyPlace] = useState<number[]>([]);
   const [isPending, setIsPending] = useState(false);
-  const { setRerender, reRender } = useRerenderStore();
+  const { setMyPageRerender, myPageRerender } = useMyPageRerenderStore();
   const { skeleton } = useSkeletonStore();
+  const queryClient = useQueryClient();
 
   const handleClickMyPlace = async (e: MouseEvent) => {
     e.preventDefault();
@@ -54,6 +56,7 @@ const ListCard = ({ data }: ListCardProps) => {
           setTimeout(() => toast.success(TOAST_MESSAGE.DELETE_MY_PLACE), 1000);
           setTimeout(() => setIsPending(false), 1500);
           compareMyPlaceWithCardListId();
+          setTimeout(() => setMyPageRerender(!myPageRerender), 1500);
         }
       } catch (error) {
         console.error(error);
@@ -68,19 +71,16 @@ const ListCard = ({ data }: ListCardProps) => {
     setMyPlace(checkRegister);
   };
 
+  const { mutate } = useMutation({
+    mutationFn: (data: CardDataItem) => adminPageRequestInstance.deleteVideo(data.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cardList'] }), toast.success(TOAST_MESSAGE.DELETE_MY_PLACE);
+    },
+  });
+
   const handleCardDelete = async (e: MouseEvent) => {
     e.preventDefault();
-    try {
-      setIsPending(true);
-      const response = await adminPageRequestInstance.deleteVideo(data.id);
-      if (response.status === 200) {
-        toast.success(TOAST_MESSAGE.DELETE_MY_PLACE);
-        setRerender(!reRender);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(TOAST_MESSAGE.FAILED_REQUEST);
-    }
+    mutate(data);
   };
 
   useEffect(() => {
@@ -92,8 +92,6 @@ const ListCard = ({ data }: ListCardProps) => {
     };
     compareMyPlaceWithCardListId();
   }, [userId, token]);
-
-  console.log(myPlace);
 
   if (!myPlace) return;
 
