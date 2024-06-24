@@ -8,10 +8,6 @@ class SignPageRequest {
       checkPassword: checkPassword,
     });
   }
-
-  async overlapEmail(email: string) {
-    return await instance.post(`/auth/duplicate/email`, { email: email });
-  }
 }
 
 const signPageRequestInstance = new SignPageRequest();

@@ -14,13 +14,12 @@ import { useOverlay } from '@toss/use-overlay';
 import { useState } from 'react';
 
 import { REGEX } from '@/src/utils/regex';
-// import SendEmail from '../common/Sendemail';
+import SendEmail from '../common/Sendemail';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 
 const ResetPwContent = () => {
   const [isVerified, setIsVerified] = useState(false);
-  // const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState<string | null>(null);
 
   const {
@@ -52,30 +51,20 @@ const ResetPwContent = () => {
   };
 
   const emailValue = watch('email') || '';
+  // const verifyValue = watch('verifyValue') || '';
   const password = watch('password') || '';
   const passwordCheck = watch('passwordcheck') || '';
-  // const isEmailvalid = !errors.email && isValidateEmail;
+  const isEmailvalid = !errors.email;
   const isPwValid = password === passwordCheck && password.length > 0 && Object.keys(errors).length === 0;
 
   const checkVerificationCode = async () => {
-    // const verifyValue = getValues('verify');
-    // const validCode = verifyValue === verificationCode;
-    // if (validCode) toast.success(TOAST_MESSAGE.VERIFY);
-    // else toast.error(TOAST_MESSAGE.FAILED_VERIFY);
-    try {
-      if (Object.keys(errors).length !== 0) {
-        const response = await signPageRequestInstance.overlapEmail(emailValue);
-        if (response.status === 200) {
-          toast.error(TOAST_MESSAGE.FAILED_VERIFY);
-          //아래 코드 삭제할 것
-          setVerificationCode('11');
-        }
-      }
-    } catch (e) {
+    const verifyValue = getValues('verify');
+    const validCode = verifyValue === verificationCode;
+    console.log(verifyValue, validCode);
+    if (validCode) {
       toast.success(TOAST_MESSAGE.VERIFY);
       setIsVerified(true);
-    }
-    console.clear();
+    } else toast.error(TOAST_MESSAGE.FAILED_VERIFY);
   };
 
   const handleChangePassword = async () => {
@@ -114,13 +103,13 @@ const ResetPwContent = () => {
               disabled={isVerified}
             />
           </div>
-          {/* <SendEmail
+          <SendEmail
             isVerified={isVerified}
             userEmail={emailValue}
             disabled={!isEmailvalid}
             setVerificationCode={setVerificationCode}
             error={errors.email?.message}
-          /> */}
+          />
         </div>
         <div className="flex items-center w-full gap-10">
           <div className="w-full">
@@ -139,14 +128,14 @@ const ResetPwContent = () => {
               inputContent="인증코드"
               labelId="verify"
               focusType="verify"
-              // disabled={!isEmailvalid || isVerified}
+              disabled={!isEmailvalid || isVerified}
               isSuccess={isVerified}
             />
           </div>
           <Button
             type="button"
             className={`min-w-182 h-60 ${errors.verify ? 'mb-25' : 'm-2b-0'}`}
-            // disabled={!isEmailvalid}
+            disabled={!isEmailvalid}
             onClick={checkVerificationCode}
           >
             인증 요청
