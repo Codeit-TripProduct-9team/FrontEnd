@@ -25,7 +25,6 @@ const ListSearchSection = () => {
   const { setSkeleton } = useSkeletonStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
-    console.log(reRender);
     setSearchValue((e.target as HTMLInputElement).value);
     if (!sectionVisible) {
       setSectionVisible(true);

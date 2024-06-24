@@ -27,7 +27,7 @@ const CarouselSection = () => {
       rewind={true}
       navigation={true}
       autoplay={{
-        delay: 3500,
+        delay: 5000,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}

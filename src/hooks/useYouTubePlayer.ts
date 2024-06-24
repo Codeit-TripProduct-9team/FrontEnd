@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { YouTubeProps } from 'react-youtube';
 
 interface YouTubePlayer {
@@ -13,22 +13,27 @@ const useYouTubePlayer = () => {
   const playerRef = useRef<YouTubePlayer | null>(null);
   const videoSize = router.pathname === '/travel-information/[id]' ? 589 : 700;
   const autoPlay = router.pathname === '/travel-information/[id]' ? false : true;
+  const [loading, setLoading] = useState(false);
 
   const onReady: YouTubeProps['onReady'] = (event) => {
     playerRef.current = event.target;
   };
 
   const onMouseEnter: React.MouseEventHandler<HTMLDivElement> = () => {
-    if (playerRef.current) {
+    if (loading && playerRef.current) {
       playerRef.current.playVideo();
     }
   };
 
   const onMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => {
-    if (autoPlay && playerRef.current) {
+    if (loading && autoPlay && playerRef.current) {
       playerRef.current.pauseVideo();
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => setLoading(true), 8000);
+  }, []);
 
   return { videoSize, onReady, onMouseEnter, onMouseLeave, autoPlay };
 };
