@@ -8,23 +8,26 @@ import Button from '../common/button';
 import SearchMyCard from './SearchMyCard';
 import myCoursePageRequestInstance from '@/src/api/myPageRequest';
 import { getCookie } from '@/src/utils/cookie';
+import { useRerenderStore } from '@/src/utils/zustand/useRerenderStore';
 
 const MypageContent = () => {
   const [cardData, setCardData] = useState([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const userId = getCookie('userId');
+  const { reRender, setRerender } = useRerenderStore();
   useEffect(() => {
     const fetchAndLogCardList = async () => {
       try {
         const cardList = await myCoursePageRequestInstance.getCourseData(userId);
         setCardData(cardList);
+        setRerender(!reRender);
       } catch (error) {
         console.error('Error fetching card list:', error);
       }
     };
     fetchAndLogCardList();
-  }, [userId]);
+  }, [userId, reRender]);
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
