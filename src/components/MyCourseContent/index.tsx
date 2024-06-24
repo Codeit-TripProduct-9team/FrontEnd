@@ -4,11 +4,15 @@ import { CourseData } from '@/src/lib/types';
 import { useEffect, useState } from 'react';
 import Button from '../common/button';
 import Link from 'next/link';
+import { useCoursePageRerenderStore } from '@/src/utils/zustand/useRerenderStore';
 import { getCookie } from '@/src/utils/cookie';
 
 const MyCourseContent = () => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const { coursePageRerender } = useCoursePageRerenderStore();
   const hasToken = getCookie('userId');
+  console.log(courseData);
+
   useEffect(() => {
     const fetchMyCourseList = async () => {
       try {
@@ -19,7 +23,7 @@ const MyCourseContent = () => {
       }
     };
     fetchMyCourseList();
-  }, [hasToken, courseData]);
+  }, [coursePageRerender]);
   return (
     <>
       <div className="flex flex-col justify-center items-center pb-40">

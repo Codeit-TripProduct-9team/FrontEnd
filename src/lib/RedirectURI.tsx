@@ -53,7 +53,7 @@ const RedirectURI = () => {
         <h1 className="text-50 text-center">
           안녕하세요 <span className="font-bold text-blue">{userData.nickname}</span>님!
         </h1>
-        <div className="flex text-60 items-center justify-center gap-10 ">
+        <div className="flex text-50 items-center justify-center gap-10 ">
           <h1 className="mt-20">유트립에 오신것을 환영해요!</h1>
         </div>
         <div className="flex gap-20 mt-30">

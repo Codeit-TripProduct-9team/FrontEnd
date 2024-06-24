@@ -15,6 +15,11 @@ interface skeletonInterface {
   setSkeleton: (state: boolean) => void;
 }
 
+interface coursePageRerenderInterface {
+  coursePageRerender: boolean;
+  setCoursePageRerender: (state: boolean) => void;
+}
+
 export const useRerenderStore = create<reRenderInterface>((set) => ({
   reRender: false,
   setRerender: (state) => set({ reRender: state }),
@@ -28,4 +33,9 @@ export const useSkeletonStore = create<skeletonInterface>((set) => ({
 export const useMyPageRerenderStore = create<MyPageRerenderInterface>((set) => ({
   myPageRerender: false,
   setMyPageRerender: (state) => set({ myPageRerender: state }),
+}));
+
+export const useCoursePageRerenderStore = create<coursePageRerenderInterface>((set) => ({
+  coursePageRerender: false,
+  setCoursePageRerender: (state) => set({ coursePageRerender: state }),
 }));

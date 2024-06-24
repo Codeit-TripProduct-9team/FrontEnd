@@ -1,6 +1,7 @@
 import { getCookie } from '@/src/utils/cookie';
 import Button from '../../common/button';
 import myCoursePageRequestInstance from '@/src/api/myPageRequest';
+import { useCoursePageRerenderStore } from '@/src/utils/zustand/useRerenderStore';
 
 type DeleteCourseModalProps = {
   courseId: number;
@@ -9,10 +10,11 @@ type DeleteCourseModalProps = {
 };
 const DeleteCourseModal = ({ courseId, courseName, close }: DeleteCourseModalProps) => {
   const hasToken = getCookie('userId');
-  console.log(courseId, hasToken);
+  const { coursePageRerender, setCoursePageRerender } = useCoursePageRerenderStore();
   const handleDeleteCourse = async () => {
     try {
       await myCoursePageRequestInstance.deleteCourseList(hasToken, courseId);
+      setCoursePageRerender(!coursePageRerender);
     } catch (error) {
       console.error('Error delete course list:', error);
     } finally {
