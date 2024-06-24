@@ -30,6 +30,7 @@ const ListCard = ({ data }: ListCardProps) => {
   const queryClient = useQueryClient();
 
   const handleClickMyPlace = async (e: MouseEvent) => {
+    console.log(myPlace);
     e.preventDefault();
     if (!token) {
       toast.error(TOAST_MESSAGE.FAILED_MY_PLACE);
@@ -84,16 +85,14 @@ const ListCard = ({ data }: ListCardProps) => {
   };
 
   useEffect(() => {
+    if (!token) return;
     const compareMyPlaceWithCardListId = async () => {
-      if (!token) return;
       const checkRegisterdPlace = await mainPageRequestInstance.getRegisteredPlace(userId);
       const checkRegister = checkRegisterdPlace?.map((myPlaceList: any) => myPlaceList.id);
       setMyPlace(checkRegister);
     };
     compareMyPlaceWithCardListId();
   }, [userId, token]);
-
-  if (!myPlace) return;
 
   if (skeleton) {
     return <ListCardSkeleton />;
@@ -126,7 +125,7 @@ const ListCard = ({ data }: ListCardProps) => {
                   </div>
                 ))}
               </div>
-              {!myPlace.includes(data.id) ? (
+              {!myPlace?.includes(data.id) ? (
                 <div
                   className="z-10 transition-transform duration-300 transform hover:scale-105 hover:bg-gray-30 rounded-s font-bold bg-gray-10 py-3 px-10 text-12"
                   onClick={handleClickMyPlace}
