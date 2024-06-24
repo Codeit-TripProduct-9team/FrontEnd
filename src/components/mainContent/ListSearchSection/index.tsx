@@ -5,12 +5,12 @@ import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
 import { CardDataItem } from '@/src/lib/types';
 import { useInView } from 'react-intersection-observer';
 
-import search from '@/public/assets/icon/search.png';
+import search from '@/public/assets/icon/search.svg';
 import Image from 'next/image';
 import CardSection from '../CardSection';
 import InputNavigator from './InputNavigator';
 import mainPageRequestInstance from '@/src/api/mainPageRequest';
-import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
 import { useQuery } from 'react-query';
 
 const ListSearchSection = () => {
@@ -21,7 +21,6 @@ const ListSearchSection = () => {
   const [sectionVisible, setSectionVisible] = useState<boolean>(false);
   const filteredData: CardDataItem[] = useFilteredData({ data: cardData }, searchValue);
   const { relatedData, visible } = useRelatedSearch(searchValue, sectionVisible);
-  const { reRender } = useRerenderStore();
   const { setSkeleton } = useSkeletonStore();
 
   const handleSearchInputChange = (e: ChangeEvent) => {
@@ -88,11 +87,11 @@ const ListSearchSection = () => {
           </div>
         )}
         {searchValue ? (
-          <div className="absolute cursor-pointer right-20 top-18" onClick={() => setSearchValue('')}>
+          <div className="absolute cursor-pointer right-20 top-15" onClick={() => setSearchValue('')}>
             <Image src="/assets/icon/clear.png" width={20} height={10} alt="클리어버튼" />
           </div>
         ) : (
-          <Image src={search} width={30} height={10} alt="검색이미지" className="absolute right-15 top-15" />
+          <Image src={search} width={20} height={10} alt="검색이미지" className="absolute right-20 top-15" />
         )}
       </div>
       <CardSection filteredData={filteredData} setSearchValue={setSearchValue} />
