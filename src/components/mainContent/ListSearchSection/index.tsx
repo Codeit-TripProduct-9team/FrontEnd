@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useFilteredData } from '@/src/hooks/useFilteredData';
 import RelatedSearchInfo from './RelatedSearchInfo';
 import { useRelatedSearch } from '@/src/hooks/useRelatedSearch';
@@ -50,6 +50,10 @@ const ListSearchSection = () => {
       console.error('Error fetching card list:', error);
     },
   });
+
+  useEffect(() => {
+    setSkeleton(true);
+  }, [setSkeleton]);
 
   return (
     <article onClick={() => setSectionVisible(false)} className="flex flex-col items-center">
