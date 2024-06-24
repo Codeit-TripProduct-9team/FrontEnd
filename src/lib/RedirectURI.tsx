@@ -11,7 +11,6 @@ import { Toaster } from 'react-hot-toast';
 
 const RedirectURI = () => {
   const { setUserData, userData } = userDataStore();
-  console.log(userData);
   const router = useRouter();
 
   useEffect(() => {
