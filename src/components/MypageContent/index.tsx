@@ -28,7 +28,7 @@ const MypageContent = () => {
       }
     };
     fetchAndLogCardList();
-  }, [myPageRerender]);
+  }, [userId, myPageRerender]);
   return (
     <>
       <section className="flex items-center justify-center my-30 ">
