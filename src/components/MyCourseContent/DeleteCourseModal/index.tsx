@@ -1,7 +1,6 @@
 import { getCookie } from '@/src/utils/cookie';
 import Button from '../../common/button';
 import myCoursePageRequestInstance from '@/src/api/myPageRequest';
-import { useRouter } from 'next/router';
 
 type DeleteCourseModalProps = {
   courseId: number;
@@ -9,7 +8,6 @@ type DeleteCourseModalProps = {
   close: () => void;
 };
 const DeleteCourseModal = ({ courseId, courseName, close }: DeleteCourseModalProps) => {
-  const router = useRouter();
   const hasToken = getCookie('userId');
   console.log(courseId, hasToken);
   const handleDeleteCourse = async () => {
@@ -19,7 +17,6 @@ const DeleteCourseModal = ({ courseId, courseName, close }: DeleteCourseModalPro
       console.error('Error delete course list:', error);
     } finally {
       close();
-      router.reload();
     }
   };
   return (
