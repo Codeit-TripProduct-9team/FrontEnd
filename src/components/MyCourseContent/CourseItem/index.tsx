@@ -32,7 +32,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
       }
     };
     fetchMyCourseList();
-  }, []);
+  }, [setSkeleton]);
 
   const handleRouteChange = () => {
     const courseData = {

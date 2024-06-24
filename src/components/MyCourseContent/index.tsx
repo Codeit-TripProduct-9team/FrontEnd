@@ -8,6 +8,7 @@ import { getCookie } from '@/src/utils/cookie';
 
 const MyCourseContent = () => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  console.log(courseData);
   const hasToken = getCookie('userId');
   useEffect(() => {
     const fetchMyCourseList = async () => {
@@ -19,7 +20,7 @@ const MyCourseContent = () => {
       }
     };
     fetchMyCourseList();
-  }, [hasToken, courseData]);
+  }, [hasToken]);
   return (
     <>
       <div className="flex flex-col justify-center items-center pb-40">
