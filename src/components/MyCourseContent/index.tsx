@@ -9,11 +9,9 @@ import { getCookie } from '@/src/utils/cookie';
 const MyCourseContent = () => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const hasToken = getCookie('userId');
-
   useEffect(() => {
     const fetchMyCourseList = async () => {
       try {
-        //user id 들어갈 예정
         const course = await myCoursePageRequestInstance.getCourseList(hasToken);
         setCourseData(course);
       } catch (error) {
@@ -21,7 +19,7 @@ const MyCourseContent = () => {
       }
     };
     fetchMyCourseList();
-  }, [hasToken]);
+  }, [hasToken, courseData]);
   return (
     <>
       <div className="flex flex-col justify-center items-center pb-40">
@@ -35,7 +33,6 @@ const MyCourseContent = () => {
             <div className="flex flex-col items-center gap-10">
               <strong className="text-20">저장된 코스 목록이 존재하지 않습니다.</strong>
               <Button className="w-150 h-40 font-bold hover:bg-blue-500">
-                {/* 코스 생성 버튼 */}
                 <Link href="/course/new">지금 코스짜기</Link>
               </Button>
             </div>
