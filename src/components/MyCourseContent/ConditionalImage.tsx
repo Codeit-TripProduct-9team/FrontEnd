@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import noImage from '@/public/assets/noImage.png';
+import noImage from '@/public/assets/image/noImage.png';
 import { twMerge } from 'tailwind-merge';
 
 interface ConditionalImageProps {
@@ -12,7 +12,7 @@ const ConditionalImage = ({ img, className }: ConditionalImageProps) => {
   return (
     <div className={`${style}`}>
       <span className="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2">
-        {img === 'img' ? (
+        {img === '' ? (
           <Image src={noImage} alt="img" layout="fill" objectFit="cover" />
         ) : (
           <Image src={img.replace(/'/g, '')} alt="place" layout="fill" objectFit="cover" />

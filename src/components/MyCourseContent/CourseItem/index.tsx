@@ -10,6 +10,8 @@ import pencil from '@/public/assets/icon/pencilIcon.png';
 import { useRouter } from 'next/router';
 import DeleteCourseModal from '../DeleteCourseModal';
 import { useCourseStore } from '@/src/utils/zustand/useCourseStore/useCourseStore';
+import noImage from '@/public/assets/image/noImage.png';
+import getValidImageUrl from '@/src/utils/getValidImageUrl';
 
 const CourseItem = ({ id, name, plan }: Course) => {
   const { setData } = useCourseStore();
@@ -53,16 +55,6 @@ const CourseItem = ({ id, name, plan }: Course) => {
         <DeleteCourseModal courseId={id} courseName={name} close={close} />
       </Modal>
     ));
-  };
-
-  const getValidImageUrl = (url: string) => {
-    try {
-      const parsedUrl = new URL(url);
-      return parsedUrl.href;
-    } catch (e) {
-      console.error('Invalid image URL', url);
-      return 'img';
-    }
   };
 
   return (
@@ -117,7 +109,7 @@ const CourseItem = ({ id, name, plan }: Course) => {
             <p className="absolute top-80 left-130 text-white">+ {remainingCount} more</p>
             <Image
               key={fourthPlace.index}
-              src={getValidImageUrl(fourthPlace.img)}
+              src={getValidImageUrl(fourthPlace.img) || noImage}
               alt="place"
               width={321}
               height={207}

@@ -3,16 +3,31 @@ import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 import useYouTubeData from '@/src/hooks/useYouTubeData';
 import truncateText from '@/src/utils/truncateText';
+import MyPlaceCardSkeleton from '../../common/skeleton/MyPlaceCardSkeleton';
+import { useEffect, useState } from 'react';
 
 interface ListCardProps {
   data: CardDataItem;
+  offset: number;
 }
 
-const MyRouteListCard = ({ data }: ListCardProps) => {
+const MyRouteListCard = ({ data, offset }: ListCardProps) => {
   const { description, img, name, id, tags, title, videoUrl } = data;
   const videoId = videoUrl.split('v=')[1];
   const { thumbnail } = useYouTubeData(videoId);
   const MAXIMUM_DESCRIPTION_LENGTH = 65;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, [offset]);
+
+  if (isLoading) {
+    return <MyPlaceCardSkeleton />;
+  }
 
   return (
     <Draggable draggableId={name} index={id}>
@@ -34,9 +49,9 @@ const MyRouteListCard = ({ data }: ListCardProps) => {
 
                 <div className="flex flex-col justify-between p-10 h-110">
                   <div>
-                    <h2 className="font-bold text-13 mb-5 overflow-ellipsis-2">{title}</h2>
+                    <h2 className="font-bold text-13 overflow-ellipsis-2">{title}</h2>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between mb-15">
                     <div className="flex gap-5">
                       {tags?.slice(0, 2).map((tags: string, index: number) => (
                         <div className="flex rounded-s font-bold bg-gray-10 py-3 px-10 text-12" key={index}>
