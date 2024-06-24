@@ -9,6 +9,8 @@ import { MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import trashIcon from '@/public/assets/icon/trashIcon.png';
 import adminPageRequestInstance from '@/src/api/adminPageRequest';
+import { useRerenderStore, useSkeletonStore } from '@/src/utils/zustand/useRerenderStore';
+import { ListCardSkeleton } from '../skeleton/MainPageSkeleton';
 
 interface ListCardProps {
   data: CardDataItem;
@@ -22,6 +24,8 @@ const ListCard = ({ data }: ListCardProps) => {
   const userNickname = getCookie('nickname');
   const [myPlace, setMyPlace] = useState<number[]>([]);
   const [isPending, setIsPending] = useState(false);
+  const { setRerender, reRender } = useRerenderStore();
+  const { skeleton } = useSkeletonStore();
 
   const handleClickMyPlace = async (e: MouseEvent) => {
     e.preventDefault();
@@ -71,7 +75,7 @@ const ListCard = ({ data }: ListCardProps) => {
       const response = await adminPageRequestInstance.deleteVideo(data.id);
       if (response.status === 200) {
         toast.success(TOAST_MESSAGE.DELETE_MY_PLACE);
-        setIsPending(false);
+        setRerender(!reRender);
       }
     } catch (error) {
       console.error(error);
@@ -90,6 +94,11 @@ const ListCard = ({ data }: ListCardProps) => {
   }, [userId, token]);
 
   if (!myPlace) return;
+
+  if (skeleton) {
+    return <ListCardSkeleton />;
+  }
+
   return (
     <div>
       <Link href={`/travel-information/${data.id}`}>
