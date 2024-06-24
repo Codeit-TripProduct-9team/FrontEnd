@@ -93,6 +93,8 @@ const ListCard = ({ data }: ListCardProps) => {
     compareMyPlaceWithCardListId();
   }, [userId, token]);
 
+  console.log(myPlace);
+
   if (!myPlace) return;
 
   if (skeleton) {
